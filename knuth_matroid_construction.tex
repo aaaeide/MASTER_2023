@@ -1,4 +1,4 @@
-\chapter{Generating random matroids}
+\chapter{Random matroid generation}
 
 One goal for this project was to create a Julia library for generating and interacting with random matroids. In the preparatory project fall of 2022, I implemented Knuth's 1974 algorithm for random matroid generation via the erection of closed sets \cite{knuth-1975}. With this, I was able to randomly generate matroids with a universe size $n$ of about 12, but for larger values of $n$ my implementation was infeasibly slow.
 
@@ -74,7 +74,7 @@ It is clear that representing closed sets using binary numbers is a substantial 
 \subsection{Sorted superpose}
 Can we improve the running time of the algorithm further? One idea might be to perform the superpose operation in descending order based on the size of the sets. This should result in fewer calls, as the bigger sets will "eat" the smaller sets that fully overlap with them in the early iterations, however, the repeated sorting of the sets might negate this performance gain. \skelpar{KANSKJE: Skrive bedre om idéen bak sorted superpose.} 
 
-Sadly, as Table~\ref{tab:perf_v3} shows, this implementation is a few times slower and more space demanding than the previous implementation. This is likely due to the fact that an ordered list is more space inefficient than the hashmap-based \Set.
+Unfortunately, as Table~\ref{tab:perf_v3} shows, this implementation is a few times slower and more space demanding than the previous implementation. This is likely due to the fact that an ordered list is more space inefficient than the hashmap-based \Set.
 
 \begin{table*}[ht!]
   \centering
@@ -102,3 +102,7 @@ Sadly, as Table~\ref{tab:perf_v3} shows, this implementation is a few times slow
 \end{table*}
 
 \skelpar{Skrive om variansen mellom tilfeldige matroider! @benchmark osv. Histogram}
+
+
+\subsection{Iterative superpose}
+% So far, we are inserting all covers of $F_r$ into $F_{r+1}$ along with all enlargements, and then running the superpose operation on all of them at once. In the worst case, when no enlargements have been made, $F_{r+1}$ is the set of all $r+1$-sized subsets of $E$, $|F_{r+1}| = {n \choose r+1}$.  Previous superpose implementations have had a triply nested for loop, comparing each $A,B \in F_{r+1}$ with each $C \in F_r$ to see whether $A\cap B \subseteq C$ or whether $A, B$ should be replaced by $A\cup B$. Thus we were looking at a whopping $\mathcal{O}({n \choose r+1}^2{n \choose r})$ operations in the superpose step.

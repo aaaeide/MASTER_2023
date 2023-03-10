@@ -1,0 +1,19 @@
+\contentsline {chapter}{\numberline {1}Introduction}{2}{chapter.1}%
+\contentsline {chapter}{\numberline {2}Background}{5}{chapter.2}%
+\contentsline {chapter}{\numberline {3}Random matroid generation}{8}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Knuth's matroid construction}{8}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Randomized KMC}{10}{subsection.3.1.1}%
+\contentsline {section}{\numberline {3.2}Improving performance}{11}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Representing sets as binary numbers}{12}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Sorted superpose}{13}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}Iterative superpose}{14}{subsection.3.2.3}%
+\contentsline {chapter}{\numberline {4}A library for fair allocation with matroids}{15}{chapter.4}%
+\contentsline {chapter}{\numberline {5}Fair allocation with binary submodular valuations}{19}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Yankee Swap}{20}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Some other MRF alloc algorithm as well maybe?}{23}{section.5.2}%
+\contentsline {chapter}{\numberline {6}Fair allocation with matroid constraints}{26}{chapter.6}%
+\contentsline {section}{\numberline {6.1}A very cool algorithm will be discussed here}{27}{section.6.1}%
+\contentsline {section}{\numberline {6.2}This algorithm is okay as well}{30}{section.6.2}%
+\contentsline {chapter}{\numberline {7}Results}{33}{chapter.7}%
+\contentsline {chapter}{Appendices}{42}{section*.10}%
+\contentsline {chapter}{Appendix \numberline {A}Tables}{43}{appendix.A}%

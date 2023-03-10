@@ -1,0 +1,14 @@
+\chapter{Background}
+If a mathematical structure can be defined or axiomatized in multiple different, but not obviously equivalent, ways, the different definitions or axiomatizations of that structure make up a cryptomorphism. The many obtusely equivalent definitions of a matroid are a classic example of cryptomorphism, and belie the fact that the matroid is a generalization of concepts in many, seemingly disparate areas of mathematics.
+
+One common way to define a matroid is in terms of its independent sets. An independence system is a pair $(E, \mathcal{S})$, where $E$ is the ground set of elements, $E \not= \emptyset$, and $\mathcal{S}$ is the set of independent sets, $\mathcal{S} \subseteq 2^E$. A matroid is an independence system with the following properties:
+
+\begin{enumerate}
+  \item The empty set is an independent set, $\emptyset \in \mathcal{S}$.
+  \item A matroid is closed under inclusion: if $A \subseteq B$ and $B \in \mathcal{S}$, then $A \in \mathcal{S}$.
+  \item If $A, B \in S$ and $|A| > |B|,$ then there exists an $e \in A$ st. $B \cup \{e\} \in S$.
+\end{enumerate}
+
+In practice, the ground set $E$ represents the universe of elements in play, and the independent sets of typically represent the legal combinations of these items. In fair allocation instances
+
+\skelpars[6]{Intro til matroider}

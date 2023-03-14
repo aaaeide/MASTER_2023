@@ -6,25 +6,28 @@
 \usepackage{skeldoc}
 \usepackage[kw]{pseudo}
 \usepackage{tcolorbox}
+\usepackage{tabto}
+
+\definecolor{lighttan}{cmyk}{0,0.05,0.17,0}
+\definecolor{darktan}{cmyk}{0,0.07,0.26,0.06}
+\pseudoset{label=\small\arabic*, hd-space}
+
 \usepackage{caption}
 \usepackage{threeparttable}
 
 \usepackage{amsmath}
 \usepackage{amssymb}
 
-\usepackage{tabto}
-
 \usepackage[page,toc,titletoc,title]{appendix}
 \usepackage{hyperref}
 
 \tcbuselibrary{skins,theorems}
-\newtcbtheorem{algorithm}{Algorithm}{pseudo/ruled}{alg}
+\newtcbtheorem{algorithm}{Algorithm}{pseudo/filled, float, colback = lighttan, colbacktitle = darktan}{alg}
 \TabPositions{2cm}
 
 \begin{document}
 
-\newcommand{\Set}{$\texttt{Set}$}
-\newcommand{\UIntSixteen}{$\texttt{UInt16}$}
+\newcommand{\mono}[1]{$\texttt{#1}$}
 
 \begin{titlepage}
   \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
@@ -60,11 +63,12 @@
 
 \input{introduction}
 \input{background}
-\input{knuth_matroid_construction}
+\input{random_matroids}
 \input{matroids.jl}
-\input{yankeeswap}
+\input{mrf}
 \input{matroidconstraints}
 \input{results}
+\input{conclusions}
 
 \printskelnotes{}
 \bibliographystyle{alpha}

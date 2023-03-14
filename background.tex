@@ -1,7 +1,7 @@
 \chapter{Background}
 If a mathematical structure can be defined or axiomatized in multiple different, but not obviously equivalent, ways, the different definitions or axiomatizations of that structure make up a cryptomorphism. The many obtusely equivalent definitions of a matroid are a classic example of cryptomorphism, and belie the fact that the matroid is a generalization of concepts in many, seemingly disparate areas of mathematics.
 
-One common way to define a matroid is in terms of its independent sets. An independence system is a pair $(E, \mathcal{S})$, where $E$ is the ground set of elements, $E \not= \emptyset$, and $\mathcal{S}$ is the set of independent sets, $\mathcal{S} \subseteq 2^E$. A matroid is an independence system with the following properties:
+Perhaps the most common way to define a matroid is in terms of its \textit{independent sets}. An independence system is a pair $(E, \mathcal{S})$, where $E$ is the ground set of elements, $E \not= \emptyset$, and $\mathcal{S}$ is the set of independent sets, $\mathcal{S} \subseteq 2^E$. A matroid is an independence system with the following properties:
 
 \begin{enumerate}
   \item The empty set is an independent set, $\emptyset \in \mathcal{S}$.
@@ -9,6 +9,16 @@ One common way to define a matroid is in terms of its independent sets. An indep
   \item If $A, B \in S$ and $|A| > |B|,$ then there exists an $e \in A$ st. $B \cup \{e\} \in S$.
 \end{enumerate}
 
-In practice, the ground set $E$ represents the universe of elements in play, and the independent sets of typically represent the legal combinations of these items. In fair allocation instances
+Given a matroid $\mathfrak{M} = (E, \mathcal{S})$, the \textit{matroid rank function} (MRF) is a function $\text{rank} : 2^E \to \mathbb{N}$ that gives the \textit{rank} of a set $ A \subseteq E$, which is defined to be the size of the largest independent set which is a subset of $A$. 
+
+In practice, the ground set $E$ represents the universe of elements in play, and the independent sets of typically represent the legal combinations of these items. In the context of fair allocation, the independent sets represent the legal (in the case of matroid constraints) or desired (in the case of matroid utilities) bundles of items.
+
+We also need to establish the concept of \textit{closed sets} of a matroid. A closed set is a set whose cardinality is maximal for its rank. Equivalently to the definition given above, we can define a matroid as $\mathfrak{M} = (E, \mathcal{F})$, where $\mathcal{F}$ is the set of closed sets of $\mathfrak{M}$, satisfying the following properties:
+
+\begin{enumerate}
+  \item The set of all elements is closed: $E \in \mathcal{F}$
+  \item The intersection of two closed sets is a closed set: If $A,B \in \mathcal{F},$ then $A \cap B \in \mathcal{F}$
+  \item If $A \in \mathcal{F}$ and $a,b \in E \setminus A,$ then $b$ is a member of all sets in $\mathcal{F}$ containing $A \cup \{a\}$ if and only if $a$ is a member of all sets in $\mathcal{F}$ containing $A \cup \{b\}$
+\end{enumerate}
 
 \skelpars[6]{Intro til matroider}

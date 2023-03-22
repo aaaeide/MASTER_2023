@@ -1,8 +1,19 @@
 \begin{thebibliography}{Knu75}
 
+\bibitem[Ben21]{benabbou-2021}
+et~al. Benabbou, Nawal.
+\newblock Finding fair and efficient allocations for matroid rank valuations.
+\newblock {\em ACM Transactions on Economics and Computation}, 9:1--41,
+  December 2021.
+
 \bibitem[Knu75]{knuth-1975}
 Donald~E. Knuth.
 \newblock Random matroids.
 \newblock {\em Discrete Mathematics}, 12:341--358, 1975.
+
+\bibitem[Whi35]{whitney-1935}
+Hassler Whitney.
+\newblock On the abstract properties of linear dependence.
+\newblock {\em American Journal of Mathematics}, 57:509--533, July 1935.
 
 \end{thebibliography}

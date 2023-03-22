@@ -1,12 +1,17 @@
 \chapter{A library for fair allocation with matroids}
-A goal for this project is to introduce a useful matroid library for experimenting with algorithms for fair allocation with matroid constraints, or matroid rank utility functions. In the previous chapter, we explored how this library generates random matroids, however this is not very useful until we also have in place an API layer to allow fair allocation algorithms to interface with our matroids in a practical and efficient manner.
+A goal for this project is to introduce Matroids.jl as a useful library for experimenting with fair allocation that require matroids. In the previous chapter, we explored how this library generates random matroids, however this is not very useful until we also have in place an API layer to allow fair allocation algorithms to interface with our matroids in a practical and efficient manner.
 
-This chapter is a literature study of relevant algorithms, and then a discussion on how the results of this has informed the API design of Matroids.jl.
 
-\skelpars[12]
+
+
+
+\skelpars[5]
+
+\section{The matroid union algorithm}
+\skelpars[7]
 
 
 \section{Supporting universe sizes of \texorpdfstring{$n > 128$}{n > 128}}
-The larger the ground set, the closer we are to an instance of The cake-cutting problem. Typical fair allocation problems with indivisible items deal with less than 100 items. \skelpars[1]{Referer til Spliddit og vanlige størrelser på fordelingsproblemer}
+The larger the ground set, the closer we are to an instance of The cake-cutting problem. Typical fair allocation problems with indivisible items deal with less than 100 items. \skelline{Referer til Spliddit og vanlige størrelser på fordelingsproblemer}
 
 In other words, the Integer cap of 128 bits is a reasonable upper limit on universe size for fair allocation problems. However, one could look into using packages that add larger fixed-width integer types\footnote{See for instance \href{https://github.com/rfourquet/BitIntegers.jl}{\mono{BitIntegers.jl}}}. \mono{Matroids.jl} supports arbitrary integer types. \skelpars[1]{Beskriv åssen man kan oppgi valgfri Integer-type}

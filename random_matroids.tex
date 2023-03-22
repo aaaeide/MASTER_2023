@@ -7,7 +7,7 @@ One goal for this project is to create the Julia library \mono{Matroids.jl}, whi
 
 The algorithm proceeds in a bottom-up manner, starting with the single closed set of rank 0 (the empty set) and for each rank $r+1$ adds the covers of the closed sets of rank $r$. The covers of a closed set $A$ of rank $r$ is simply all sets obtained by adding one more element from $E$ to $A$. The covers are generated with the helper method \pr{Generate-Covers}(\mathrm{F}, r, E).
 
-\begin{tcolorbox}[pseudo/filled, colback=lighttan]
+\begin{tcolorbox}[pseudo/boxruled]
   \begin{pseudo}*
     \hd{Generate-Covers}(\mathrm{F}, r, E) \\
     return $\{ A \cup \{a\} : A \in \mathrm{F}[r], a \in E \setminus A \}$
@@ -18,7 +18,7 @@ Given no enlargements ($\mathrm{X} = []$), the resulting matroid is the uniform 
 
 \pr{Superpose!}(\mathrm{F}[r+1], F[r]) ensures that the newly enlarged set of closed sets of rank $r+1$ is valid. If $F_{r+1}$ contains two sets $A,B$ whose intersection $A \cap B \not \subseteq C$, for some $C \in F_{r}$, replace $A,B$ with $A \cup B$. Repeat until no two sets exist in $F_{r+1}$ whose intersection is not contained within some set $C \in F_{r}$.
 
-\begin{tcolorbox}[pseudo/filled, colback=lighttan, float*=ht!]
+\begin{tcolorbox}[pseudo/boxruled, float*=ht!]
   \begin{pseudo}[indent-mark]*
     \hd{Superpose!}({F_{r+1},F_r}) \\
     for $A \in F_{r+1}$ \\+
@@ -61,7 +61,7 @@ Given no enlargements ($\mathrm{X} = []$), the resulting matroid is the uniform 
 \subsection{Randomized KMC}
 In the randomized version of \pr{Knuth-Matroid}, we generate matroids by applying a supplied number of random coarsening steps, instead of enlarging with supplied sets. This is done by applying \pr{Superpose!} immediately after adding the covers, then choosing a random member $A$ of $\mathrm{F}[r+1]$ and a random element $a \in E \setminus A$, replacing $A$ with $A \cup \{a\}$ and finally reapplying \pr{Superpose!}. The parameter $p = (p_1, p_2, \ldots)$ gives the number of such coarsening steps to be applied at each iteration of the algorithm.
 
-The pseudocode given up to this point corresponds closely to the initial Julia implementation. It should already be clear that this brute force implementation leads to poor performance -- for instance, the \pr{Superpose!} method uses a triply nested for loop! Subpar stuff. Section~\ref{sec:improving-performance} describes the engineering work done to create a more performant implementation.
+The pseudocode given up to this point corresponds closely to the initial Julia implementation, which can be found in Appendix~\ref{apx:randkmcv1}. It should already be clear that this brute force implementation leads to poor performance -- for instance, the \pr{Superpose!} method uses a triply nested for loop, which is a candidate for significant improvement if possible. Section~\ref{sec:improving-performance} describes the engineering work done to create a more performant implementation.
 
 \begin{algorithm}[float*=ht!]{\pr{Randomized-Knuth-Matroid}(E, p)}{rkmc}
 
@@ -102,7 +102,7 @@ When recreating Knuth's table of observed mean values for the randomly generated
 
 \begin{table*}[ht!]
   \centering
-  \caption{Performance of $\texttt{randomized\_kmc\_v1}$.}
+  \caption{Performance of $\texttt{random\_kmc\_v1}$.}
   \label{tab:perf_v1}
   \begin{threeparttable}
     \begin{tabular}{llllllllll}
@@ -125,16 +125,18 @@ When recreating Knuth's table of observed mean values for the randomly generated
   \end{threeparttable}
 \end{table*}
 
-The performance was measured using Julia's $\texttt{@timed}$ macro \footnote{\href{https://docs.julialang.org/en/v1/base/base/\#Base.@timed}{https://docs.julialang.org/en/v1/base/base/\#Base.@timed}}, which returns the time it takes to execute a function call, how much of that time was spent in garbage collection and the size of the memory allocated. As is evident from the data, larger matroids are computationally quite demanding to compute with the current approach, and the time and space requirements scales exponentially with $n$. Can we do better? As it turns out, we can; after the improvements outlined in this section, we will be able to generate matroids over universes as large as $n=128$ in a manner of seconds and megabytes.
+The performance was measured using Julia's \jlinl{@timed}\footnote{\href{https://docs.julialang.org/en/v1/base/base/\#Base.@timed}{https://docs.julialang.org/en/v1/base/base/\#Base.@timed}} macro, which returns the time it takes to execute a function call, how much of that time was spent in garbage collection and the size of the memory allocated. As is evident from the data, larger matroids are computationally quite demanding to compute with the current approach, and the time and space requirements scales exponentially with $n$. Can we do better? As it turns out, we can; after the improvements outlined in this section, we will be able to generate matroids over universes as large as $n=128$ in a manner of seconds and megabytes.
 
 \subsubsection{Representing sets as binary numbers}
-The first improvement we will attempt is to represent our families as sets of hexadecimal numbers, instead of sets of sets of numbers. Sets are represented using Julia's native $\texttt{Set}$ type \footnote{\href{https://docs.julialang.org/en/v1/base/collections/\#Base.Set}{https://docs.julialang.org/en/v1/base/collections/\#Base.Set}}. \skelpar{Skrive mer om hvordan Set\{Set\{Integer\}\} lagres i minnet og fordelene med å gå over til Set\{Integer\}.}
+The first improvement we will attempt is to represent our families as sets of hexadecimal numbers, instead of sets of sets of numbers. Sets are represented using Julia's native \jlinl{Set} type \footnote{\href{https://docs.julialang.org/en/v1/base/collections/\#Base.Set}{https://docs.julialang.org/en/v1/base/collections/\#Base.Set}}. The Julia implementation at this point can be found in Appendix~\ref{apx:randkmcv2}. \skelpar{Skrive mer om hvordan Set\{Set\{Integer\}\} lagres i minnet og fordelene med å gå over til Set\{Integer\}.}
 
-The idea is to define a family of closed sets of the same rank as \mono{Set}\{\mono{UInt16}\}. Using \mono{UInt16} we can support ground sets of size up to 16. Each 16-bit number represents a set in the family. For instance, the set $\{ 2,5,7 \}$ is represented by $$164 = 0\rm{x}00\rm{a}4 = 0\rm{b}0000000010100100 = 2^7+2^5+2^2.$$ At either end we have $\emptyset \equiv 0\rm{x}0000$ and $E \equiv 0\rm{xffff}$ (if $n = 16$). Set operations have equivalent binary operations; intersection corresponds to bitwise AND, union to bitwise OR and the set difference between sets $A$ and $B$ to the bitwise OR of $A$ and the complement of $B$. Subset equality is also simple to implement: $A \subseteq B \iff A \cap B = A.$ \skelpar{Beskrive KMC v2. Kode? Pseudokode? Putte i appendix? Finn ut.}
+The idea is to define a family of closed sets of the same rank as \jlinl{Set\{UInt16\}}. Using \jlinl{UInt16} we can support ground sets of size up to 16. Each 16-bit number represents a set in the family. For instance, the set $\{ 2,5,7 \}$ is represented by $$164 = 0\rm{x}00\rm{a}4 = 0\rm{b}0000000010100100 = 2^7+2^5+2^2.$$ At either end we have $\emptyset \equiv 0\rm{x}0000$ and $E \equiv 0\rm{xffff}$ (if $n = 16$). Set operations have equivalent binary operations; intersection corresponds to bitwise AND, union to bitwise OR and the set difference between sets $A$ and $B$ to the bitwise OR of $A$ and the complement of $B$. Subset equality is also simple to implement: $A \subseteq B \iff A \cap B = A.$ 
+
+We can now describe the bitwise versions of the required methods. The bitwise implementation of \pr{Generate-Covers} finds all elements in $E \setminus A$ by finding each value $i$ for which \jlinl{A & 1 << i === 0}, meaning that the set represented by \jlinl{1 << i} is not a subset of A. The bitwise implementation of \pr{Superpose!} is unchanged apart from using the bitwise set operations described above.
 
 \begin{table*}[ht!]
   \centering
-  \caption{Performance of $\texttt{randomized\_kmc\_v2}$.}
+  \caption{Performance of $\texttt{random\_kmc\_v2}$.}
   \label{tab:perf_v2}
   \begin{threeparttable}
     \begin{tabular}{llllllllll}
@@ -157,17 +159,21 @@ The idea is to define a family of closed sets of the same rank as \mono{Set}\{\m
   \end{threeparttable}
 \end{table*}
 
-It is clear that representing closed sets using binary numbers is a substantial improvement -- we are looking at performance increases of 100x-1000x across the board.
+The performance of \mono{random\_kmc\_v2} is shown in Table~\ref{tab:perf_v2}. It is clear that representing closed sets using binary numbers represents a substantial improvement -- we are looking at performance increases of 100x-1000x across the board.
 
 
 \subsubsection{Sorted superpose}
-Can we improve the running time of the algorithm further? One idea might be to perform the superpose operation in descending order based on the size of the sets. This should result in fewer calls, as the bigger sets will "eat" the smaller sets that fully overlap with them in the early iterations, however, the repeated sorting of the sets might negate this performance gain. \skelpar{KANSKJE: Skrive bedre om idéen bak sorted superpose.} 
+Can we improve the running time of the algorithm further? It is clear that \pr{Superpose!} takes up a large portion of the compute time. In the worst case, when no enlargements have been made, $F_{r+1}$ is the set of all $r+1$-sized subsets of $E$, $|F_{r+1}| = {\binom{n}{r+1}}$. Comparing each $A,B \in F_{r+1}$ with each $C \in F_r$ in a triply nested for loop requires a whopping $\mathcal{O}({\binom{n}{r+1}}^2{\binom{n}{r}})$ operations. In the worst case, no enlargements are made at all, and we build the free matroid in $\mathcal{O}(2^{3n})$ time.
+
+Observing the step-by-step calls to \pr{Superpose!}, we see that there are a lot of duplicate and unnecessary sets being processed. The duplicate sets stem from \pr{Generate-Covers}, whose current implementation does not take into account that any two sets of rank $r$ will have at least one cover in common. To see this, consider a matroid-under-construction where $A = \{1,2\}$ and $B = \{1,3\}$ are closed sets of rank 2. Currently, \pr{Generate-Covers} will happily generate the cover $C=\{1,2,3\}$ twice, once as the cover of $A$ and subsequently as the cover of $B$. Non-redundant cover generation was a worthwhile improvement and is described below.
+
+After larger closed sets have been added to $\mathrm{F}[r+1]$, \pr{Superpose!} will cause sets to merge, so that only maximal dependent sets remain. Some sets will even simply disappear. In the case where $X=\{1,2\}$ was added by \pr{Generate-Covers}, and the $Y=\{1,2,3\}$ was added manually as an enlargement, the smaller set will be completely subsumed in the bigger set, as $\{1,2\}\cap\{1,2,3\}=\{1,2\}$ and $\{1,2\}\cup\{1,2,3\}=\{1,2,3\}$. In this situation, $X$ will ``eat'' the covers $\{1,3\}$ and $\{2,3\}$ as well. Since the larger sets will absorb so many of the smaller sets (around $\binom{p}{r+1}$, where $p$ is the size of the larger set and $r+1$ is the size of the smallest sets allowed to be added in a given iteration), might it be an idea to perform the superpose operation in descending order based on the size of the sets? This should result in fewer calls to \pr{Superpose!}, as the bigger sets will remove the smaller sets that fully overlap with them in the early iterations, however, the repeated sorting of the sets might negate this performance gain. This was the idea behind \jlinl{random_kmc_v3}, which can be found in Appendix~\ref{apx:randkmcv2}.
 
 Unfortunately, as Table~\ref{tab:perf_v3} shows, this implementation is a few times slower and more space demanding than the previous implementation. This is likely due to the fact that an ordered list is more space inefficient than the hashmap-based \mono{Set}.
 
 \begin{table*}[ht!]
   \centering
-  \caption{Performance of $\texttt{randomized\_kmc\_v3}$.}
+  \caption{Performance of $\texttt{random\_kmc\_v3}$.}
   \label{tab:perf_v3}
   \begin{threeparttable}
     \begin{tabular}{llllllllll}
@@ -194,7 +200,7 @@ Unfortunately, as Table~\ref{tab:perf_v3} shows, this implementation is a few ti
 
 
 \subsubsection{Iterative superpose}
-So far, we are inserting all covers of $F_r$ into $F_{r+1}$ along with all enlargements, and then running the superpose operation on all of them at once. In the worst case, when no enlargements have been made, $F_{r+1}$ is the set of all $r+1$-sized subsets of $E$, $|F_{r+1}| = {\binom{n}{r+1}}$.  Until this point, the superpose operation was performed with a triply nested \mono{for} loop, comparing each $A,B \in F_{r+1}$ with each $C \in F_r$ to see whether $A\cap B \subseteq C$ or whether $A, B$ should be replaced by $A\cup B$. Thus we were looking at a whopping $\mathcal{O}({\binom{n}{r+1}}^2{\binom{n}{r}})$ operations to perform the superpose part of step $r$.
+So far, we are inserting all covers of $F_r$ into $F_{r+1}$ along with all enlargements, and then running the superpose operation on all of them at once.   Until this point, the superpose operation was performed with a triply nested \mono{for} loop, c Thus we were looking at a whopping  to perform the superpose part of step $r$.
 
 
 
@@ -216,6 +222,7 @@ So far, we are inserting all covers of $F_r$ into $F_{r+1}$ along with all enlar
 \skelpars[7]
 
 \subsection{Finding independent sets and circuits}
+In order for the 
 \skelpars[15]
 
 \section{Other kinds of matroids}

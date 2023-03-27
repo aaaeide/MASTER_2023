@@ -7,31 +7,33 @@
 \contentsline {subsection}{\numberline {3.1.1}Randomized KMC}{12}{subsection.3.1.1}%
 \contentsline {subsection}{\numberline {3.1.2}Improving performance}{13}{subsection.3.1.2}%
 \contentsline {subsubsection}{Representing sets as binary numbers}{14}{section*.14}%
-\contentsline {subsubsection}{Sorted superpose}{16}{section*.17}%
-\contentsline {subsubsection}{Iterative superpose}{18}{section*.20}%
-\contentsline {subsubsection}{Rank table}{19}{section*.23}%
-\contentsline {subsubsection}{Non-redundant cover generation and iterative superpose}{20}{section*.24}%
-\contentsline {subsection}{\numberline {3.1.3}Finding independent sets and circuits}{22}{subsection.3.1.3}%
-\contentsline {section}{\numberline {3.2}Other kinds of matroids}{26}{section.3.2}%
-\contentsline {subsection}{\numberline {3.2.1}Uniform matroids}{26}{subsection.3.2.1}%
-\contentsline {subsection}{\numberline {3.2.2}Graphic matroids}{27}{subsection.3.2.2}%
-\contentsline {subsection}{\numberline {3.2.3}Vector matroids}{29}{subsection.3.2.3}%
-\contentsline {chapter}{\numberline {4}A library for fair allocation with matroids}{32}{chapter.4}%
-\contentsline {section}{\numberline {4.1}The matroid union algorithm}{34}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Supporting universe sizes of $n > 128$}{35}{section.4.2}%
-\contentsline {chapter}{\numberline {5}Fair allocation with matroid rank utilities}{37}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Yankee Swap}{38}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Barman and Verma's MMS algorithm}{41}{section.5.2}%
-\contentsline {chapter}{\numberline {6}Fair allocation under matroid constraints}{44}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Gourvès and Monnot's MMS approximation algorithm}{45}{section.6.1}%
-\contentsline {section}{\numberline {6.2}Biswas and Barman's algorithm for EF1 under cardinality constraints}{48}{section.6.2}%
-\contentsline {section}{\numberline {6.3}Biswas and Barman's algorithm for EF1 under matroid constraints}{50}{section.6.3}%
-\contentsline {chapter}{\numberline {7}Results}{53}{chapter.7}%
-\contentsline {chapter}{\numberline {8}Conclusions and future work}{60}{chapter.8}%
-\contentsline {chapter}{Appendices}{65}{section*.27}%
-\contentsline {chapter}{Appendix \numberline {A}Code snippets}{66}{appendix.1.A}%
-\contentsline {section}{\numberline {A.1}$\texttt {random\_kmc\_v1}$}{66}{section.1.A.1}%
-\contentsline {section}{\numberline {A.2}$\texttt {random\_kmc\_v2}$ and $\texttt {random\_kmc\_v3}$}{68}{section.1.A.2}%
-\contentsline {section}{\numberline {A.3}$\texttt {random\_kmc\_v4}$}{70}{section.1.A.3}%
-\contentsline {section}{\numberline {A.4}$\texttt {random\_kmc\_v5}$}{71}{section.1.A.4}%
-\contentsline {section}{\numberline {A.5}$\texttt {random\_kmc\_v6}$}{73}{section.1.A.5}%
+\contentsline {subsubsection}{Sorted superpose}{16}{section*.18}%
+\contentsline {subsubsection}{Iterative superpose}{18}{section*.21}%
+\contentsline {subsubsection}{Rank table}{19}{section*.24}%
+\contentsline {subsubsection}{Non-redundant cover generation}{22}{section*.27}%
+\contentsline {subsection}{\numberline {3.1.3}What do the generated matroids look like?}{25}{subsection.3.1.3}%
+\contentsline {subsection}{\numberline {3.1.4}Producing the rank function and independent sets}{27}{subsection.3.1.4}%
+\contentsline {subsubsection}{Finding circuits and independent sets for smaller matroids}{27}{section*.30}%
+\contentsline {section}{\numberline {3.2}Other kinds of matroids}{31}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Uniform matroids}{32}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Graphic matroids}{33}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}Vector matroids}{34}{subsection.3.2.3}%
+\contentsline {chapter}{\numberline {4}A library for fair allocation with matroids}{37}{chapter.4}%
+\contentsline {section}{\numberline {4.1}The matroid union algorithm}{39}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Supporting universe sizes of $n > 128$}{40}{section.4.2}%
+\contentsline {chapter}{\numberline {5}Fair allocation with matroid rank utilities}{42}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Yankee Swap}{43}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Barman and Verma's MMS algorithm}{46}{section.5.2}%
+\contentsline {chapter}{\numberline {6}Fair allocation under matroid constraints}{49}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Gourvès and Monnot's MMS approximation algorithm}{50}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Biswas and Barman's algorithm for EF1 under cardinality constraints}{53}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Biswas and Barman's algorithm for EF1 under matroid constraints}{55}{section.6.3}%
+\contentsline {chapter}{\numberline {7}Results}{58}{chapter.7}%
+\contentsline {chapter}{\numberline {8}Conclusions and future work}{65}{chapter.8}%
+\contentsline {chapter}{Appendices}{70}{section*.33}%
+\contentsline {chapter}{Appendix \numberline {A}Code snippets}{71}{appendix.1.A}%
+\contentsline {section}{\numberline {A.1}$\texttt {random\_kmc\_v1}$}{71}{section.1.A.1}%
+\contentsline {section}{\numberline {A.2}$\texttt {random\_kmc\_v2}$ and $\texttt {random\_kmc\_v3}$}{73}{section.1.A.2}%
+\contentsline {section}{\numberline {A.3}$\texttt {random\_kmc\_v4}$}{75}{section.1.A.3}%
+\contentsline {section}{\numberline {A.4}$\texttt {random\_kmc\_v5}$}{76}{section.1.A.4}%
+\contentsline {section}{\numberline {A.5}$\texttt {random\_kmc\_v6}$}{78}{section.1.A.5}%

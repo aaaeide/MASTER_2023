@@ -92,7 +92,7 @@ function random_bitwise_kmc(generate_covers, superpose, n, p)::KnuthMatroid{Any}
     while pr > 0
       # Get random closed set A in F_{r+1} and element a in E - A.
       A = rand(F[r+1])
-      a = random_element(diff(E, A))
+      a = random_element(E&~A)
 
       # Replace A with A ∪ {a}.
       F[r+1] = setdiff(F[r+1], A) ∪ Set([A | a])

@@ -4,7 +4,7 @@
 \usepackage{mwe}
 
 \usepackage{skeldoc}
-\usepackage[kw]{pseudo}
+\usepackage{pseudo}
 \usepackage{tcolorbox}
 \usepackage{tabto}
 
@@ -24,8 +24,7 @@
 \usepackage{hyperref}
 
 \tcbuselibrary{skins,theorems}
-\newtcbtheorem{algorithm}{Algorithm}{pseudo/boxruled, float}{alg}
-% colback = lighttan, colbacktitle = darktan
+\newtcbtheorem{algorithm}{Algorithm}{pseudo/ruled}{alg}
 \TabPositions{2cm}
 
 \begin{document}
@@ -133,6 +132,7 @@
 
 
 \chapter{Code snippets}
+\label{apx:code}
 
 \section{\texorpdfstring{$\texttt{random\_kmc\_v1}$}{random\_kmc\_v1}}
 \label{apx:randkmcv1}

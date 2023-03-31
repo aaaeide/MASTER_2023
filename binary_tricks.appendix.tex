@@ -1,0 +1,30 @@
+\chapter{Some useful tricks when working with sets as numbers}
+Section~\ref{sec:improving-performance} details a number of steps taken in order to build a performant Julia implementation of \pr{Knuth-Matroid}. Perhaps chief among these steps in terms of sheer performance gain compared to the initial, naïve implementation, was the transition from representing subsets of $E$ as a \jlinl{Set} of integers (or whatever type the elements of E might have), to representing them as a single integer, whose 1-bits denote which elements are in the set. This is possible as long as $n$ is less than the widest numeric primitive (in out-of-the-box Julia, 128 bits). For simplicity,  we reiterate the bitwise equivalents of the basic set operations:
+\begin{table}[!ht]
+  % \caption{Set operations and their equivalent bitwise operations}
+  \centering
+  \begin{tabular}{|l|l|}
+  \hline
+      Set operation   & Bitwise equivalent   \\\hline
+      $A \cap B$      & $A \land B$       \\\hline
+      $A \cup B$      & $A \lor B$        \\\hline
+      $A \setminus B$ & $A \land \lnot B$   \\\hline
+      $A \subseteq B$ & $A \land B$ = $A$ \\\hline
+  \end{tabular}
+\end{table}
+These bitwise equivalents allow us to perform the set operations in constant time~(right???), resulting in significant performance increases. In the code snippets included throughout Section~\ref{sec:improving-performance} and Appendix~\ref{apx:code}, a number of ``tricks'' are performed with bitwise operations whose workings and purpose might be a bit obtuse. This appendix came to be as I worked to get to grips with working with sets in this manner.
+
+\section*{How do I...}
+\subsection*{...create a singleton set?}
+The left-shift operator ($<<$) can be used to set the $i$th bit to 1 and the others to 0. In general, $\{a\} = 1<<a$. This is used in an early version of \pr{Generate-Covers}:
+\begin{jllisting}
+function generate_covers_v2(F_r, n)
+  Set([A | 1 << i for A ∈ F_r for i in 0:n-1 if A & 1 << i === 0])
+end
+\end{jllisting}
+
+\subsection*{...find the smallest element of a set?}
+Using it's two's complement, denoted by $-T = \lnot T+1$, we can find the smallest element in a set $T$ with $T\land -T$.
+
+\subsection*{...enumerate all elements of a set one by one?}
+We can pop the smallest element from a set, using the previous trick to get the smallest element, in the following manner:

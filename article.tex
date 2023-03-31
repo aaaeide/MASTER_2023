@@ -23,9 +23,13 @@
 \usepackage[page,toc,titletoc,title]{appendix}
 \usepackage{hyperref}
 
+\usepackage{epigraph}
+
 \tcbuselibrary{skins,theorems}
 \newtcbtheorem{algorithm}{Algorithm}{pseudo/ruled}{alg}
 \TabPositions{2cm}
+
+\setlength\epigraphwidth{.5\textwidth}
 
 \begin{document}
 
@@ -60,6 +64,29 @@
     {\large \today\par}
   \end{center}
 \end{titlepage}
+
+
+\epigraph{In matroid theory, we explore
+
+A structure with properties galore
+
+From bases to circuits
+
+It never discourages
+
+Mathematicians always wanting more
+\newline
+\newline
+The axioms it holds are so grand
+
+And its applications vast and unplanned
+
+From optimization to graphs
+
+It can solve so many tasks
+
+Matroid theory, truly a wonderland}{ChatGPT}
+
 
 \tableofcontents
 
@@ -130,6 +157,7 @@
 %   \end{threeparttable}
 % \end{table*}
 
+\input{binary_tricks.appendix}
 
 \chapter{Code snippets}
 \label{apx:code}

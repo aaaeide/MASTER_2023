@@ -1,14 +1,12 @@
-\chapter{A library for fair allocation with matroids}
-A goal for this project is to introduce Matroids.jl as a useful library for experimenting with fair allocation that require matroids. In the previous chapter, we explored how this library generates random matroids, however this is not very useful until we also have in place an API layer to allow fair allocation algorithms to interface with our matroids in a practical and efficient manner.
+\chapter{The Matroids.jl API}
+A goal for this project is to introduce Matroids.jl as a useful library for experimenting with fair allocation that require matroids. In the previous chapter, we explored how such a library might generate and represent matroids, but this is not especially worthwhile until we also have in place an API layer to allow fair allocation algorithms to interface with our matroids in a practical and efficient manner.
 
-When matroids show up in the context of fair allocation, it is either in the guise of the agents' matroid rank valuations, or as matroid feasibility constraints. Matroid.jl should expose an API that makes it useful for both cases.
-
-\section{Matroid rank valuations}
-
+\section{The independence oracle}
+Whenever matroids show up in the context of fair allocation, the existence is assumed of an \textit{independence oracle}, which can in polynomial time (with respect to the number of elements) decide whether a set is independent. 
 
 
 \section{The matroid union algorithm}
-\skelpars[7]
+\skelpar
 
 
 \section{Supporting universe sizes of \texorpdfstring{$n > 128$}{n > 128}}

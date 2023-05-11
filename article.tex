@@ -1,5 +1,19 @@
 \documentclass[b5paper]{report}
 
+% \usepackage{titlesec}
+% \titleformat{\chapter}[display]
+%   {\Large\bfseries}
+%   {\chaptertitlename\ \thechapter}{0pt}{\Huge}
+
+% \usepackage[Bjornstrup]{fncychap}
+
+\usepackage[T1]{fontenc}
+\usepackage{titlesec, blindtext, color}
+\definecolor{gray75}{gray}{0.75}
+\newcommand{\hsp}{\hspace{20pt}}
+\titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries}
+
+
 \usepackage{graphicx}
 \usepackage{mwe}
 
@@ -88,19 +102,26 @@ It can solve so many tasks
 Matroid theory, truly a wonderland}{ChatGPT}
 
 
+
+
+
+
+
+
+
+
 \tableofcontents
 
 \input{introduction}
-\input{background}
 \input{random_matroids}
 \input{matroids.jl}
-\input{mrf}
-\input{matroidconstraints}
-\input{results}
-\input{conclusions}
+% \input{mrf}
+% \input{matroidconstraints}
+% \input{results}
+% \input{conclusions}
 
 \printskelnotes{}
-\bibliographystyle{alpha}
+\bibliographystyle{plain}
 \bibliography{refs}
 
 
@@ -110,7 +131,7 @@ Matroid theory, truly a wonderland}{ChatGPT}
 
 
 
-\begin{appendices}
+% \begin{appendices}
 
 
 % \chapter{Tables}
@@ -157,32 +178,32 @@ Matroid theory, truly a wonderland}{ChatGPT}
 %   \end{threeparttable}
 % \end{table*}
 
-\input{binary_tricks.appendix}
+% \input{binary_tricks.appendix}
 
-\chapter{Code snippets}
-\label{apx:code}
+% \chapter{Code snippets}
+% \label{apx:code}
 
-\section{\texorpdfstring{$\texttt{random\_kmc\_v1}$}{random\_kmc\_v1}}
-\label{apx:randkmcv1}
-\jlinputlisting{random_kmc_v1.jl}
+% \section{\texorpdfstring{$\texttt{random\_kmc\_v1}$}{random\_kmc\_v1}}
+% \label{apx:randkmcv1}
+% \jlinputlisting{random_kmc_v1.jl}
 
-\section{\texorpdfstring{\mono{random\_kmc\_v2} and \mono{random\_kmc\_v3}}{random\_kmc\_v2 and random\_kmc\_v3}}
-\label{apx:randkmcv2}
-\jlinputlisting{random_kmc_v2.jl}
+% \section{\texorpdfstring{\mono{random\_kmc\_v2} and \mono{random\_kmc\_v3}}{random\_kmc\_v2 and random\_kmc\_v3}}
+% \label{apx:randkmcv2}
+% \jlinputlisting{random_kmc_v2.jl}
 
-\section{\texorpdfstring{$\texttt{random\_kmc\_v4}$}{random\_kmc\_v4}}
-\label{apx:randkmcv4}
-\jlinputlisting{random_kmc_v4.jl}
+% \section{\texorpdfstring{$\texttt{random\_kmc\_v4}$}{random\_kmc\_v4}}
+% \label{apx:randkmcv4}
+% \jlinputlisting{random_kmc_v4.jl}
 
-\section{\texorpdfstring{$\texttt{random\_kmc\_v5}$}{random\_kmc\_v5}}
-\label{apx:randkmcv5}
-\jlinputlisting{random_kmc_v5.jl}
+% \section{\texorpdfstring{$\texttt{random\_kmc\_v5}$}{random\_kmc\_v5}}
+% \label{apx:randkmcv5}
+% \jlinputlisting{random_kmc_v5.jl}
 
-\section{\texorpdfstring{$\texttt{random\_kmc\_v6}$}{random\_kmc\_v6}}
-\label{apx:randkmcv6}
-\jlinputlisting{random_kmc_v6.jl}
+% \section{\texorpdfstring{$\texttt{random\_kmc\_v6}$}{random\_kmc\_v6}}
+% \label{apx:randkmcv6}
+% \jlinputlisting{random_kmc_v6.jl}
 
 
-\end{appendices}
+% \end{appendices}
 
 \end{document}

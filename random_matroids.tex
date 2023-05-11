@@ -1,16 +1,17 @@
-\chapter{Random matroid generation}
+\chapter{Generating matroids}
+\epigraph{For simplicity, we also assume that every point in a geometry is a closed set. Without this additional assumption, the resulting structure is often described by the ineffably cacaphonic term "matroid", which we prefer to avoid in favor of the term "pregeometry".}{Gian-Carlo Rota \cite{crapo_rota_1970}}
 
-One goal for this project is to create the Julia library \mono{Matroids.jl}, which will supply functionality for generating and interacting with random matroids. In the preparatory project delivered fall of 2022, I implemented Knuth's 1974 algorithm for the random generation of arbitrary matroids via the erection of closed sets \cite{knuth-1975}. With this, I was able to randomly generate matroids of universe sizes $n \leq 12$, but for larger values of $n$ my implementation was unbearably slow. In this chapter, after a brief foray into the required matroid theory, Knuth's method for random matroid construction will be described, along with the steps I have taken to speed up my initial, naïve implementation. The random generation of other specific types of matroids is discussed as well.
-
-\section{Preliminaries}
-\subsection{Matroid theory}
-\label{sec:matroid-theory}
 If a mathematical structure can be defined or axiomatized in multiple different, but not obviously equivalent, ways, the different definitions or axiomatizations of that structure make up a cryptomorphism. The many obtusely equivalent definitions of a matroid are a classic example of cryptomorphism, and belie the fact that the matroid is a generalization of concepts in many, seemingly disparate areas of mathematics.
 
-First introduced by Hassler Whitney in 1935~\cite{whitney-1935}, in a seminal paper where he described two axioms for independence in the columns of a matrix, and defined any system obeying these axioms to be a ``matroid''. Whitney's key insight was that this abstraction of~~``independence'' is applicable to both matrices and graphs. As a result of this, the terms used in matroid theory are borrowed from analogous concepts in both graph theory and linear algebra. Matroids have also received attention from researchers in fair allocation, as their properties make them useful for modeling user preferences; for instance, matroid rank functions are a natural way of formally describing course allocation for students~\cite{benabbou-2021}. 
+Matroids were first introduced by Hassler Whitney in 1935~\cite{whitney-1935}, in a seminal paper where he described two axioms for independence in the columns of a matrix, and defined any system obeying these axioms to be a ``matroid'' (which unfortunately for Rota is the term that has stuck). Whitney's key insight was that this abstraction of~~``independence'' is applicable to both matrices and graphs. As a result of this, the terms used in matroid theory are borrowed from analogous concepts in both graph theory and linear algebra. Matroids have also received attention from researchers in fair allocation, as their properties make them useful for modeling user preferences; for instance, matroid rank functions are a natural way of formally describing course allocation for students~\cite{benabbou-2021}. 
+
+One goal for this project is to create the Julia library \mono{Matroids.jl}, which will supply functionality for generating and interacting with (random) matroids. In the preparatory project delivered fall of 2022, I implemented Knuth's 1974 algorithm for the random generation of arbitrary matroids via the erection of closed sets \cite{knuth-1975}. With this, I was able to randomly generate matroids of universe sizes $n \leq 12$, but for larger values of $n$ my implementation was unbearably slow. In this chapter, after a brief foray into the required matroid theory, Knuth's method for random matroid construction will be described, along with the steps I have taken to speed up my initial, naïve implementation. The random generation of other specific types of matroids is discussed as well.
+
+\section{Matroid preliminaries}
+\label{sec:matroid-theory}
 
 \subsection*{Independent sets}
-Perhaps the most common way to define a matroid is in terms of its \textit{independent sets}. An independence system is a pair $(E, \mathcal{I})$, where $E$ is the ground set of elements, $E \not= \emptyset$, and $\mathcal{I}$ is the set of independent sets, $\mathcal{I} \subseteq 2^E$. A matroid is an independence system with the following properties:
+The first concept we will need to establish is the \textit{independent sets} of a matroid, which is arguably the most common way to define a matroid. An independence system is a pair $(E, \mathcal{I})$, where $E$ is the ground set of elements, $E \not= \emptyset$, and $\mathcal{I}$ is the set of independent sets, $\mathcal{I} \subseteq 2^E$. The \textit{dependent sets} of a matroid are $2^E \setminus \mathcal{I}$. A matroid is an independence system with the following properties:
 
 \begin{enumerate}
   \item The empty set is independent: $\emptyset \in \mathcal{I}$.
@@ -21,7 +22,7 @@ Perhaps the most common way to define a matroid is in terms of its \textit{indep
 In practice, the ground set $E$ represents the universe of elements in play, and the independent sets of typically represent the legal combinations of these items. In the context of fair allocation, the independent sets represent the legal (in the case of matroid constraints) or desired (in the case of matroid utilities) bundles of items.
 
 \subsection*{Rank}
-Given a matroid $\mathfrak{M} = (E, \mathcal{I})$, the \textit{matroid rank function} (MRF) is a function $\fn{rank} : 2^E \to \mathbb{Z}^+$ that gives the \textit{rank} of a set $ A \subseteq E$, which is defined to be the size of the largest independent subset of $A$. Formally, $$\fn{rank}(A) = \max\{|X| : X \subseteq A \text{ and } X \in \mathcal{I}\}.$$ Matroid rank functions are \textit{binary submodular}. Binary because they have binary marginals, that is, $\fn{rank}(A \cup \{ e \}) - \fn{rank}(A) \in \{0,1\}$, for all $A \subseteq 2^E$ and $e \in E$. Submodularity refers to rank functions' natural diminishing returns property, namely that for any two sets $X, Y \subseteq E$, we have $$\fn{rank}(X \cup Y) + \fn{rank}(X \cap Y) \leq \fn{rank}(X) + \fn{rank}(Y).$$ This diminishing returns property makes the rank function useful for modeling user preferences, and is a reason why matroids show up so often in economics and game theory (???).
+Given a matroid $\mathfrak{M} = (E, \mathcal{I})$, the \textit{matroid rank function} (MRF) is a function $\fn{r} : 2^E \to \mathbb{Z}^+$ that gives the rank of a set $ A \subseteq E$, defined to be the size of the largest independent subset of $A$. Formally, $$\fn{r}(A) = \max\{|X| : X \subseteq A \text{ and } X \in \mathcal{I}\}.$$ Matroid rank functions are \textit{binary submodular}. Binary because they have binary marginals, that is, $\fn{r}(A \cup \{ e \}) - \fn{r}(A) \in \{0,1\}$, for all $A \subseteq 2^E$ and $e \in E$. Submodularity refers to rank functions' natural diminishing returns property, namely that for any two sets $X, Y \subseteq E$, we have $$\fn{r}(X \cup Y) + \fn{r}(X \cap Y) \leq \fn{r}(X) + \fn{r}(Y).$$ It is a well known fact that every binary submodular function is the rank function of some matroid~\cite{schrijver-2003}. The diminishing returns property makes the rank function useful for modeling user preferences, as we will see in fair allocation with matroidal valuations.
 
 \subsection*{Closed sets}
 
@@ -32,24 +33,6 @@ We also need to establish the concept of the \textit{closed sets} of a matroid. 
   \item The intersection of two closed sets is a closed set: If $A,B \in \mathcal{F},$ then $A \cap B \in \mathcal{F}$
   \item If $A \in \mathcal{F}$ and $a,b \in E \setminus A,$ then $b$ is a member of all sets in $\mathcal{F}$ containing $A \cup \{a\}$ if and only if $a$ is a member of all sets in $\mathcal{F}$ containing $A \cup \{b\}$
 \end{enumerate}
-
-\subsection{Examples of matroids}
-\skelpar
-
-\subsection*{The free matroid}
-\skelpar
-
-\subsection*{The uniform matroid}
-\skelpar
-
-\subsection*{The partition matroid}
-\skelpar
-
-\subsection*{The vector matroid}
-\skelpars[2]
-
-\subsection*{The graphic matroid}
-\skelpars[3]
 
 \section{Knuth's matroid construction (KMC)}
 \pr{Knuth-Matroid} (given in Algorithm~\ref{alg:knuth}) accepts the ground set $E$ and a list of enlargements $\mathrm{X}$, and produces the matroid $\mathfrak{M} = (E, \mathcal{F})$, such that for each set $X \in \mathrm{X}[r]$, we have $X \in \mathcal{F}, \text{ rank}(X) = r$. The algorithm outputs the tuple $(E, \mathrm{F})$, where $\mathrm{F} = [F_0, \ldots, F_r]$, $r$ being the final rank of $\mathfrak{M}$ and $F_i$ the family of closed sets of rank $i$. In the paper, Knuth shows that $\bigcup_{i=0}^r \mathrm{F}[r] = \mathcal{F}$, and so the algorithm produces a valid matroid represented by its closed sets.
@@ -229,7 +212,7 @@ The performance of \mono{random\_kmc\_v2} is shown in Table~\ref{tab:perf_v2}. I
 \subsubsection{Sorted superpose}
 Can we improve the running time of the algorithm further? It is clear that \pr{Superpose!} takes up a large portion of the compute time. In the worst case, when no enlargements have been made, $F_{r+1}$ is the set of all $r+1$-sized subsets of $E$, $|F_{r+1}| = {\binom{n}{r+1}}$. Comparing each $A,B \in F_{r+1}$ with each $C \in F_r$ in a triply nested for loop requires $\mathcal{O}({\binom{n}{r+1}}^2{\binom{n}{r}})$ operations. In the worst case, no enlargements are made at all, and we build the free matroid in $\mathcal{O}(2^{3n})$ time (considering only the superpose step).
 
-After larger closed sets have been added to $\mathrm{F}[r+1]$, \pr{Superpose!} will cause sets to merge, so that only maximal dependent sets remain. Some sets will even simply disappear. In the case where $X=\{1,2\}$ was added by \pr{Generate-Covers}, and the $Y=\{1,2,3\}$ was added manually as an enlargement, the smaller set will be fully subsumed in the bigger set, as $\{1,2\}\cap\{1,2,3\}=\{1,2\}$ (which is not a subset of any set in $\mathrm{F}[r]$) and $\{1,2\}\cup\{1,2,3\}=\{1,2,3\}$. In this situation, $Y$ would ``eat'' the covers $\{1,3\}$ and $\{2,3\}$ as well. This fact is reflected in the performance data -- notice how much more space is demanded by the 10-element matroid with $p=[0,0,6]$ than the one with $p=[0,6,0]$ in any of the performance tables in this section. Making enlargements at earlier ranks will result in smaller matroids as more sets will get absorbed.
+After larger closed sets have been added to $\mathrm{F}[r+1]$, \pr{Superpose!} will cause sets to merge, so that only maximal dependent sets remain. Some sets will even simply disappear. In the case where $X=\{1,2\}$ was added by \pr{Generate-Covers}, and the $Y=\{1,2,3\}$ was added manually as an enlargement, the smaller set will be fully subsumed in the bigger set, as $\{1,2\}\cap\{1,2,3\}=\{1,2\}$ (which is not a subset of any set in $\mathrm{F}[r]$) and $\{1,2\}\cup\{1,2,3\}=\{1,2,3\}$. In this situation, $Y$ would ``eat'' the covers $\{1,3\}$ and $\{2,3\}$ as well. This fact is reflected in the performance data -- compare the memory allocation differences between the 10-element matroid with $p=[0,0,6]$ and the one with $p=[0,6,0]$ in any of the performance tables in this section. Making enlargements at earlier ranks result in smaller matroids as more sets get absorbed.
 
 \begin{jllisting}
 function sorted_bitwise_superpose!(F, F_prev)
@@ -487,7 +470,7 @@ The full code for \jlinl{random_kmc_v6} can be found in Appendix~\ref{apx:randkm
     \end{tabular}
   \end{threeparttable}
 \end{table*}
-\skelpars[7]
+\skelpar
 
 \subsection{What do the generated matroids look like?}
 \subsubsection{Observations}
@@ -495,7 +478,7 @@ The full code for \jlinl{random_kmc_v6} can be found in Appendix~\ref{apx:randkm
   \item The average cardinality of the closed sets of a given rank is usually not very much higher than the rank. If the average cardinality were to stray much, all the sets merge instead and the sole closed set of that rank would become $E$. This might be a useful heuristic when finding the rank of a set.
 \end{enumerate}
 
-\skelpars[4]{@Benchmarking. Histogrammer. Beskrive variansen i matroide-størrelse ifht input.}
+\skelpar{@Benchmarking. Histogrammer. Beskrive variansen i matroide-størrelse ifht input.}
 
 \subsection{Producing the rank function and independent sets}
 To build a general matroid library, we want to be able to access all properties of a generated matroid $\mathfrak{M}$. This would include:
@@ -525,16 +508,39 @@ Covers are generated and sets inserted in the same manner as in\linebreak\jlinl{
 
 \skelpars[4]
 
-\subsubsection{A general }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \section{Other kinds of matroids}
-\skelpars[1]
+Knuth's matroid construction generates arbitrary matroids. A complete matroid library should support working with specific types of matroids as well, of which there are many. Let's investigate how we might implement some common types of matroids.
 
-\subsection{Uniform matroids}
-\skelpars[4]
+\subsection*{Uniform matroids}
+A uniform matroid $U_n^r$ is the matroid over $n$ elements where the independent sets are exactly the sets of cardinality at most $r$. The free matroid $U_n^n = (E, 2^E)$ is a special case of the uniform matroid and is the simplest and least interesting type of matroid, being the trivial case in which every subset of $E$ is an independent set. In \mono{Matroids.jl}, we represent uniform matroids with a simple struct.
+
+\begin{jllisting}
+struct UniformMatroid
+  n::Integer
+  r::Integer
+end
+
+FreeMatroid(n) = UniformMatroid(n, n)
+\end{jllisting}
 
 \subsection{Graphic matroids}
-\skelpars[6]
+\skelpar
 
 \subsection{Vector matroids}
-\skelpars[7]
+\skelpar

@@ -1,0 +1,31 @@
+\section{Matroid preliminaries}
+\label{sec:matroid-theory}
+
+\subsection*{Independent sets}
+The most common way to characterize a matroid is as an \textit{independence system}. An independence system is a pair $(E, \mathcal{I})$, where $E$ is the ground set of elements, $E \not= \emptyset$, and $\mathcal{I}$ is the set of independent sets, $\mathcal{I} \subseteq 2^E$. The \textit{dependent sets} of a matroid are $2^E \setminus \mathcal{I}$. 
+
+In practice, the ground set $E$ represents the universe of elements in play, and the independent sets of typically represent the legal combinations of these items. In the context of fair allocation, the independent sets represent the legal (in the case of matroid constraints) or desired (in the case of matroid utilities) bundles of items.
+
+A matroid is an independence system with the following properties~\cite{whitney-1935}:
+\begin{enumerate}
+  \item[(1)] If $A \subseteq B$ and $B \in \mathcal{I}$, then $A \in \mathcal{I}$.
+  \item[(2)] If $A, B \in \mathcal{I}$ and $|A| > |B|,$ then there exists $e \in A \setminus B$ such that $B \cup \{e\} \in S$.
+  \item[(2')] If $S \subseteq E$, then the maximal independent subsets of $S$ are equal in size.
+\end{enumerate}
+Properties (2) and (2') are equivalent. To see that $(2) \implies$~(2'), consider two maximal subsets of $S$. If they differ in size, (2) tells us that there are elements we can add from one to the other until they have equal cardinality. We get (2')~$\implies (2)$ by considering $S = A \cup B$. Since $|A|>|B|$, they cannot both be maximal, and some $e \in A \setminus B$ can be added to $B$ to obtain another independent set.
+
+When $S=E$, (3) gives us a fundamental property of the \textit{bases}, or maximal independent sets of a matroid, namely that all bases are of the same size. This is the rank of the matroid.
+
+
+\subsection*{Rank}
+Given a matroid $\mathfrak{M} = (E, \mathcal{I})$, the \textit{matroid rank function} (MRF) is a function $\fn{r} : 2^E \to \mathbb{Z}^+$ that gives the rank of a set $ A \subseteq E$, defined to be the size of the largest independent subset of $A$. Formally, $$\fn{r}(A) = \max\{|X| : X \subseteq A \text{ and } X \in \mathcal{I}\}.$$ Matroid rank functions are \textit{binary submodular}. Binary because they have binary marginals, that is, $\fn{r}(A \cup \{ e \}) - \fn{r}(A) \in \{0,1\}$, for all $A \subseteq 2^E$ and $e \in E$. Submodularity refers to rank functions' natural diminishing returns property, namely that for any two sets $X, Y \subseteq E$, we have $$\fn{r}(X \cup Y) + \fn{r}(X \cap Y) \leq \fn{r}(X) + \fn{r}(Y).$$ Every binary submodular function is the rank function of some matroid~\cite{schrijver-2003}. The diminishing returns property makes the rank function useful for modeling user preferences, as we will see in fair allocation with matroidal valuations.
+
+\subsection*{Closed sets}
+
+We also need to establish the concept of the \textit{closed sets} of a matroid. A closed set is a set whose cardinality is maximal for its rank. Equivalently to the definition given above, we can define a matroid as $\mathfrak{M} = (E, \mathcal{F})$, where $\mathcal{F}$ is the set of closed sets of $\mathfrak{M}$, satisfying the following properties~\cite{knuth-1975}:
+
+\begin{enumerate}
+  \item The set of all elements is closed: $E \in \mathcal{F}$
+  \item The intersection of two closed sets is a closed set: If $A,B \in \mathcal{F},$ then $A \cap B \in \mathcal{F}$
+  \item If $A \in \mathcal{F}$ and $a,b \in E \setminus A,$ then $b$ is a member of all sets in $\mathcal{F}$ containing $A \cup \{a\}$ if and only if $a$ is a member of all sets in $\mathcal{F}$ containing $A \cup \{b\}$
+\end{enumerate}

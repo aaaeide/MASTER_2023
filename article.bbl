@@ -1,4 +1,9 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
+
+\bibitem{barabasi-albert}
+R\'eka Albert and Albert-L\'aszl\'o Barab\'asi.
+\newblock Statistical mechanics of complex networks.
+\newblock {\em Rev. Mod. Phys.}, 74:47--97, Jan 2002.
 
 \bibitem{benabbou-2021}
 et~al. Benabbou, Nawal.
@@ -6,11 +11,45 @@ et~al. Benabbou, Nawal.
 \newblock {\em ACM Transactions on Economics and Computation}, 9:1--41,
   December 2021.
 
+\bibitem{bezanson2017julia}
+Jeff Bezanson, Alan Edelman, Stefan Karpinski, and Viral~B Shah.
+\newblock Julia: A fresh approach to numerical computing.
+\newblock {\em SIAM review}, 59(1):65--98, 2017.
+
 \bibitem{crapo_rota_1970}
 Henry~H. Crapo and Gian-Carlo Rota.
 \newblock {\em On the foundations of combinatorial theory: Combinatorial
   geometries}.
 \newblock M.I.T. Press, 1970.
+
+\bibitem{erdos-1959}
+P.~Erd{\H{o}}s and A.~R{\'{e}}nyi.
+\newblock On random graphs {I}.
+\newblock {\em Publicationes Mathematicae Debrecen}, 6(3-4):290--297, July
+  1959.
+
+\bibitem{Graphs2021}
+James Fairbanks, Mathieu Besan{\c{c}}on, Sch{\"o}lly Simon, J{\'u}lio Hoffiman,
+  Nick Eubank, and Stefan Karpinski.
+\newblock Juliagraphs/graphs.jl: an optimized graphs package for the julia
+  programming language, 2021.
+
+\bibitem{fienberg-2012}
+Stephen~E. Fienberg.
+\newblock A brief history of statistical models for network analysis and open
+  challenges.
+\newblock {\em Journal of Computational and Graphical Statistics},
+  21(4):825--839, 2012.
+
+\bibitem{gilbert-1959}
+E.~N. Gilbert.
+\newblock {Random Graphs}.
+\newblock {\em The Annals of Mathematical Statistics}, 30(4):1141 -- 1144,
+  1959.
+
+\bibitem{janson1993birth}
+Svante Janson, Donald~E. Knuth, Tomasz Łuczak, and Boris Pittel.
+\newblock The birth of the giant component, 1993.
 
 \bibitem{knuth-1975}
 Donald~E. Knuth.
@@ -25,6 +64,11 @@ Donald~E. Knuth.
 A.~Schrijver.
 \newblock {\em Combinatorial Optimization: Polyhedra and Efficiency}.
 \newblock Springer, 2003.
+
+\bibitem{Watts-1998}
+Duncan~J. Watts and Steven~H. Strogatz.
+\newblock Collective dynamics of `small-world' networks.
+\newblock {\em Nature}, 393(6684):440--442, June 1998.
 
 \bibitem{whitney-1935}
 Hassler Whitney.

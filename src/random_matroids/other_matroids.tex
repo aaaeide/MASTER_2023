@@ -1,0 +1,63 @@
+\section{Other kinds of matroids}
+Knuth's matroid construction is interesting, as it allows us to fully describe completely arbitrary matroids. However, as discussed in Section~\ref{sec:improving-performance}, this sadly also entails a runtime on the order of $2^n$. Matroids.jl should support working with specific types of matroids as well. In this section, we will investigate how we might represent and generate a few well-known matroid types.
+
+\subsection{Uniform matroids}
+A uniform matroid $U_n^r$ is the matroid over $n$ elements where the independent sets are exactly the sets of cardinality at most $r$. The free matroid $U_n^n = (E, 2^E)$ is a special case of the uniform matroid and is the simplest and least interesting type of matroid, being the trivial case in which every subset of $E$ is an independent set. In Matroids.jl, we represent uniform matroids with a simple struct.
+
+\begin{jllisting}
+struct UniformMatroid
+  n::Integer
+  r::Integer
+end
+
+FreeMatroid(n) = UniformMatroid(n, n)
+\end{jllisting}
+
+\subsection{Linear matroids}
+
+\subsection{Graphic matroids}
+
+We begin with defining the graph theory terms used in this section. An undirected graph $G=(V,E)$ is said to be \textit{connected} if there exists at least one path between each pair of nodes in the graph; otherwise it is \textit{disconnected}. A disconnected graph consists of at least two connected subsets of nodes. These connected subgraphs are called \textit{components}. A \textit{tree} is a connected acyclic graph, and a \textit{forest} is a disconnected graph consisting of some number of trees. A \textit{spanning tree} of $G$ is a subgraph with a unique simple path between all pairs of vertices of $G$. A \textit{spanning forest} of $G$ is a collection of spanning trees, one for each component.
+
+Given a graph $G=(V,E)$, let $\mathcal{I} \subseteq 2^E$ be the family of subsets of the edges $E$ such that, for each $I \in \mathcal{I},\ (V, I)$ is a forest. It is a classic result of matroid theory that $\mathfrak{M} = (E, \mathcal{I})$ is a matroid~\cite[p.~657]{schrijver-2003}. To understand how, we will show that it adhers to axioms (1) and (2'), as given in Section~\ref{sec:matroid-theory}. (1) holds trivially, as all subsets of a forest are forests. To see that (2') holds, consider the bases (maximal independent sets) $\mathcal{B} \subseteq \mathcal{I}$. By definition, each basis $B \in \mathcal{B}$ is a maximal forest over $G$. Since a spanning tree of a graph with $n$ nodes must needs have $n-1$ edges, we have $|B| = |V| - k$, where $k$ is the number of components of $G$. This is the same for every $B \in \mathcal{B}$, which proves property (2'). Any matroid given by a graph $G$, denoted by $\mathfrak{M}(G)$, is called a \textit{graphic matroid}.
+
+\subsubsection{Random graphs}
+To generate random matroids, we need to generate random graphs, a task for which there luckily for us is already good library support in Julia with the Graphs.jl library~\cite{Graphs2021}, which includes several models for random graph generation with different properties.
+
+The Erdős-Rényi (ER) model (also known as Erdős-Rényi-Gilbert~\cite{fienberg-2012}) picks uniformly at random a graph from among the $\binom{\binom{n}{2}}{M}$ possible graphs with $n$ nodes and $M$ edges, or, alternatively, constructs a graph with $n$ nodes where each edge is present with some probability $p$~\cite{erdos-1959, gilbert-1959}. This model produces mostly disconnected graphs, and the size distribution of its components with respect to the number of edges has been studied extensively. With $n$ nodes and fewer than $\frac{n}{2}$ edges, the resulting graph will almost always consist of components that are small trees or contain at most one cycle. As the number of edges exceeds $\frac{n}{2}$, however, the so-called ``giant'' component of size $\mathcal{O}(n)$ emerges, and starts to absorb the smaller components~\cite{janson1993birth}. The ER model is the oldest and most basic random graph model, and is often referred to simply as the random graph, denoted by $G(n,p)$.
+
+Variations of the ER model have been developed by physicists and network scientists to produce phenomena commonly seen in real-world networks~\cite{fienberg-2012}. These variations include the Barabási-Albert model, which grows an initial connected graph using preferential attachment (a mechanism colloquially known as ``the rich get richer''), in which more connected nodes are more likely to receive new connections. This results in graphs in which a small number of nodes (``hubs'') have a significantly higher degree than the rest, creating a power-law distribution of node degrees. This property is known as scale-freeness and is thought to be a characteristic of the Internet~\cite{barabasi-albert}. Another approach is the Watts-Strogatz model, which starts with a ring lattice, a regular graph with $n$ nodes and $k$ edges per node, and then rewires each edge with some probability $p$. By changing $p$, one is able to `tune' the graph between regularity (p=0) and disorder (p=1). For intermediate values of $p$, Watts-Strogatz produces so-called ``small-world'' graphs, which exhibit (1) a high degree of clustering (how likely two nodes with a common neighbor are to be adjacent), and (2) short average distance between nodes. This phenomenon is found in many real-world networks, such as social systems or power grids~\cite{Watts-1998}.
+
+\pagebreak
+
+
+
+
+For alle par $i,j$ med regler 
+
+i $R$ har vi enten:
+\begin{enumerate}
+  \item \textbf{"disjunkte regler":} $$|S_i \cap S_j| = 0,\ a_i \neq a_j$$
+  \item \textbf{"overlapp element":} $$a_i = a_j$$
+  \item \textbf{"overlapp mengde":}
+  $$
+  \begin{aligned}
+    \mbox{total: }  &S_i \subseteq S_j, \mbox{ eller} \\
+    \mbox{delvis: } &S_i \not \subseteq S_j, |S_i \cap S_j| > 0
+  \end{aligned}
+  $$
+  \item \textbf{"overlapp element og mengde"}
+  \subitem Total overlapp mengde og likt element: $R_i = R_j$.
+  \subitem Delvis overlapp mengde og likt element
+\end{enumerate}
+
+
+
+Har regler $R = \{ (S_1, a_1), (S_2, a_2), \dots, (S_k, a_k) \}$. 
+$$
+\Delta(X, b) = \begin{cases}
+  0 & \mbox{if } b \in X, \\
+  0 & \mbox{if } \exists(S, a) \in R \mbox{ st. } S+a \subseteq X+b \mbox{ and } b \in S+a, \\
+  1 & \mbox{else.}
+\end{cases}
+$$

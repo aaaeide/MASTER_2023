@@ -1,0 +1,30 @@
+
+
+For alle par $i,j$ med regler 
+
+i $R$ har vi enten:
+\begin{enumerate}
+  \item \textbf{"disjunkte regler":} $$|S_i \cap S_j| = 0,\ a_i \neq a_j$$
+  \item \textbf{"overlapp element":} $$a_i = a_j$$
+  \item \textbf{"overlapp mengde":}
+  $$
+  \begin{aligned}
+    \mbox{total: }  &S_i \subseteq S_j, \mbox{ eller} \\
+    \mbox{delvis: } &S_i \not \subseteq S_j, |S_i \cap S_j| > 0
+  \end{aligned}
+  $$
+  \item \textbf{"overlapp element og mengde"}
+  \subitem Total overlapp mengde og likt element: $R_i = R_j$.
+  \subitem Delvis overlapp mengde og likt element
+\end{enumerate}
+
+
+
+Har regler $R = \{ (S_1, a_1), (S_2, a_2), \dots, (S_k, a_k) \}$. 
+$$
+\Delta(X, b) = \begin{cases}
+  0 & \mbox{if } b \in X, \\
+  0 & \mbox{if } \exists(S, a) \in R \mbox{ st. } S+a \subseteq X+b \mbox{ and } b \in S+a, \\
+  1 & \mbox{else.}
+\end{cases}
+$$

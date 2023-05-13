@@ -51,6 +51,11 @@ E.~N. Gilbert.
 Svante Janson, Donald~E. Knuth, Tomasz Łuczak, and Boris Pittel.
 \newblock The birth of the giant component, 1993.
 
+\bibitem{kelly-1978}
+Douglas~G. Kelly and Daniel Kennedy.
+\newblock The higgs factorization of a geometric strong map.
+\newblock {\em Discrete Mathematics}, 22(2):139--146, 1978.
+
 \bibitem{knuth-1975}
 Donald~E. Knuth.
 \newblock Random matroids.
@@ -59,6 +64,10 @@ Donald~E. Knuth.
 \bibitem{knuth-2003}
 Donald~E. Knuth.
 \newblock {ERECTION.W}, Mar 2003.
+
+\bibitem{pendavingh2016enumerating}
+Rudi Pendavingh and Jorn van~der Pol.
+\newblock Enumerating matroids of fixed rank, 2016.
 
 \bibitem{schrijver-2003}
 A.~Schrijver.
@@ -69,6 +78,12 @@ A.~Schrijver.
 Duncan~J. Watts and Steven~H. Strogatz.
 \newblock Collective dynamics of `small-world' networks.
 \newblock {\em Nature}, 393(6684):440--442, June 1998.
+
+\bibitem{Welsh1976-wj}
+D~J~A Welsh.
+\newblock {\em Matroid Theory}.
+\newblock Monographs / London Mathematical Society. Academic Press, San Diego,
+  CA, October 1976.
 
 \bibitem{whitney-1935}
 Hassler Whitney.

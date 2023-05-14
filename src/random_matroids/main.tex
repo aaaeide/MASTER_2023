@@ -5,8 +5,7 @@ If a mathematical structure can be defined or axiomatized in multiple different,
 
 Matroids were first introduced by Hassler Whitney in 1935~\cite{whitney-1935}, in a seminal paper where he described two axioms for independence in the columns of a matrix, and defined any system obeying these axioms to be a ``matroid'' (which unfortunately for Rota is the term that has stuck). Whitney's key insight was that this abstraction of~~``independence'' is applicable to both matrices and graphs. As a result of this, the terms used in matroid theory are borrowed from analogous concepts in both graph theory and linear algebra. Matroids have also received attention from researchers in fair allocation, as their properties make them useful for modeling user preferences; for instance, matroid rank functions are a natural way of formally describing course allocation for students~\cite{benabbou-2021}. 
 
-This chapter describes how Matroids.jl generates and represents various types of matroids, from the very basic uniform matroid to the erection of arbitrary matroids using Knuth's 1974 algorithm~\cite{knuth-1975}. 
-
+The overarching goal for this project is to make Matroids.jl, a proof-of-concept library for working programmatically with matroids, specifically in the context of fair allocation. This chapter covers how Matroids.jl enables the creation of specific matroids and the generation of random ones, as well as how to access important properties such as independent sets, closed sets, circuits, bases, the rank function and the closure function. The first part of the chapter focuses on implementing these features for various types of matroids, including uniform, linear (vector), graphic, and partition matroids. The final part of the chapter is a significant portion of the thesis as a whole, and describes the implementation of Knuth's 1974 algorithm~\cite{knuth-1975} for the erection of arbitrary rank-$r$ matroids.
 
 \input{src/random_matroids/prelims}
 

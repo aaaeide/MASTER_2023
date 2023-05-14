@@ -1,26 +1,28 @@
 \contentsline {chapter}{\numberline {1}Introduction}{3}{chapter.1}%
 \contentsline {chapter}{\numberline {2}Generating matroids}{4}{chapter.2}%
 \contentsline {section}{\numberline {2.1}Matroid preliminaries}{5}{section.2.1}%
-\contentsline {section}{\numberline {2.2}Basic types of matroids}{6}{section.2.2}%
+\contentsline {section}{\numberline {2.2}Basic types of matroids}{7}{section.2.2}%
 \contentsline {subsection}{\numberline {2.2.1}Uniform matroids}{7}{subsection.2.2.1}%
 \contentsline {subsection}{\numberline {2.2.2}Linear matroids}{7}{subsection.2.2.2}%
 \contentsline {subsection}{\numberline {2.2.3}Graphic matroids}{7}{subsection.2.2.3}%
-\contentsline {section}{\numberline {2.3}Knuth's matroid construction}{8}{section.2.3}%
-\contentsline {subsection}{\numberline {2.3.1}Randomized KMC}{10}{subsection.2.3.1}%
-\contentsline {subsection}{\numberline {2.3.2}Improving performance}{11}{subsection.2.3.2}%
-\contentsline {subsubsection}{Representing sets as binary numbers}{12}{subsubsection*.7}%
-\contentsline {subsubsection}{Sorted superpose}{14}{subsubsection*.11}%
-\contentsline {subsubsection}{Iterative superpose}{16}{subsubsection*.14}%
-\contentsline {subsubsection}{Rank table}{18}{subsubsection*.17}%
-\contentsline {subsubsection}{Non-redundant cover generation}{19}{subsubsection*.20}%
-\contentsline {subsection}{\numberline {2.3.3}What do the generated matroids look like?}{22}{subsection.2.3.3}%
-\contentsline {subsubsection}{Observations}{22}{subsubsection*.23}%
-\contentsline {subsection}{\numberline {2.3.4}Producing the rank function and independent sets}{23}{subsection.2.3.4}%
-\contentsline {subsubsection}{Finding circuits and independent sets for smaller matroids}{23}{subsubsection*.24}%
-\contentsline {chapter}{\numberline {3}The Matroids.jl API}{26}{chapter.3}%
-\contentsline {section}{\numberline {3.1}The independence oracle}{26}{section.3.1}%
-\contentsline {section}{\numberline {3.2}The matroid union algorithm}{26}{section.3.2}%
-\contentsline {section}{\numberline {3.3}Supporting universe sizes of $n > 128$}{27}{section.3.3}%
-\contentsline {chapter}{\numberline {4}Conclusions}{28}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Limitations}{28}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Future work}{28}{section.4.2}%
+\contentsline {subsubsection}{Random graphs}{8}{subsubsection*.2}%
+\contentsline {subsubsection}{Random graphic matroids}{9}{subsubsection*.3}%
+\contentsline {section}{\numberline {2.3}Knuth's matroid construction}{9}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Randomized KMC}{11}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Improving performance}{13}{subsection.2.3.2}%
+\contentsline {subsubsection}{Representing sets as binary numbers}{14}{subsubsection*.9}%
+\contentsline {subsubsection}{Sorted superpose}{15}{subsubsection*.13}%
+\contentsline {subsubsection}{Iterative superpose}{16}{subsubsection*.16}%
+\contentsline {subsubsection}{Rank table}{18}{subsubsection*.19}%
+\contentsline {subsubsection}{Non-redundant cover generation}{20}{subsubsection*.22}%
+\contentsline {subsection}{\numberline {2.3.3}What do the generated matroids look like?}{23}{subsection.2.3.3}%
+\contentsline {subsubsection}{Observations}{23}{subsubsection*.25}%
+\contentsline {subsection}{\numberline {2.3.4}Producing the rank function and independent sets}{24}{subsection.2.3.4}%
+\contentsline {subsubsection}{Finding circuits and independent sets for smaller matroids}{24}{subsubsection*.26}%
+\contentsline {chapter}{\numberline {3}The Matroids.jl API}{27}{chapter.3}%
+\contentsline {section}{\numberline {3.1}The independence oracle}{27}{section.3.1}%
+\contentsline {section}{\numberline {3.2}The matroid union algorithm}{27}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Supporting universe sizes of $n > 128$}{28}{section.3.3}%
+\contentsline {chapter}{\numberline {4}Conclusions}{29}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Limitations}{29}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Future work}{29}{section.4.2}%

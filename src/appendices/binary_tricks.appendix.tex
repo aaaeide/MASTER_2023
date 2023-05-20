@@ -1,5 +1,5 @@
 \chapter{Sets as numbers -- some useful tricks}
-Section~\ref{sec:improving-performance} details a number of steps taken in order to build a performant Julia implementation of \pr{Knuth-Matroid}. Perhaps chief among these steps in terms of sheer performance gain compared to the initial, naïve implementation, was the transition from representing subsets of $E$ as a \jlinl{Set} of integers (or whatever type the elements of E might have), to representing them as a single integer, whose 1-bits denote which elements are in the set. This is possible as long as $n$ is less than the widest numeric primitive (in off-the-shelf Julia, 128 bits). We reiterate the bitwise equivalents of the basic set operations in Table~\ref{tab:equiv-bitwise}.
+Section*~\ref{sec:improving-performance} details a number of steps taken in order to build a performant Julia implementation of \pr{Knuth-Matroid}. Perhaps chief among these steps in terms of sheer performance gain compared to the initial, naïve implementation, was the transition from representing subsets of $E$ as a \jlinl{Set} of integers (or whatever type the elements of E might have), to representing them as a single integer, whose 1-bits denote which elements are in the set. This is possible as long as $n$ is less than the widest available integer type (in off-the-shelf Julia, 128 bits, though one can go wider with the help of libraries~\cite{BitIntegers.jl}). We reiterate the bitwise equivalents of the basic set operations in Table~\ref{tab:equiv-bitwise}.
 \begin{table}[!ht]
   \caption{Set operations and their equivalent bitwise operations}
   \label{tab:equiv-bitwise}
@@ -15,8 +15,8 @@ Section~\ref{sec:improving-performance} details a number of steps taken in order
 \end{table}
 These bitwise equivalents allow us to perform the set operations in constant time~(right???), resulting in significant performance increases. In the code snippets included throughout Section~\ref{sec:improving-performance} and Appendix~\ref{apx:code}, a number of ``tricks'' are performed with bitwise operations whose workings and purpose might be a bit obtuse. This appendix came to be as I got to grips with working with sets in this manner.
 
-\section{How do I...}
-\subsection{...create a singleton set?}
+\section*{How do I...}
+\subsection*{...create a singleton set?}
 The left-shift operator ($<<$) can be used to set the $i$th bit to 1 and the others to 0. In general, $\{a\} = 1<<a$. This is used in an early version of \pr{Generate-Covers}:
 \begin{jllisting}
 function generate_covers_v2(F_r, n)
@@ -24,17 +24,27 @@ function generate_covers_v2(F_r, n)
 end
 \end{jllisting}
 
-\subsection{...find the smallest element of a set?}
+\subsection*{...find the smallest element of a set?}
 Using the two's complement of a set $T$, denoted by $-T = \lnot T+1$, we can find the smallest element with the operation $T\land -T$. This is used in the next trick.
 
-\subsection{...enumerate all elements of a set one by one?}
+\subsection*{...enumerate all elements of a set one by one?}
 Using the previous trick, we can repeatedly pop the smallest element in the following manner:
 \begin{jllisting}
   t = 0b11111111
   while t > 0
     x = t&-t  # x is the singleton set consisting of the smallest element of t
-    println(bitstring(x))
+    output(x)
     t &= ~x   # t = t setminus x
   end
 \end{jllisting}
 This outputs all numbers from 1 to 0xff with a Hamming weight of 1.
+
+\subsection*{...get a random element from a set?}
+We find all the positions at which the reversed bitstring of the set has a '1' character, and choose a random one.
+
+\begin{jllisting}
+function rand_el(S::Integer)
+  x = rand([2^(i-1) for (i,c) in enumerate(reverse(bitstring(S))) if c == '1'])
+  return convert(typeof(S), x)
+end
+\end{jllisting}

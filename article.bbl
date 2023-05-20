@@ -16,6 +16,11 @@ Jeff Bezanson, Alan Edelman, Stefan Karpinski, and Viral~B Shah.
 \newblock Julia: A fresh approach to numerical computing.
 \newblock {\em SIAM review}, 59(1):65--98, 2017.
 
+\bibitem{Cormen2009-zm}
+Thomas~H Cormen, Charles~E Leiserson, Ronald~L Rivest, and Clifford Stein.
+\newblock {\em Introduction to Algorithms}.
+\newblock The MIT Press. MIT Press, London, England, 3 edition, July 2009.
+
 \bibitem{Crapo1970}
 Henry~H. Crapo.
 \newblock Erecting geometries.
@@ -37,7 +42,7 @@ P.~Erd{\H{o}}s and A.~R{\'{e}}nyi.
 \bibitem{Graphs2021}
 James Fairbanks, Mathieu Besan{\c{c}}on, Sch{\"o}lly Simon, J{\'u}lio Hoffiman,
   Nick Eubank, and Stefan Karpinski.
-\newblock Juliagraphs/graphs.jl: an optimized graphs package for the julia
+\newblock {JuliaGraphs/Graphs.jl}: an optimized graphs package for the julia
   programming language, 2021.
 
 \bibitem{fienberg-2012}
@@ -47,20 +52,26 @@ Stephen~E. Fienberg.
 \newblock {\em Journal of Computational and Graphical Statistics},
   21(4):825--839, 2012.
 
+\bibitem{BitIntegers.jl}
+Rafael Fourquet.
+\newblock {BitIntegers.jl}.
+\newblock https://github.com/rfourquet/BitIntegers.jl.
+\newblock Accessed: 2023-05-20.
+
 \bibitem{gilbert-1959}
 E.~N. Gilbert.
 \newblock {Random Graphs}.
 \newblock {\em The Annals of Mathematical Statistics}, 30(4):1141 -- 1144,
   1959.
 
+\bibitem{greene-1991}
+Tom Greene.
+\newblock Descriptively sufficient subcollections of flats in matroids.
+\newblock {\em Discrete Mathematics}, 87(2):149--161, 1991.
+
 \bibitem{janson1993birth}
 Svante Janson, Donald~E. Knuth, Tomasz Łuczak, and Boris Pittel.
 \newblock The birth of the giant component, 1993.
-
-\bibitem{kelly-1978}
-Douglas~G. Kelly and Daniel Kennedy.
-\newblock The higgs factorization of a geometric strong map.
-\newblock {\em Discrete Mathematics}, 22(2):139--146, 1978.
 
 \bibitem{knuth-1975}
 Donald~E. Knuth.
@@ -69,11 +80,9 @@ Donald~E. Knuth.
 
 \bibitem{knuth-2003}
 Donald~E. Knuth.
-\newblock {ERECTION.W}, Mar 2003.
-
-\bibitem{pendavingh2016enumerating}
-Rudi Pendavingh and Jorn van~der Pol.
-\newblock Enumerating matroids of fixed rank, 2016.
+\newblock {ERECTION.W}.
+\newblock \url{https://www-cs-faculty.stanford.edu/~knuth/programs/erection.w},
+  Mar 2003.
 
 \bibitem{schrijver-2003}
 A.~Schrijver.

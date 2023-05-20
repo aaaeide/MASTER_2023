@@ -1,14 +1,88 @@
 \chapter{Generating matroids}
-\epigraph{For simplicity, we also assume that every point in a geometry is a closed set. Without this additional assumption, the resulting structure is often described by the ineffably cacaphonic term "matroid", which we prefer to avoid in favor of the term "pregeometry".}{Gian-Carlo Rota \cite{crapo_rota_1970}}
+The overarching goal for this project is to make Matroids.jl, a proof-of-concept library for working programmatically with matroids, specifically in the context of fair allocation. This chapter covers how Matroids.jl enables the creation of specific matroids and the generation of random ones, as well as how to access important properties such as independent sets, closed sets, circuits, bases, the rank function and the closure function. The first part of the chapter focuses on implementing these features for various types of matroids, including uniform, linear (vector), graphic, and partition matroids. The final part of the chapter is a significant portion of the thesis as a whole, and describes the implementation of Knuth's interesting algorithm~\cite{knuth-1975} for the erection of arbitrary rank-$r$ matroids.
 
-If a mathematical structure can be defined or axiomatized in multiple different, but not obviously equivalent, ways, the different definitions or axiomatizations of that structure make up a cryptomorphism. The many obtusely equivalent definitions of a matroid are a classic example of cryptomorphism, and belie the fact that the matroid is a generalization of concepts in many, seemingly disparate areas of mathematics.
 
-Matroids were first introduced by Hassler Whitney in 1935~\cite{whitney-1935}, in a seminal paper where he described two axioms for independence in the columns of a matrix, and defined any system obeying these axioms to be a ``matroid'' (which unfortunately for Rota is the term that has stuck). Whitney's key insight was that this abstraction of~~``independence'' is applicable to both matrices and graphs. As a result of this, the terms used in matroid theory are borrowed from analogous concepts in both graph theory and linear algebra. Matroids have also received attention from researchers in fair allocation, as their properties make them useful for modeling user preferences; for instance, matroid rank functions are a natural way of formally describing course allocation for students~\cite{benabbou-2021}. 
+\section{Uniform matroids and partition matroids}
+A uniform matroid $U_n^r$ is the matroid over $n$ elements where the independent sets are exactly the sets of cardinality at most $r$. The free matroid $U_n^n = (E, 2^E)$ is a special case of the uniform matroid and is the simplest, biggest and least interesting type of matroid, being the trivial case in which every subset of $E$ is an independent set. In Matroids.jl, we represent uniform matroids with a simple struct.
 
-The overarching goal for this project is to make Matroids.jl, a proof-of-concept library for working programmatically with matroids, specifically in the context of fair allocation. This chapter covers how Matroids.jl enables the creation of specific matroids and the generation of random ones, as well as how to access important properties such as independent sets, closed sets, circuits, bases, the rank function and the closure function. The first part of the chapter focuses on implementing these features for various types of matroids, including uniform, linear (vector), graphic, and partition matroids. The final part of the chapter is a significant portion of the thesis as a whole, and describes the implementation of Knuth's 1974 algorithm~\cite{knuth-1975} for the erection of arbitrary rank-$r$ matroids.
+\begin{jllisting}
+struct UniformMatroid
+  n::Integer
+  r::Integer
+end
 
-\input{src/random_matroids/prelims}
+FreeMatroid(n) = UniformMatroid(n, n)
+\end{jllisting}
 
-\input{src/random_matroids/other_matroids}
+
+\section{Linear matroids}
+
+\section{Graphic matroids}
+We begin with defining the graph theory terms used in this section. An undirected graph $G=(V,E)$ is said to be \textit{connected} if there exists at least one path between each pair of nodes in the graph; otherwise it is \textit{disconnected}. A disconnected graph consists of at least two connected subsets of nodes. These connected subgraphs are called \textit{components}. A \textit{tree} is a connected acyclic graph, and a \textit{forest} is a disconnected graph consisting of some number of trees. A \textit{spanning tree} of $G$ is a subgraph with a unique simple path between all pairs of vertices of $G$. A \textit{spanning forest} of $G$ is a collection of spanning trees, one for each component. The \textit{degree} of a node $v$ is the number of edges for which $v$ is an endpoint. A \textit{regular graph} is a graph in which all nodes have the same degree. An \textit{induced subgraph} $G[S]$, where $S$ is either a subset of the nodes of $G$ (in which case $G[S]$ is a \textit{node-induced subgraph}) or of the edges of $G$ (\textit{edge-induced}).
+
+Given a graph $G=(V,E)$, let $\mathcal{I} \subseteq 2^E$ be the family of subsets of the edges $E$ such that, for each $I \in \mathcal{I},\ (V, I)$ is a forest. It is a classic result of matroid theory that $\mathfrak{M} = (E, \mathcal{I})$ is a matroid~\cite[p.~657]{schrijver-2003}. To understand how, we will show that it adhers to axioms (1) and (2'), as given in Section~\ref{sec:matroid-theory}. (1) holds trivially, as all subsets of a forest are forests. To see that (2') holds, consider the bases (maximal independent sets) $\mathcal{B} \subseteq \mathcal{I}$. By definition, each basis $B \in \mathcal{B}$ is a maximal forest over $G$. Since a spanning tree of a graph with $n$ nodes must needs have $n-1$ edges, we have $|B| = |V| - k$, where $k$ is the number of components of $G$. This is the same for every $B \in \mathcal{B}$, which proves property (2'). Any matroid given by a graph $G$, denoted by $\mathfrak{M}(G)$, is called a \textit{graphic matroid}.
+
+\subsection{Random graphs}
+Since generating random graphic matroids will require us to generate random graphs, let us take a look at some of the options available to us for this. Luckily for us, random graphs has been an area of extensive study for more than sixty years, and several models with different properties exist.
+
+The Erdős-Rényi (ER) model (also known as Erdős-Rényi-Gilbert~\cite{fienberg-2012}) picks uniformly at random a graph from among the $\binom{\binom{n}{2}}{M}$ possible graphs with $n$ nodes and $M$ edges, or, alternatively, constructs a graph with $n$ nodes where each edge is present with some probability $p$~\cite{erdos-1959, gilbert-1959}. This model produces mostly disconnected graphs, and the size distribution of its components with respect to the number of edges has been studied extensively. With $n$ nodes and fewer than $\frac{n}{2}$ edges, the resulting graph will almost always consist of components that are small trees or contain at most one cycle. As the number of edges exceeds $\frac{n}{2}$, however, the so-called ``giant'' component of size $\mathcal{O}(n)$ emerges, and starts to absorb the smaller components~\cite{janson1993birth}. The ER model is the oldest and most basic random graph model, and is often referred to simply as the random graph, denoted by $G(n,p)$.
+
+Variations of the ER model have been developed by physicists and network scientists to produce phenomena commonly seen in real-world networks~\cite{fienberg-2012}. These variations include the Barabási-Albert model, which grows an initial connected graph using preferential attachment (a mechanism colloquially known as ``the rich get richer''), in which more connected nodes are more likely to receive new connections. This results in graphs in which a small number of nodes (``hubs'') have a significantly higher degree than the rest, creating a power-law distribution of node degrees. This property is known as scale-freeness and is thought to be a characteristic of the Internet~\cite{barabasi-albert}. 
+
+Another approach is the Watts-Strogatz model, which starts with a ring lattice, a regular graph with $n$ nodes, each with degree $k$, and then rewires each edge with some probability $p$. By changing $p$, one is able to `tune' the graph between regularity (p=0) and disorder (p=1). For intermediate values of $p$, Watts-Strogatz produces so-called ``small-world'' graphs, which exhibit both a high degree of clustering (how likely two nodes with a common neighbor are to be adjacent), and short average distance between nodes. This phenomenon is found in many real-world networks, such as social systems or power grids~\cite{Watts-1998}.
+
+\subsection{Properties of random graphic matroids}
+We will use the Graphs.jl library~\cite{Graphs2021} for handling graphs in Matroids.jl. This library has built-in methods for the random graph models described in the previous chapter\footnote{\href{https://docs.juliahub.com/Graphs/VJ6vx/1.4.1/generators/}{https://docs.juliahub.com/Graphs/VJ6vx/1.4.1/generators/}}. 
+
+When constructing matroids, we want to be able to specify the size of the ground set, and perhaps also the rank of the matroid. Let us see how we can achieve this with the random graph models we have discussed. The method \jlinl{barabasi_albert(n,k)} generates a Barabási-Albert model random graph with $n$ nodes. It starts with an initial graph of $k$ nodes, and adds the remaining $n-k$ nodes one at a time, each new node receiving $k$ edges via preferential attachment. Thus, the final graph has $|E| = (n-k)k$ edges. To specify a matroid with $m$ edges, we pick some $k|m$ and solve for $n$. Remember that the rank of a graphic matroid is the size of a spanning tree over the graph, which is $n-1$ when the graph is connected. If we select a smaller $k$ from among the factors of $|E|$, we get a larger final rank, and vice versa. We can generate a Watts-Strogatz model random graph with the method \jlinl{watts_strogatz(n, k, β)}, where $n$ is the number of nodes, $k$ the node degree and $\beta$ the probability of rewiring. The number of edges of a regular graph with $n$ nodes and degree $k$ (and thus the size of the ground set of the induced graphic matroid) is given by $\frac{nk}{2}$, so $nk$ must be even. Erdős-Rényi is the simplest model for our purposes, as the method \jlinl{erdos_renyi(nv, ne)} simply takes in the desired number of nodes and edges. However, since the resulting graph has a large number of components for $|E| < \frac{n}{2}$, we have less fine-grained control over the final rank of the induced graphic matroid.
+
+In Matroids.jl, we ``generate'' a graphic matroid by simply accepting some graph, and figure out the rank of the matroid using Kruskal's algorithm for maximal spanning forests, which runs in $\mathcal{O}(|E| \lg |E|)$ time~\cite{Cormen2009-zm}. Implementing the methods for finding the properties of our graphic matroids is simple, as they reduce to well-known algorithms (implemented by Graphs.jl) for finding the properties of the graphs they are derived from. 
+
+\begin{jllisting}
+using Graphs
+
+struct GraphicMatroid
+  g::Graph
+  n::Integer
+  r::Integer
+  GraphicMatroid(g::Graph) = new(g, ne(g), length(kruskal_mst(g)))
+end
+\end{jllisting}
+
+\textbf{The rank function} returns the size of a spanning forest of the subgraph induced by some subset of the edges. This is the rank of that subset. Thus, the rank of a subset $S \subseteq E$ can be found in $\mathcal{O}(|S| \lg |S|)$ time (when the MST is found using Kruskal's algorithm).
+
+\begin{jllisting}
+function rank(m::GraphicMatroid, S)
+  edgelist = [e for (i, e) in enumerate(edges(g)) if i in S]
+  subgraph, _vmap = induced_subgraph(m.g, edgelist)
+  return length(kruskal_mst(subgraph))
+end
+\end{jllisting}
+
+\textbf{The indepence oracle} returns whether the subgraph induced by a supplied subset of edges is acyclic. While independence can also be determined with the rank function, by checking whether the cardinality of a set equals its rank, this uses a DFS behind the scenes\footnote{\href{https://docs.juliahub.com/Graphs/VJ6vx/1.4.1/pathing/\#Graphs.is\_cyclic}{https://docs.juliahub.com/Graphs/VJ6vx/1.4.1/pathing/\#Graphs.is\_cyclic}}, which runs in linear time~\cite{Cormen2009-zm}.
+
+\begin{jllisting}
+function is_indep(m::GraphicMatroid, S)
+  edgelist = [e for (i, e) in enumerate(edges(g)) if i in S]
+  subgraph, _vmap = induced_subgraph(m.g, edgelist)
+  return !is_cyclic(subgraph)
+end
+\end{jllisting}
+
+\textbf{The circuit oracle} \skelline
+\begin{jllisting}
+function is_circuit(m::GraphicMatroid, S)
+  #TODO
+end
+\end{jllisting}
+
+\textbf{The closure function} accepts a set of elements $S$, and returns the largest set of elements $\fn{cl}(S)$ such that $S \subseteq \fn{cl}(S) \subseteq E, \fn{r}(S) = r(cl(S))$. In a graph context, given a graph $G=(V,E)$ and an edge-induced subgraph $G[S] = (V´, S), S\subseteq E$, this is the same as finding the largest edge-induced subgraph $G[T], S\subseteq T\subseteq E$, in which a spanning tree has the same number of edges as one in $G[S]$. Since the size of a spanning tree in $G[S]$ is given by $|V´|-1$, $G[T]$ cannot contain any edges to nodes not in $V´$, as this would increase the rank of $G[T]$. Therefore, we get that the closure of $S$ is the largest set $T$ of edges between nodes that are present in the edge-induced subgraph $G[S]$. The method \jlinl{closure} below returns the set of all edges whose endpoints are both located in the subgraph induced by $S$.
+\begin{jllisting}
+function closure(m::GraphicMatroid, S)
+  edgelist = [e for (i, e) in enumerate(edges(m.g)) if i in S]
+  _sg, vmap = induced_subgraph(m.g, edgelist)
+  return [e for e in edges(m.g) if [e.src, e.dst] ⊆ vmap]
+end
+\end{jllisting}
 
 \input{src/random_matroids/kmc}

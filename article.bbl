@@ -5,6 +5,16 @@ R\'eka Albert and Albert-L\'aszl\'o Barab\'asi.
 \newblock Statistical mechanics of complex networks.
 \newblock {\em Rev. Mod. Phys.}, 74:47--97, Jan 2002.
 
+\bibitem{amanatidis2022fair}
+Georgios Amanatidis, Haris Aziz, Georgios Birmpas, Aris Filos-Ratsikas, Bo~Li,
+  Hervé Moulin, Alexandros~A. Voudouris, and Xiaowei Wu.
+\newblock Fair division of indivisible goods: A survey, 2022.
+
+\bibitem{aumann-1985}
+Robert~J Aumann and Michael Maschler.
+\newblock Game theoretic analysis of a bankruptcy problem from the {Talmud}.
+\newblock {\em Journal of Economic Theory}, 36(2):195--213, 1985.
+
 \bibitem{benabbou-2021}
 et~al. Benabbou, Nawal.
 \newblock Finding fair and efficient allocations for matroid rank valuations.
@@ -88,6 +98,11 @@ Donald~E. Knuth.
 A.~Schrijver.
 \newblock {\em Combinatorial Optimization: Polyhedra and Efficiency}.
 \newblock Springer, 2003.
+
+\bibitem{steinhaus-1948}
+Hugo Steinhaus.
+\newblock The problem of fair division.
+\newblock {\em Econometrica}, (16):101--104, 1948.
 
 \bibitem{Watts-1998}
 Duncan~J. Watts and Steven~H. Strogatz.

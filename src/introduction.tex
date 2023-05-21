@@ -1,5 +1,16 @@
 \chapter{Introduction}
 
-One goal for this project is to create a library for the Julia programming language~\cite{bezanson2017julia}, supplying functionality for generating and interacting with (random) matroids. Throughout the text I will refer to this library as Matroids.jl. In the preparatory project delivered fall of 2022, I implemented Knuth's 1974 algorithm for the random generation of arbitrary matroids via the erection of closed sets \cite{knuth-1975}. With this, I was able to randomly generate matroids of universe sizes $n \leq 12$, but for larger values of $n$ my implementation was unbearably slow. 
+Fair allocation is the problem of \textit{fairly} partitioning a set of resources among individuals with different preferences over these resources. This has been a hot topic of interest since antiquity (the 2000-year old Babylonian Talmud includes a discussion on how to distribute the estate of a deceased debtor among his creditors, for example~\cite{aumann-1985}), and remains so today. As societies are faced with rising economical and environmental pressures have to do more with less, the problem of achieving fair and efficient allocations will remain central. 
 
-\skelpars[1]
+The mathematical study of fair allocation started with Hugo Steinhaus as late as 1948~\cite{steinhaus-1948}, and for decades the focus was largely on the \textit{divisible} case, in which the resources can be divided into arbitrary small pieces, and envy-free allocations (in which no agent values another agent's bundle higher than her own) always exist~\cite{amanatidis2022fair}. More recently, fair allocation of \textit{indivisible} goods has garnered the attention of computer scientists, who have brought algorithmic techniques to the field to great effect. 
+
+\begin{enumerate}
+  \item Computer science offers a fresh angle to further the research agenda for indivisible fair allocation
+  \item EF, EFX, egalitarian welfare, Nash welfare -- all NP-hard...
+  \item ...in the general, additive case. Reduced problem instances!
+  \item Matroids are great, Yankee Swap is really fair...
+  \subitem -- strong possibility results, polynomial-time computable
+  \item ...but little tooling exists for empirical working
+\end{enumerate}
+
+One goal for this project is to create a library for the Julia programming language~\cite{bezanson2017julia}, supplying functionality for generating and interacting with (random) matroids. Throughout the text I will refer to this library as Matroids.jl. In the preparatory project delivered fall of 2022, I implemented Knuth's 1974 algorithm for the random generation of arbitrary matroids via the erection of closed sets \cite{knuth-1975}. With this, I was able to randomly generate matroids of universe sizes $n \leq 12$, but for larger values of $n$ my implementation was unbearably slow. 

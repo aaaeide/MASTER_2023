@@ -79,6 +79,10 @@ Tom Greene.
 \newblock Descriptively sufficient subcollections of flats in matroids.
 \newblock {\em Discrete Mathematics}, 87(2):149--161, 1991.
 
+\bibitem{Hetland_Allocations_jl_2022}
+Magnus~Lie Hetland and Halvard Hummel.
+\newblock {Allocations.jl}, November 2022.
+
 \bibitem{janson1993birth}
 Svante Janson, Donald~E. Knuth, Tomasz Łuczak, and Boris Pittel.
 \newblock The birth of the giant component, 1993.
@@ -103,6 +107,11 @@ A.~Schrijver.
 Hugo Steinhaus.
 \newblock The problem of fair division.
 \newblock {\em Econometrica}, (16):101--104, 1948.
+
+\bibitem{viswanathan2023yankee}
+Vignesh Viswanathan and Yair Zick.
+\newblock Yankee swap: a fast and simple fair allocation mechanism for matroid
+  rank valuations, 2023.
 
 \bibitem{Watts-1998}
 Duncan~J. Watts and Steven~H. Strogatz.

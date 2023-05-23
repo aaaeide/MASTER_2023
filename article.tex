@@ -5,13 +5,13 @@
 %   {\Large\bfseries}
 %   {\chaptertitlename\ \thechapter}{0pt}{\Huge}
 
-% \usepackage[Bjornstrup]{fncychap}
+\usepackage[Lenny]{fncychap}
 
-\usepackage[T1]{fontenc}
-\usepackage{titlesec, blindtext, color}
-\definecolor{gray75}{gray}{0.75}
-\newcommand{\hsp}{\hspace{20pt}}
-\titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries}
+% \usepackage[T1]{fontenc}
+% \usepackage{titlesec, blindtext, color}
+% \definecolor{gray75}{gray}{0.75}
+% \newcommand{\hsp}{\hspace{20pt}}
+% \titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries}
 
 
 \usepackage{graphicx}
@@ -65,7 +65,8 @@
 
     % Title
     \HRule \\[0.4cm]
-    { \huge \bfseries Matroids and fair allocation}\\[0.4cm]
+    { \huge Exploring Matroids in Fair Allocation:}\\[0.1cm]
+    { \huge Building the Matroids.jl Library}\\[0.1cm]
     \HRule \\[1.5cm]
 
     % Author
@@ -118,6 +119,7 @@ Matroid theory, truly a wonderland}{ChatGPT}
 \input{src/prelims.tex}
 \input{src/random_matroids/main}
 \input{src/matroids.jl}
+\input{src/yankeeswap}
 \input{src/conclusions}
 
 

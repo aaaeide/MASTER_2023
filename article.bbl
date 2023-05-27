@@ -15,16 +15,42 @@ Robert~J Aumann and Michael Maschler.
 \newblock Game theoretic analysis of a bankruptcy problem from the {Talmud}.
 \newblock {\em Journal of Economic Theory}, 36(2):195--213, 1985.
 
+\bibitem{barman2020fair}
+Siddharth Barman and Arpita Biswas.
+\newblock Fair division under cardinality constraints, 2020.
+
+\bibitem{barman2021existence}
+Siddharth Barman and Paritosh Verma.
+\newblock Existence and computation of maximin fair allocations under
+  matroid-rank valuations, 2021.
+
+\bibitem{Benabbou_2020}
+Nawal Benabbou, Mithun Chakraborty, Ayumi Igarashi, and Yair Zick.
+\newblock Finding fair and efficient allocations when valuations don't add up.
+\newblock In {\em Algorithmic Game Theory}, pages 32--46. Springer
+  International Publishing, 2020.
+
 \bibitem{benabbou-2021}
-et~al. Benabbou, Nawal.
+Nawal Benabbou, Mithun Chakraborty, Ayumi Igarashi, and Yair Zick.
 \newblock Finding fair and efficient allocations for matroid rank valuations.
-\newblock {\em ACM Transactions on Economics and Computation}, 9:1--41,
-  December 2021.
+\newblock {\em ACM Trans. Econ. Comput.}, 9(4), oct 2021.
 
 \bibitem{bezanson2017julia}
 Jeff Bezanson, Alan Edelman, Stefan Karpinski, and Viral~B Shah.
 \newblock Julia: A fresh approach to numerical computing.
 \newblock {\em SIAM review}, 59(1):65--98, 2017.
+
+\bibitem{Budish2011}
+Eric Budish.
+\newblock The combinatorial assignment problem: Approximate competitive
+  equilibrium from equal incomes.
+\newblock {\em Journal of Political Economy}, 119(6):1061--1103, December 2011.
+
+\bibitem{caragiannis-Unreasonable}
+Ioannis Caragiannis, David Kurokawa, Herv\'{e} Moulin, Ariel~D. Procaccia,
+  Nisarg Shah, and Junxing Wang.
+\newblock The unreasonable fairness of maximum nash welfare.
+\newblock {\em ACM Trans. Econ. Comput.}, 7(3), sep 2019.
 
 \bibitem{Cormen2009-zm}
 Thomas~H Cormen, Charles~E Leiserson, Ronald~L Rivest, and Clifford Stein.
@@ -98,6 +124,17 @@ Donald~E. Knuth.
 \newblock \url{https://www-cs-faculty.stanford.edu/~knuth/programs/erection.w},
   Mar 2003.
 
+\bibitem{lipton-2004}
+R.~J. Lipton, E.~Markakis, E.~Mossel, and A.~Saberi.
+\newblock On approximately fair allocations of indivisible goods.
+\newblock In {\em Proceedings of the 5th ACM Conference on Electronic
+  Commerce}, EC '04, page 125–131, New York, NY, USA, 2004. Association for
+  Computing Machinery.
+
+\bibitem{plaut2017envyfreeness}
+Benjamin Plaut and Tim Roughgarden.
+\newblock Almost envy-freeness with general valuations, 2017.
+
 \bibitem{schrijver-2003}
 A.~Schrijver.
 \newblock {\em Combinatorial Optimization: Polyhedra and Efficiency}.
@@ -117,12 +154,6 @@ Vignesh Viswanathan and Yair Zick.
 Duncan~J. Watts and Steven~H. Strogatz.
 \newblock Collective dynamics of `small-world' networks.
 \newblock {\em Nature}, 393(6684):440--442, June 1998.
-
-\bibitem{Welsh1976-wj}
-D~J~A Welsh.
-\newblock {\em Matroid Theory}.
-\newblock Monographs / London Mathematical Society. Academic Press, San Diego,
-  CA, October 1976.
 
 \bibitem{whitney-1935}
 Hassler Whitney.

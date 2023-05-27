@@ -1,4 +1,51 @@
 \chapter{The Matroids.jl API}
-In the previous chapter, I described how our library generates and represents matroids, as well as how to access the basic properties of our matroids. If all one wanted was to play around with matroids in and of themselves, one might have declared the library finished at this point. However, as mentioned in the introduction, the raison d'être of Matroids.jl is to enable the empirical study of fair allocation algorithms that utilize matroids in some capacity. In this chapter, I consider what fair allocation-specific methods the Matroids.jl API should expose to achieve this goal, and how they might be implemented. The implementation will draw inspiration from, and be designed to interoperate with, Hummel and Hetland's well-organized Allocations.jl library~\cite{Hetland_Allocations_jl_2022}. 
+\label{chap:matroids.jl}
+\label{sec:fair-alloc-prelims}
+In the previous chapter, I described how our library generates and represents matroids, as well as how to access the basic properties of our matroids. If all one wanted was to play around with matroids in and of themselves, one might have declared the library finished at this point. However, as mentioned in the introduction, the raison d'être of Matroids.jl is to enable the empirical study of fair allocation algorithms that utilize matroids in some capacity. In this chapter, I consider what fair allocation-specific methods the Matroids.jl API should expose to achieve this goal, and how they might be implemented. 
 
-We will have fair allocation's two main use cases for matroids in mind when deciding what the Matroids.jl API should look like: matroidal rank valuations and matroidal constraints. This chapter will consist of a literature study, the goal of which is to understand what functionality algorithms for these cases will require, after which I discuss the implementation in Matroids.jl. In the next chapter, I will as a proof of concept describe an implementation of the Yankee Swap algorithm for fair allocation with matroidal valuations~\cite{viswanathan2023yankee} that make use of the functionality developed in this section, and present some experimental results. Before all this though, we should establish the required fair allocation concepts.
+The implementation will draw inspiration from, and be designed to integrate with, Hummel and Hetland's well-organized Allocations.jl library~\cite{Hetland_Allocations_jl_2022}, which provides a range of algorithms for fair allocation of indivisible items. Allocations.jl supports additive and submodular valuations and a number of constraint types, including conflict constraints and cardinality constraints (which, incidentally, are partition matroid constraints~\cite{barman2020fair}). Our goal is to extend Allocations.jl with support for matroid-rank valuations and matroidal constraints. As such, Matroids.jl should be structured in such a manner as to be familiar to those acquainted with Allocations.jl.
+
+We will have fair allocation's two main use cases for matroids in mind when deciding what the Matroids.jl API should look like: matroidal rank valuations and matroidal constraints. This chapter will consist of a literature study, the goal of which is to understand what functionality algorithms for these cases will require, after which I discuss the implementation in Matroids.jl. In the next chapter, I will as a proof of concept describe an implementation of the Yankee Swap algorithm for fair allocation with matroidal valuations~\cite{viswanathan2023yankee} that make use of the functionality developed in this section, and present some experimental results.
+
+
+\section{Fairness under matroid-rank valuations}
+If Matroids.jl is to be of use in the empirical study of matroidal fair allocation algorithms, we need to be able to evaluate the fairness of an allocation. In this chapter, we will describe the methods for EF, EF1, EFX$_+$, EFX$_0$ and MMS. A matroid-rank-valued allocation problem instance is represented as a struct containing the matroids for each of the agents, along with the number of goods. Agent $i$'s value for the set of goods $S$, is the rank of $S$ in agent $i$'s matroid.
+\begin{jllisting}
+"""
+    struct MatroidRank <: Profile
+
+A matroid rank valuation profile, representing how each agent values all possible bundles. The profile is constructed from `n` matroids, one for each agents, each matroid over the set of goods [m]. 
+"""
+struct MatroidRank <: Profile
+    matroids::Vector{Matroid}
+    m::Int
+end
+
+value(V::MatroidRank, i, S) = rank(V.matroids[i], S)
+value(V::MatroidRank, i, g::Int) = value(V, i, Set(g))
+\end{jllisting}
+
+\subsection*{Envy-freeness}
+Checking if an allocation is EF is the same for matroid-rank valuations as for additive valuations -- simply compare each agent's own bundle value with that agent's subjective valuation of each other agent's bundle. This is already implemented in Allocations.jl. In this section, I give the functions \jlinl{value_1}, \jlinl{value_x} and \jlinl{value_x0} which are used for computing EF1, EFX$_+$ and EFX$_0$, respectively. To check efficiently if an allocation is EF1, we make use of the fact that a matroid rank function has binary marginals; in other words, the highest valued good in a bundle will always have value 1, unless the bundle value is 0. This gives us a simple way of checking for EF1. Similarly, since the least (positively) valued good also has value 1, EFX$_+$ is the same as EF1. The value of the least valued good, including 0-values, depend on whether the bundle is independent. If it is, that value is 1, else it is 0. This gives us EFX$_0$.
+
+\begin{jllisting}
+"""
+    value_1(V::Profile, i, S)
+
+The value agent `i` places on bundle `S`, *up to one item*, that is, the
+smallest value `i` can place on bundle `S` after removing (at most) one item,
+according to the profile `V`.
+"""
+function value_1(V::MatroidRank, i, S)
+    val = value(V, i, S)
+    return max(val-1, 0)
+end
+
+value_x(V::MatroidRank, i, S) = value_1(V, i, S)
+
+# If S is independent for M_i, the least valued good in S has value 1, else 0.
+function value_x0(V::MatroidRank, i, S)
+    is_indep(V.matroids[i], S) ? max(value(V, i, S)-1, 0) : value(V, i, S)
+end
+\end{jllisting}
+

@@ -1,13 +1,54 @@
-\chapter{Preliminary matroid theory}
-\label{sec:matroid-theory}
+\chapter{Preliminaries}
+
+
+\section{Fair allocation}
+In this thesis, I use $[k]$ to denote the set $\{1,2,\dots,k\}$. To ease readability, I abuse notation a bit and replace $A \cup \{g\}$ and $A \setminus \{g\}$ with $A+g$ and $A-g$, respectively.
+
+An instance of a fair allocation problem consists of a set of agents $[n]$ and a set of $m$ goods $E = \{e_1, e_2, \dots, e_m\}$. Each agent has a valuation function $v_i: 2^E \to \mathbb{R}^+$; $v_i(A)$ is the value agent $i$ ascribes to the bundle of goods $A$. The marginal value of agent $i$ for the good $e$, given that she already owns the bundle $A$, is given by $\Delta_i(A, e) := v_i(A + e) - v_i(A)$. Throughout most of this thesis, we assume that $v_i$ is a matroid rank function, or, equivalently, a binary submodular function. To formalize the description given in Chapter~1, this means that
+\begin{enumerate}
+  \item[(a)] $v_i(\emptyset) = 0$,
+  \item[(b)] $v_i$ has binary marginals: $\Delta_i(A, e)\in \{0,1\}$ for every $A \subset E$ and $e\in E$
+  \item[(c)] $v_i$ is submodular: for every $A\subseteq B\subseteq E$ and $g\in E\setminus T$, we have that $\Delta_i(S, g) \geq \Delta_i(T, g)$.
+\end{enumerate}
+Any function $v_i$ adhering to these properties precisely determine a matroid~\cite{schrijver-2003}. There are many other ways to characterize matroids, some of which are given in Section~\ref{sec:matroid-theory}.
+
+\subsection{Envy-freeness}
+An allocation $A$ is an $n$-partition of $E$, $A = (A_1, A_2, \dots, A_n)$, where each $A_i$ is the bundle of goods allocated to agent $i$. We are interested in producing \textit{fair} allocations. One of the most popular notions of fairness in the literature is envy-freeness (EF), which states that no agent should prefer another agent's bundle over her own. An allocation $A$ is EF iff, for all agents $i,j\in [n]$,
+\begin{equation} \tag{EF}
+  v_i(A_i) \geq v_i(A_j).
+\end{equation}
+
+Because, as mentioned in the introduction, EF is not always achievable when the goods are indivisible, the literature has focused on relaxations thereof. The most prominent such relaxation, which can be guaranteed, is \textit{envy-freeness up to one good} (EF1)~\cite{lipton-2004}, which allows for the envy of up to one (highest-valued) good. $A$ is an EF1 allocation iff, for all agents $i,j \in [n]$, there exists an $e \in A_j$ such that
+\begin{equation} \tag{EF1}
+  v_i(A_i) \geq v_i(A_j - e).
+\end{equation}
+
+\textit{Envy-freeness up to any good} (EFX) is an even stronger version of EF. While EF1 in general allows that agent $i$ envies agent $j$ up to their highest valued good, EFX requires that the envy can be removed by dropping agent $j$'s least valued good. There are two slightly different definitions of EFX in use in the literature. Caragiannis et al.~\cite{caragiannis-Unreasonable} requires that this least valued good be positively valued. We call this fairness objective EFX$_+$. $A$ is an EFX$_+$ allocation iff, for all agents $i,j \in [n]$,
+\begin{equation} \tag{EFX$_+$}
+  v_i(A_i) \geq v_i(A_j - e), \forall e \in A_j \text{ st. } v_i(A_j-e) < v_i(A_j)
+\end{equation}
+Plaut and Roughgarden~\cite{plaut2017envyfreeness}, on the other hand, allow for 0-valued goods in the envy check -- we call this version EFX$_0$. It is stronger requirement than EFX$_+$. $A$ is an EFX$_0$ allocation iff, for all agents $i,j \in [n]$,
+\begin{equation} \tag{EFX$_0$}
+  v_i(A_i) \geq v_i(A_j - e) \forall e \in A_j
+\end{equation}
+
+\subsection{Proportionality}
+\textit{Proportionality} is a fairness objective that is fundamentally different from envy-freeness, in that it checks each bundle value against some threshold, instead of comparing bundle values against each other. An allocation is proportional if each agent receives $\frac{1}{n}$ of the total value -- also known as their fair share. Since proportionality might not be achievable in the indivisible case, Budish introduced the concept of the \textit{maximin share}~\cite{Budish2011}. An agent's maximin share is defined as the maximum value she could receive if she partitioned $E$ among all agents and then picked the worst bundle. An allocation is maxmin share fair (MMS) if all agents receive at least as much as their maximin share.
+
+
+
+
+
+
+\section{Matroid theory}
 \epigraph{For simplicity, we also assume that every point in a geometry is a closed set. Without this additional assumption, the resulting structure is often described by the ineffably cacaphonic term "matroid", which we prefer to avoid in favor of the term "pregeometry".}{Gian-Carlo Rota \cite{crapo_rota_1970}}
+\label{sec:matroid-theory}
 
 If a mathematical structure can be defined or axiomatized in multiple different, but not obviously equivalent, ways, the different definitions or axiomatizations of that structure make up a cryptomorphism. The many obtusely equivalent definitions of a matroid are a classic example of cryptomorphism, and belie the fact that the matroid is a generalization of concepts in many, seemingly disparate areas of mathematics.
 
-Matroids were first introduced by Hassler Whitney in 1935~\cite{whitney-1935}, in a seminal paper where he described two axioms for independence in the columns of a matrix, and defined any system obeying these axioms to be a ``matroid'' (which unfortunately for Rota is the term that has stuck). Whitney's key insight was that this abstraction of~~``independence'' is applicable to both matrices and graphs. As a result of this, the terms used in matroid theory are borrowed from analogous concepts in both graph theory and linear algebra. Matroids have also received attention from researchers in fair allocation, as their properties make them useful for modeling user preferences; for instance, matroid rank functions are a natural way of formally describing course allocation for students~\cite{benabbou-2021}. 
+Matroids were first introduced by Hassler Whitney in 1935~\cite{whitney-1935}, in a seminal paper where he described two axioms for independence in the columns of a matrix, and defined any system obeying these axioms to be a ``matroid'' (which unfortunately for Rota is the term that has stuck). Whitney's key insight was that this abstraction of~~``independence'' is applicable to both matrices and graphs. As a result of this, the terms used in matroid theory are borrowed from analogous concepts in both graph theory and linear algebra. Matroids have also received attention from researchers in fair allocation, as their properties make them useful for modeling user preferences; for instance, matroid rank functions are a natural way of formally describing course allocation for students~\cite{benabbou-2021}. In this section, I will describe a few ways to characterize a matroid, using the axiom systems given by Whitney in his original paper.
 
-\subsection*{Independent sets}
-The most common way to characterize a matroid is as an \textit{independence system}. An independence system is a pair $(E, \mathcal{I})$, where $E$ is the ground set of elements, $E \not= \emptyset$, and $\mathcal{I}$ is the set of independent sets, $\mathcal{I} \subseteq 2^E$. The \textit{dependent sets} of a matroid are $2^E \setminus \mathcal{I}$. 
+\subsection{Characterization via independent sets} The most common way to characterize a matroid is as an \textit{independence system}. An independence system is a pair $(E, \mathcal{I})$, where $E$ is the ground set of elements, $E \not= \emptyset$, and $\mathcal{I}$ is the set of independent sets, $\mathcal{I} \subseteq 2^E$. The \textit{dependent sets} of a matroid are $2^E \setminus \mathcal{I}$. 
 
 In practice, the ground set $E$ represents the universe of elements in play, and the independent sets of typically represent the legal combinations of these items. In the context of fair allocation, the independent sets represent the legal (in the case of matroid constraints) or desired (in the case of matroid utilities) bundles of items.
 
@@ -19,13 +60,22 @@ A matroid is an independence system with the following properties~\cite{whitney-
 \end{enumerate}
 Properties (2) and (2') are equivalent. To see that $(2) \implies$~(2'), consider two maximal subsets of $S$. If they differ in size, (2) tells us that there are elements we can add from one to the other until they have equal cardinality. We get (2')~$\implies (2)$ by considering $S = A \cup B$. Since $|A|>|B|$, they cannot both be maximal, and some $e \in A \setminus B$ can be added to $B$ to obtain another independent set.
 
-When $S=E$, (2') gives us a fundamental property of the \textit{bases}, or maximal independent sets of a matroid, namely that all bases are of the same size. This is the rank of the matroid.
+\subsection{Characterization via bases} When $S=E$, (2') gives us that the maximal independent sets of a matroid are all of the same size. A maximal independent subset of $E$ is known as a \textit{basis}. A matroid can be exactly determined by $\mathcal{B}$, its collection of bases, since a set is independent if and only if it is contained in a basis (this follows from (1) above). A theorem by Whitney~\cite{whitney-1935} gives the axiom system characterizing a collection of bases of a matroid: 
+\begin{enumerate}
+  \item No proper subset of a basis is a basis.
+  \item If $B, B'\in \mathcal{B}$ and $e \in B$, then for some $e'\in B'$, $B-e+e'\in\mathcal{B}$.
+\end{enumerate}
 
+\subsection{Characterization via circuits}
+A \textit{circuit} is a minimal dependent set of a matroid -- it is an independent set plus one ``redundant'' element. Equivalently, the collection of circuits of a matroid is given by
+$$\mathcal{C} = \bigl\{ C : |C| = r(C) + 1, C\subseteq E \bigr\}.$$
+A set is independent if and only if it contains no circuit~\cite{schrijver-2003}, and so a matroid is uniquely determined by the collection of its circuits. The following conditions characterize $\mathcal{C}$~\cite{whitney-1935}:
+\begin{enumerate}
+  \item No proper subset of a circuit is a circuit.
+  \item If $C, C'\in\mathcal{C}$, $x\in C\cap C'$ and $y\in C\setminus C'$, then $C\cup C'$ contains a circuit containing $y$ but not $x$.
+\end{enumerate}
 
-\subsection*{Rank}
-Given a matroid $\mathfrak{M} = (E, \mathcal{I})$, the \textit{matroid rank function} (MRF) is a function $\fn{r} : 2^E \to \mathbb{Z}^+$ that gives the rank of a set $ A \subseteq E$, defined to be the size of the largest independent subset of $A$. Formally, $$\fn{r}(A) = \max\{|X| : X \subseteq A \text{ and } X \in \mathcal{I}\}.$$ Matroid rank functions are \textit{binary submodular}. Binary because they have binary marginals, that is, $\fn{r}(A \cup \{ e \}) - \fn{r}(A) \in \{0,1\}$, for all $A \subseteq 2^E$ and $e \in E$. Submodularity refers to rank functions' natural diminishing returns property, namely that for any two sets $X, Y \subseteq E$, we have $$\fn{r}(X \cup Y) + \fn{r}(X \cap Y) \leq \fn{r}(X) + \fn{r}(Y).$$ Every binary submodular function is the rank function of some matroid~\cite{Welsh1976-wj}. The diminishing returns property makes the rank function useful for modeling user preferences, as we will see in fair allocation with matroidal valuations.
-
-\subsection*{Closed sets}
+\subsection{Characterization via closed sets}
 
 We also need to establish the concept of the \textit{closed sets} of a matroid. A closed set is a set whose cardinality is maximal for its rank. Equivalently to the definition given above, we can define a matroid as $\mathfrak{M} = (E, \mathcal{F})$, where $\mathcal{F}$ is the set of closed sets of $\mathfrak{M}$, satisfying the following properties~\cite{knuth-1975}:
 
@@ -36,3 +86,8 @@ We also need to establish the concept of the \textit{closed sets} of a matroid. 
 \end{enumerate}
 
 The \textit{closure function} is the function $\fn{cl} : 2^E \to 2^E$, such that $$\fn{cl}(S) = \bigl\{ x \in E : \fn{r}(S) = \fn{r}(S \cup \{x\}) \bigr\}.$$ That is to say, the closure function, when given a set $S \subseteq E$, returns the set of elements in $x \in E$ such that $x$ can be added to $S$ with no increase in rank. It returns the closed set of the same rank as $S$, that contains $S$.
+
+
+\section{Matroids in fair allocation}
+\subsection{Matroid-rank valuations}
+\subsection{Matroid constraints}

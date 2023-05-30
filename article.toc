@@ -1,44 +1,45 @@
 \contentsline {chapter}{\numberline {1}Introduction}{4}{chapter.1}%
 \contentsline {chapter}{\numberline {2}Preliminaries}{8}{chapter.2}%
-\contentsline {section}{\numberline {2.1}Fair allocation}{8}{section.2.1}%
+\contentsline {section}{\numberline {2.1}Fair allocation}{9}{section.2.1}%
 \contentsline {subsection}{\numberline {2.1.1}Envy-freeness}{9}{subsection.2.1.1}%
-\contentsline {subsection}{\numberline {2.1.2}Proportionality}{9}{subsection.2.1.2}%
-\contentsline {section}{\numberline {2.2}Matroid theory}{10}{section.2.2}%
-\contentsline {subsection}{\numberline {2.2.1}Characterization via independent sets}{11}{subsection.2.2.1}%
-\contentsline {subsection}{\numberline {2.2.2}Characterization via bases}{11}{subsection.2.2.2}%
-\contentsline {subsection}{\numberline {2.2.3}Characterization via circuits}{12}{subsection.2.2.3}%
-\contentsline {subsection}{\numberline {2.2.4}Characterization via closed sets}{12}{subsection.2.2.4}%
-\contentsline {section}{\numberline {2.3}Matroids in fair allocation}{13}{section.2.3}%
-\contentsline {subsection}{\numberline {2.3.1}Matroid-rank valuations}{13}{subsection.2.3.1}%
-\contentsline {subsection}{\numberline {2.3.2}Matroid constraints}{13}{subsection.2.3.2}%
-\contentsline {chapter}{\numberline {3}The Matroids.jl API}{14}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Fairness under matroid-rank valuations}{15}{section.3.1}%
-\contentsline {chapter}{\numberline {4}Implementing Yankee Swap}{17}{chapter.4}%
-\contentsline {section}{\numberline {4.1}The matroid union algorithm}{17}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Some experimental results}{18}{section.4.2}%
-\contentsline {chapter}{\numberline {5}Generating matroids}{19}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Uniform matroids and partition matroids}{19}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Linear matroids}{20}{section.5.2}%
-\contentsline {section}{\numberline {5.3}Graphic matroids}{20}{section.5.3}%
-\contentsline {subsection}{\numberline {5.3.1}Random graphs}{20}{subsection.5.3.1}%
-\contentsline {subsection}{\numberline {5.3.2}Properties of random graphic matroids}{21}{subsection.5.3.2}%
-\contentsline {section}{\numberline {5.4}Matroid erection}{24}{section.5.4}%
-\contentsline {section}{\numberline {5.5}Knuth's matroid construction}{24}{section.5.5}%
-\contentsline {subsection}{\numberline {5.5.1}Randomized KMC}{26}{subsection.5.5.1}%
-\contentsline {subsection}{\numberline {5.5.2}Improving performance}{26}{subsection.5.5.2}%
-\contentsline {subsubsection}{Representing sets as binary numbers}{28}{section*.11}%
-\contentsline {subsubsection}{Sorted superpose}{30}{section*.15}%
-\contentsline {subsubsection}{Iterative superpose}{31}{section*.18}%
-\contentsline {subsubsection}{Rank table}{32}{section*.21}%
-\contentsline {subsubsection}{Non-redundant cover generation}{35}{section*.24}%
-\contentsline {subsection}{\numberline {5.5.3}What do the generated matroids look like?}{38}{subsection.5.5.3}%
-\contentsline {subsubsection}{Observations}{38}{section*.27}%
-\contentsline {subsection}{\numberline {5.5.4}Finding the properties of arbitrary matroids}{38}{subsection.5.5.4}%
-\contentsline {subsubsection}{Up-front enumeration of circuits and independent sets for smaller matroids}{39}{section*.28}%
-\contentsline {subsubsection}{Determining matroid properties after erection}{39}{section*.29}%
-\contentsline {chapter}{\numberline {6}Results}{43}{chapter.6}%
-\contentsline {chapter}{\numberline {7}Conclusions}{44}{chapter.7}%
-\contentsline {section}{\numberline {7.1}Limitations}{44}{section.7.1}%
-\contentsline {section}{\numberline {7.2}Future work}{44}{section.7.2}%
-\contentsline {chapter}{Appendices}{50}{section*.32}%
-\contentsline {chapter}{Appendix \numberline {A}Sets as numbers -- some useful tricks}{51}{appendix.1.A}%
+\contentsline {subsection}{\numberline {2.1.2}Proportionality}{10}{subsection.2.1.2}%
+\contentsline {subsection}{\numberline {2.1.3}Efficiency}{11}{subsection.2.1.3}%
+\contentsline {section}{\numberline {2.2}Matroid theory}{12}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Characterization via independent sets}{12}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Characterization via bases}{13}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}Characterization via circuits}{13}{subsection.2.2.3}%
+\contentsline {subsection}{\numberline {2.2.4}Characterization via closed sets}{14}{subsection.2.2.4}%
+\contentsline {section}{\numberline {2.3}Matroids in fair allocation}{14}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Matroid-rank valuations}{15}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Matroid constraints}{15}{subsection.2.3.2}%
+\contentsline {chapter}{\numberline {3}The Matroids.jl API}{16}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Fairness under matroid-rank valuations}{17}{section.3.1}%
+\contentsline {chapter}{\numberline {4}Implementing Yankee Swap}{20}{chapter.4}%
+\contentsline {section}{\numberline {4.1}The matroid union algorithm}{20}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Some experimental results}{21}{section.4.2}%
+\contentsline {chapter}{\numberline {5}Generating matroids}{22}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Uniform matroids and partition matroids}{23}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Linear matroids}{23}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Graphic matroids}{23}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}Random graphs}{24}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}Properties of random graphic matroids}{25}{subsection.5.3.2}%
+\contentsline {section}{\numberline {5.4}Matroid erection}{27}{section.5.4}%
+\contentsline {section}{\numberline {5.5}Knuth's matroid construction}{27}{section.5.5}%
+\contentsline {subsection}{\numberline {5.5.1}Randomized KMC}{29}{subsection.5.5.1}%
+\contentsline {subsection}{\numberline {5.5.2}Improving performance}{30}{subsection.5.5.2}%
+\contentsline {subsubsection}{Representing sets as binary numbers}{31}{section*.14}%
+\contentsline {subsubsection}{Sorted superpose}{32}{section*.18}%
+\contentsline {subsubsection}{Iterative superpose}{34}{section*.21}%
+\contentsline {subsubsection}{Rank table}{36}{section*.24}%
+\contentsline {subsubsection}{Non-redundant cover generation}{37}{section*.27}%
+\contentsline {subsection}{\numberline {5.5.3}What do the generated matroids look like?}{40}{subsection.5.5.3}%
+\contentsline {subsubsection}{Observations}{40}{section*.30}%
+\contentsline {subsection}{\numberline {5.5.4}Finding the properties of arbitrary matroids}{42}{subsection.5.5.4}%
+\contentsline {subsubsection}{Up-front enumeration of circuits and independent sets for smaller matroids}{42}{section*.31}%
+\contentsline {subsubsection}{Determining matroid properties after erection}{43}{section*.32}%
+\contentsline {chapter}{\numberline {6}Results}{46}{chapter.6}%
+\contentsline {chapter}{\numberline {7}Conclusions}{47}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Limitations}{47}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Future work}{47}{section.7.2}%
+\contentsline {chapter}{Appendices}{53}{section*.35}%
+\contentsline {chapter}{Appendix \numberline {A}Sets as numbers -- some useful tricks}{54}{appendix.1.A}%

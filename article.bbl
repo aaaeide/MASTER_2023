@@ -145,6 +145,11 @@ Hugo Steinhaus.
 \newblock The problem of fair division.
 \newblock {\em Econometrica}, (16):101--104, 1948.
 
+\bibitem{suksumpong-constraints}
+Warut Suksompong.
+\newblock Constraints in fair division.
+\newblock {\em SIGecom Exch.}, 19(2):46–61, dec 2021.
+
 \bibitem{viswanathan2023yankee}
 Vignesh Viswanathan and Yair Zick.
 \newblock Yankee swap: a fast and simple fair allocation mechanism for matroid

@@ -2,6 +2,15 @@
 \label{chap:generating_matroids}
 The overarching goal for this project is to make Matroids.jl, a proof-of-concept library for working programmatically with matroids, specifically in the context of fair allocation. This chapter covers how Matroids.jl enables the creation of specific matroids and the generation of random ones, as well as how to access important properties such as independent sets, closed sets, circuits, bases, the rank function and the closure function. The first part of the chapter focuses on implementing these features for various types of matroids, including uniform, linear (vector), graphic, and partition matroids. The final part of the chapter is a significant portion of the thesis as a whole, and describes the implementation of Knuth's interesting algorithm~\cite{knuth-1975} for the erection of arbitrary rank-$r$ matroids.
 
+\begin{enumerate}
+  \item \jlinl{rank}
+  \item \jlinl{closure}
+  \item \jlinl{bases}
+  \item \jlinl{is_indep}
+  \item \jlinl{is_circuit}
+  \item \jlinl{is_basis}
+\end{enumerate}
+
 
 \section{Uniform matroids and partition matroids}
 A uniform matroid $U_n^r$ is the matroid over $n$ elements where the independent sets are exactly the sets of cardinality at most $r$. The free matroid $U_n^n = (E, 2^E)$ is a special case of the uniform matroid and is the simplest, biggest and least interesting type of matroid, being the trivial case in which every subset of $E$ is an independent set. In Matroids.jl, we represent uniform matroids with a simple struct.

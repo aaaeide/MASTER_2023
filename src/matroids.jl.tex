@@ -4,6 +4,8 @@ Matroids.jl exists to enable the empirical study of matroidal fair allocation. I
 
 The implementation will draw inspiration from, and be designed to integrate with, Hummel and Hetland's well-organized Allocations.jl library~\cite{Hetland_Allocations_jl_2022}, which provides a range of algorithms for fair allocation of indivisible items. Allocations.jl currently supports additive and submodular valuations and a number of constraint types, including conflict constraints and cardinality constraints (which, incidentally, are partition matroid constraints~\cite{barman2020fair}). Our goal is to extend Allocations.jl with support for matroid-rank valuations and matroidal constraints. As such, Matroids.jl should be structured in such a manner as to be familiar to those acquainted with Allocations.jl.
 
+
+
 This chapter is structured as follows:
 \begin{enumerate}
     \item I first extend Allocation.jl's existing functionality to support representing and evaluating fair allocation instances with matroid-rank valuations and matroidal constraints
@@ -14,9 +16,7 @@ This chapter is structured as follows:
 In the next chapter, I describe an implementation, using Matroids.jl, of the Yankee Swap algorithm for fair allocation with matroidal valuations~\cite{viswanathan2023yankee} and present some experimental results.
 
 \section{Fairness under matroid-rank valuations}
-If Matroids.jl is to be of use in the empirical study of matroidal fair allocation algorithms, we need to be able to evaluate the fairness of an allocation. In this chapter, I show how Matroids.jl implements the fairness criteria given in Chapter~\ref{chap:prelims}.
-
-A matroid-rank-valued allocation problem instance is represented as a struct containing the matroids for each of the agents, along with the number of goods. Agent $i$'s value for the set of goods $S$, is the rank of $S$ in agent $i$'s matroid.
+If Matroids.jl is to be of use in the empirical study of matroidal fair allocation algorithms, we need to be able to evaluate the fairness of an allocation. In this chapter, I show how Matroids.jl implements the fairness criteria given in Chapter~\ref{chap:prelims}. The valuation profile of matroid-rank-valued allocation problem instance gives the valuation function of each agent. This is represented as a struct containing the matroid $\mathfrak{M}_i$ for each agent $i$. Agent $i$'s value for the set of goods $S$, $v_i(S)$, is the rank of $S$ in $\mathfrak{M}_i$.
 \begin{jllisting}
 """
     struct MatroidRank <: Profile
@@ -49,14 +49,27 @@ value_x0(V::MatroidRank, i, A) =
 
 
 \subsection*{Proportionality}
-To check whether an allocation $A$ is PROP or some relaxation thereof, we compare $v_i(A_i)$ against some threshold for every agent $i$. PROP$_i$ is simply the rank of the $\mathfrak{M}_i$, as this is the maximum value achievable for agent $i$, divided by the number of agents in the problem instance.
+To check whether an allocation $A$ is PROP or some relaxation thereof, we compare $v_i(A_i)$ against some threshold for every agent $i$. In this section, we give the functions for computing the threshold for PROP and its relaxations.
+
+PROP$_i$ is simply the rank of $\mathfrak{M}_i$, $v_i(\mathcal{M})$, as this is the maximum value achievable for agent $i$, divided by the number of agents in the problem instance.
 \begin{jllisting}
 prop(V::MatroidRank, i, _) = rank(V.matroids[i])/na(V)
 \end{jllisting}
 
-To check for PROP1, we need to figure out if there exists some $g\in\mathcal{M}$ such that $v_i(A_i+g)\geq \frac{1}{n}v_i(\mathcal{M})$. We have two possible cases, the first being that $v_i(A_i) = v_i(\mathcal{M})$. This is trivially PROP1. In the other case, $v_i(A_i) < v_i(\mathcal{M})$. We know, due to the hereditary property (as given in Section~\ref{sec:indep_sets}) that there exists $g\in\mathcal{M}\setminus A_i$ such that $\Delta_i(A_i, g) = 1$ (this is equivalent to saying that $A_i$ does not a contain a basis of $\mathfrak{M}_i$). To figure out if $A$ is PROP1, then, we need to check whether $v_i(A_i) + 1 \geq \frac{1}{n}v_i(\mathcal{M}) \iff v_i(A_i) \geq \frac{1}{n}v_i(\mathcal{M}) - 1$.
+To check for PROP1, we need to figure out if there exists some $g\in\mathcal{M}$ such that $v_i(A_i+g)\geq \frac{1}{n}v_i(\mathcal{M})$. We know, due to the hereditary property (as given in Section~\ref{sec:characterizations}) that unless $v_i(A_i) = v_i(\mathcal{M})$ already (in which case we have trivial PROP1), there exists $g\in\mathcal{M}\setminus A_i$ such that $\Delta_i(A_i, g) = 1$. To figure out if $A$ is PROP1, then, we need to check whether $v_i(A_i) + 1 \geq \frac{1}{n}v_i(\mathcal{M})$, or equivalently, whether $v_i(A_i) \geq \frac{1}{n}v_i(\mathcal{M})-1 = \text{PROP}_i - 1$. This is our PROP1 threshold. Since the least positively-valued element will also have a marginal value of 1, PROPX$_+$ is the same as PROP1.
 \begin{jllisting}
-prop_1(V::MatroidRank, i, A) = value(V, i, A) >= prop(V, i, A) - 1
+prop_1(V::MatroidRank, i, A) = prop(V, i, A) - 1
+prop_x(V::MatroidRank, i, A) = prop_1(V, i, A)
 \end{jllisting}
 
-When checking for PROPX$_0$, we want the $g\in E\setminus A_i$ whose addition would increase the value of $A_i$ the least. If $A_i$ is a closed set, then any additional good will increase the rank by 1, otherwise there is an element
+When checking for PROPX$_0$, we want the $g\in E\setminus A_i$ whose addition would increase the value of $A_i$ the least. The question, then, is whether there exists an element $g\in E\setminus A_i$ such that $\Delta_i(A_i, g) = 0$. If $A_i$ is a closed set (ie. maximal for its rank), then any additional good will increase the rank by 1, otherwise there exists some such $g$.
+\begin{jllisting}
+prop_x(V::MatroidRank, i, A) = 
+    is_closed(V.matroids[i], A) ? prop_1(V, i, A) : prop(V, i, A)
+\end{jllisting}
+
+\subsubsection*{Maximin share}
+Matroids.jl implements Barman and Verma's~\cite{barman2021existence} method for computing agent $i$'s maximin share $\mu_i$ in polynomial time. It starts off with a partitioning of $\mathcal{M}$ into $n$ sets that are independent in $\mathfrak{M}_i$, which can be produced in polynomial time using the matroid partioning algorithm~\cite[p. 731]{schrijver-2003}. This
+
+\section{The matroid partitioning algorithm}
+\label{sec:matroid-union}

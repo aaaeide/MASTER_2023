@@ -1,14 +1,13 @@
 \chapter{Preliminaries}
 \label{chap:prelims}
 \epigraph{For simplicity, we also assume that every point in a geometry is a closed set. Without this additional assumption, the resulting structure is often described by the ineffably cacaphonic term "matroid", which we prefer to avoid in favor of the term "pregeometry".}{Gian-Carlo Rota \cite{crapo_rota_1970}}
-\label{sec:matroid-theory}
 
-Matroids were first introduced by Hassler Whitney in 1935~\cite{whitney-1935}, in a seminal paper where he described two axioms for independence in the columns of a matrix, and defined any system obeying these axioms to be a ``matroid'' (which unfortunately for Rota is the term that has stuck). Whitney's key insight was that this abstraction of~~``independence'' is applicable to both matrices and graphs. Matroids have also received attention from researchers in fair allocation, as their properties make them useful for modeling user preferences; for instance, matroid rank functions are a natural way of formally describing course allocation for students~\cite{benabbou-2021}. 
+Matroids were first introduced by Hassler Whitney in 1935~\cite{whitney-1935}, in a seminal paper where he described two axioms for independence in the columns of a matrix, and defined any system obeying these axioms to be a ``matroid'' (which unfortunately for Rota is the term that has stuck). Whitney's key insight was that this abstraction of~~``independence'' is applicable to both matrices and graphs. Matroids have also received attention from researchers in fair allocation, as their properties make them useful for modeling user preferences. We have already seen this with the course allocation problem described in the previous chapter; other use cases include the assignment of kindergarten slots or public housing estates among people of different ethnicities~\cite{benabbou-2021}.
 
 \section{Fair allocation}
 In this thesis, I use $[k]$ to denote the set $\{1,2,\dots,k\}$. To ease readability, I abuse notation a bit and replace $A \cup \{g\}$ and $A \setminus \{g\}$ with $A+g$ and $A-g$, respectively.
 
-An instance of a fair allocation problem consists of a set of agents $\mathcal{N} = [n]$ and a set of $m$ goods $\mathcal{G} = \{g_1, g_2, \dots, g_m\}$. Each agent has a valuation function $v_i: 2^\mathcal{G} \to \mathbb{R}^+$; $v_i(A)$ is the value agent $i$ ascribes to the bundle of goods $A$. The marginal value of agent $i$ for the good $g$, given that she already owns the bundle $A$, is given by $\Delta_i(A, g) := v_i(A + g) - v_i(A)$. Throughout most of this thesis, we assume that $v_i$ is a matroid rank function, or, equivalently, a binary submodular function. To formalize the description given in Chapter~1, this means that
+An instance of a fair allocation problem consists of a set of agents $\mathcal{N} = [n]$ and a set of $m$ goods $\mathcal{G} = \{g_1, g_2, \dots, g_m\}$.Each agent has a valuation function $v_i: 2^\mathcal{G} \to \mathbb{R}^+$; $v_i(A)$ is the value agent $i$ ascribes to the bundle of goods $A$. The marginal value of agent $i$ for the good $g$, given that she already owns the bundle $A$, is given by $\Delta_i(A, g) := v_i(A + g) - v_i(A)$. Throughout most of this thesis, we assume that $v_i$ is a matroid rank function, or, equivalently, a binary submodular function. To formalize the description given in Chapter~1, this means that
 \begin{enumerate}
   \item[(a)] $v_i(\emptyset) = 0$,
   \item[(b)] $v_i$ has binary marginals: $\Delta_i(A, g)\in \{0,1\}$ for every $A \subset \mathcal{G}$ and $g\in \mathcal{G}$
@@ -16,8 +15,10 @@ An instance of a fair allocation problem consists of a set of agents $\mathcal{N
 \end{enumerate}
 Any function $v_i$ adhering to these properties precisely determine a matroid~\cite{schrijver-2003}. There are many other ways to characterize matroids, some of which are given in Section~\ref{sec:matroid-theory}.
 
+The output of an algorithm for fair allocation is an allocation of the goods to the agents. An allocation $A$ is an $n$-partition of $E$, $A = (A_1, A_2, \dots, A_n)$, where each $A_i$ is the bundle of goods allocated to agent $i$. Sharing is not allowed, so $A_i\cap A_j = \emptyset$ for all $i\neq j$. We say that an allocation is \textit{clean} if no agent has received any good they value at 0. An allocation is \textit{complete} if all goods are allocated.
+
 \subsection{Envy-freeness}
-An allocation $A$ is an $n$-partition of $E$, $A = (A_1, A_2, \dots, A_n)$, where each $A_i$ is the bundle of goods allocated to agent $i$. We are interested in producing \textit{fair} allocations. One of the most popular notions of fairness in the literature is envy-freeness (EF), which states that no agent should prefer another agent's bundle over her own. An allocation $A$ is EF iff, for all agents $i,j\in \mathcal{N}$,
+We are interested in producing \textit{fair} allocations. One of the most popular notions of fairness in the literature is envy-freeness (EF), which states that no agent should prefer another agent's bundle over her own. An allocation $A$ is EF iff, for all agents $i,j\in \mathcal{N}$,
 \begin{equation} \tag{EF}
   v_i(A_i) \geq v_i(A_j).
 \end{equation}
@@ -58,11 +59,11 @@ If we disallow zero-valued items, we arrive at the even stronger criteria PROPX$
 
 \subsubsection*{Maximin share fairness}
 
-Budish introduces a relaxation of proportionality known as \textit{maximin share fairness} (MMS)~\cite{Budish2011}, in which the threshold for each agent $i$ is her \textit{maximin share}, defined as the maximum value she could receive if she partitioned $\mathcal{G}$ among all agents and then picked the worst bundle. Let $\mathcal{A}_n(\mathcal{G})$ be the family of all possible allocations of the goods in $\mathcal{G}$ to the agents in $\mathcal{N}$. The maximin share for agent $i$, denoted by $\text{MMS}_i$, is given by
-$$\text{MMS}_i := \max_{B\in \mathcal{A}_n(\mathcal{G})} \min_{A \in B} v_i(A).$$
+Budish introduces a relaxation of proportionality known as \textit{maximin share fairness} (MMS)~\cite{Budish2011}, in which the threshold for each agent $i$ is her \textit{maximin share}, defined as the maximum value she could receive if she partitioned $\mathcal{G}$ among all agents and then picked the worst bundle. Let $\mathcal{A}_n(\mathcal{G})$ be the family of all possible allocations of the goods in $\mathcal{G}$ to the agents in $\mathcal{N}$. The maximin share for agent $i$, denoted by $\mu_i$, is given by
+$$\mu_i := \max_{B\in \mathcal{A}_n(\mathcal{G})} \min_{A \in B} v_i(A).$$
 An allocation is \textit{maximin share fair} (MMS) if all agents receive at least as much as their maximin share:
 \begin{equation} \tag{MMS}
-  v_i(A_i) \geq \text{MMS}_i,\ \forall i \in \mathcal{N}.
+  v_i(A_i) \geq \mu_i,\ \forall i \in \mathcal{N}.
 \end{equation}
 
 \subsection{Efficiency}
@@ -75,17 +76,19 @@ As mentioned in the introduction, fairness is usually coupled with some efficien
 Allocations that maximize one of these welfare functions are referred to as MAX-ESW, MAX-USW and MNW, respectively. 
 
 \subsubsection*{Leximin}
-An obvious drawback of the egalitarian rule is that if an allocation with agent values $(0,0,100)$ is MAX-ESW, then so is the allocation with agent values $(0,0,0)$. A stricter version of MAX-ESW is \textit{leximin}. An allocation is leximin if it maximizes the smallest value; subject to that, it maximizes the second-smallest value; subject to that, it maximizes the next-smallest value, and so on.
+An obvious drawback of the egalitarian rule is that, in the situation where there are multiple possible allocations that maximize the minimum bundle value, it is indifferent to which of these bundles it prefers. Consider for instance two possible allocations of goods to three agents, where their bundle values are given as (A,B,C):
+\begin{itemize}
+  \item Allocation 1: $(5,7,10)$
+  \item Allocation 2: $(5,8,9)$
+\end{itemize}
+Both of these allocations are MAX-ESW. A stricter version of the egalitarian rule is \textit{leximin} -- an allocation is leximin if it maximizes the smallest value; subject to that, it maximizes the second-smallest value; subject to that, it maximizes the next-smallest value, and so on. The leximin rule prefers Allocation 2 over Allocation 1.
 
 
 
 \section{Matroid theory}
+\label{sec:matroid-theory}
+If a mathematical structure can be defined or axiomatized in multiple different, but not obviously equivalent, ways, the different definitions or axiomatizations of that structure make up a cryptomorphism. The many obtusely equivalent definitions of a matroid are a classic example of cryptomorphism, and belie the fact that the matroid is a generalization of concepts in many, seemingly disparate areas of mathematics. As a result of this, the terms used in matroid theory are borrowed from analogous concepts in both graph theory and linear algebra. 
 
-If a mathematical structure can be defined or axiomatized in multiple different, but not obviously equivalent, ways, the different definitions or axiomatizations of that structure make up a cryptomorphism. The many obtusely equivalent definitions of a matroid are a classic example of cryptomorphism, and belie the fact that the matroid is a generalization of concepts in many, seemingly disparate areas of mathematics. As a result of this, the terms used in matroid theory are borrowed from analogous concepts in both graph theory and linear algebra. In this section, I will describe a few ways to characterize a matroid, using the axiom systems given by Whitney in his original paper.
-
-
-\subsection{Characterization via independent sets} 
-\label{sec:indep_sets}
 The most common way to characterize a matroid is as an \textit{independence system}. An independence system is a pair $(E, \mathcal{I})$, where $E$ is the ground set of elements, $E \not= \emptyset$, and $\mathcal{I}$ is the set of independent sets, $\mathcal{I} \subseteq 2^E$. The \textit{dependent sets} of a matroid are $2^E \setminus \mathcal{I}$. 
 
 In practice, the ground set $E$ represents the universe of elements in play, and the independent sets of typically represent the legal combinations of these items. In the context of fair allocation, the independent sets represent the legal (in the case of matroid constraints) or desired (in the case of matroid utilities) bundles of items.
@@ -96,28 +99,112 @@ A matroid is an independence system with the following properties~\cite{whitney-
   \item[(2)] If $A, B \in \mathcal{I}$ and $|A| > |B|,$ then there exists $e \in A - B$ such that $B + e \in S$.
   \item[(2')] If $S \subseteq E$, then the maximal independent subsets of $S$ are equal in size.
 \end{enumerate}
-Property (1) is called the \textit{hereditary property} and (2) the \textit{exchange property}. Properties (2) and (2') are equivalent. To see that $(2) \implies$~(2'), consider two maximal subsets of $S$. If they differ in size, (2) tells us that there are elements we can add from one to the other until they have equal cardinality. We get (2')~$\implies (2)$ by considering $S = A \cup B$. Since $|A|>|B|$, they cannot both be maximal, and some $e \in A \setminus B$ can be added to $B$ to obtain another independent set.
+Property (1) is called the \textit{hereditary property} and (2) the \textit{exchange property}. Properties (2) and (2') are equivalent. To see that $(2) \implies$~(2'), consider two maximal subsets of $S$. If they differ in size, (2) tells us that there are elements we can add from one to the other until they have equal cardinality. We get (2')~$\implies (2)$ by considering $S = A \cup B$. Since $|A|>|B|$, they cannot both be maximal, and some $e \in A \setminus B$ can be added to $B$ to obtain another independent set. 
 
-The rank function of a matroid is a function $v:2^E \to \mathbb{Z}^+$ which, given a subset $B\subseteq E$, returns the size of the largest independent set contained in $B$. That is, $$r(B) = \max_{A \subseteq B, A\in \mathcal{I}}|A|.$$
-
-\subsection{Characterization via bases} When $S=E$, (2') gives us that the maximal independent sets of a matroid are all of the same size. A maximal independent subset of $E$ is known as a \textit{basis}. A matroid can be exactly determined by $\mathcal{B}$, its collection of bases, since a set is independent if and only if it is contained in a basis (this follows from (1) above). A theorem by Whitney~\cite{whitney-1935} gives the axiom system characterizing a collection of bases of a matroid: 
+When $S=E$, (2') gives us that the maximal independent sets of a matroid are all of the same size. A maximal independent subset of $E$ is known as a \textit{basis}. The size of the bases is the \textit{rank} of the matroid as a whole.  A matroid can be exactly determined by $\mathcal{B}$, its collection of bases, since a set is independent if and only if it is contained in a basis (this follows from (1) above). A theorem by Whitney~\cite{whitney-1935} gives the axiom system characterizing a collection of bases of a matroid: 
 \begin{enumerate}
   \item No proper subset of a basis is a basis.
   \item If $B, B'\in \mathcal{B}$ and $e \in B$, then for some $e'\in B'$, $B-e+e'\in\mathcal{B}$.
-\end{enumerate}
+\end{enumerate} 
 
-\subsection{Characterization via circuits}
-A \textit{circuit} is a minimal dependent set of a matroid -- it is an independent set plus one ``redundant'' element. Equivalently, the collection of circuits of a matroid is given by
+The rank function of a matroid is a function $v:2^E \to \mathbb{Z}^+$ which, given a subset $B\subseteq E$, returns the size of the largest independent set contained in $B$. That is, $$v(B) = \max_{A \subseteq B, A\in \mathcal{I}}|A|.$$
+
+\subsection{A graphic example}
+Different types of matroids exist, arising from different sources of ``independence''; one well-known subclass of matroids, arising from notions of independence in graphs, is the class of \textit{graphic matroids}. Graphic matroids are by their nature more visualizable than other types of matroids, and will be used to 
+
+A \textit{tree} is a connected acyclic graph, and a \textit{forest} is a disconnected graph consisting of some number of trees. A \textit{spanning tree} of $G$ is a subgraph with a unique simple path between all pairs of vertices of $G$. A \textit{spanning forest} of $G$ is a collection of spanning trees, one for each component. A graph will have some number of different spanning trees. Figure~\ref{fig:ex-graph-mst} shows two spanning trees of the same graphs (or alternatively, a spanning forest over one graph with two components).
+
+Given a graph $G=(V,E)$, let $\mathcal{I} \subseteq 2^E$ be the family of subsets of the edges $E$ such that, for each $I \in \mathcal{I},\ (V, I)$ is a forest. It is a classic result of matroid theory that $\mathfrak{M} = (E, \mathcal{I})$ (the ground set of the matroid being the edges of the graph) is a matroid~\cite[p.~657]{schrijver-2003}. To understand how, we will show that it adhers to axioms (1) and (2'), as given in above. By investigating the highlighted spanning trees in Figure~\ref{fig:ex-graph-mst}, it is easy to convince oneself that all subsets of a spanning tree are trees, since no subset of an acyclic set of edges will contain a cycle. Thus axiom (1) -- the hereditary property -- holds. 
+
+To see that (2') holds, consider the set of bases of the matroid, $\mathcal{B} \subseteq \mathcal{I}$. Figure~\ref{fig:ex-graph-mst} shows two bases of the matroid described by the graph. By definition, each basis $B \in \mathcal{B}$ is a maximal forest over $G$. Since a spanning tree of a graph with $n$ nodes must needs have $n-1$ edges (I recommend drawing trees and counting their edges until one is convinced that this must be the case), we have $|B| = |V| - k$, where $k$ is the number of components of $G$. This is the same for every $B \in \mathcal{B}$, which proves property (2'). Any matroid given by a graph $G$, denoted by $\mathfrak{M}(G)$, is called a graphic matroid.
+
+\begin{figure}
+  \centering
+  \begin{minipage}{.4\textwidth}
+    \begin{tikzpicture}[scale=0.75]
+      \node[draw,circle, inner sep=3pt] (q) at (0,0)   {};
+      \node[draw,circle, inner sep=3pt] (w) at (-3,-2) {};
+      \node[draw,circle, inner sep=3pt] (e) at (0,-2)  {};
+      \node[draw,circle, inner sep=3pt] (r) at (3,-2)  {};
+      \node[draw,circle, inner sep=3pt] (t) at (-2,-4) {};
+      \node[draw,circle, inner sep=3pt] (y) at (2,-4)  {};
+      
+      \draw[preaction={draw=darktan, line width=2mm}] (q) -- (w); 
+      \draw[preaction={draw=darktan, line width=2mm}] (q) -- (e); 
+      \draw[preaction={draw=darktan, line width=2mm}] (q) -- (r); 
+      \draw (w) -- (t); 
+      \draw[preaction={draw=darktan, line width=2mm}] (e) -- (t); 
+      \draw[preaction={draw=darktan, line width=2mm}] (e) -- (y); 
+      \draw (r) -- (y); 
+      \draw (t) -- (y); 
+    \end{tikzpicture}
+  \end{minipage}
+  \hspace{0.75cm}
+  \begin{minipage}{.4\textwidth}
+    \begin{tikzpicture}[scale=0.75]
+      \node[draw,circle, inner sep=3pt] (q) at (0,0)   {};
+      \node[draw,circle, inner sep=3pt] (w) at (-3,-2) {};
+      \node[draw,circle, inner sep=3pt] (e) at (0,-2)  {};
+      \node[draw,circle, inner sep=3pt] (r) at (3,-2)  {};
+      \node[draw,circle, inner sep=3pt] (t) at (-2,-4) {};
+      \node[draw,circle, inner sep=3pt] (y) at (2,-4)  {};
+      
+      \draw (q) -- (w); 
+      \draw[preaction={draw=darktan, line width=2mm}] (q) -- (e); 
+      \draw (q) -- (r); 
+      \draw[preaction={draw=darktan, line width=2mm}] (w) -- (t); 
+      \draw[preaction={draw=darktan, line width=2mm}] (e) -- (t); 
+      \draw (e) -- (y); 
+      \draw[preaction={draw=darktan, line width=2mm}] (r) -- (y); 
+      \draw[preaction={draw=darktan, line width=2mm}] (t) -- (y); 
+    \end{tikzpicture}
+  \end{minipage}
+
+  \caption{Two spanning trees of a graph with 8 edges.}
+  \label{fig:ex-graph-mst}
+\end{figure}
+  
+
+
+\subsection{Other characterizations of a matroid} 
+\label{sec:characterizations}
+
+We have already seen the independent sets characterization of a matroid, but the other properties of a matroid have their own axiom systems that can equivalently be used to characterize a matroid.
+
+\textbf{Characterization via circuits.} A \textit{circuit} is a minimal dependent set of a matroid -- it is an independent set plus one ``redundant'' element. Equivalently, the collection of circuits of a matroid is given by
 $$\mathcal{C} = \bigl\{ C : |C| = r(C) + 1, C\subseteq E \bigr\}.$$
 A set is independent if and only if it contains no circuit~\cite{schrijver-2003}, and so a matroid is uniquely determined by the collection of its circuits. The following conditions characterize $\mathcal{C}$~\cite{whitney-1935}:
 \begin{enumerate}
-  \item No proper subset of a circuit is a circuit.
-  \item If $C, C'\in\mathcal{C}$, $x\in C\cap C'$ and $y\in C\setminus C'$, then $C\cup C'$ contains a circuit containing $y$ but not $x$.
+  \item[(1)] No proper subset of a circuit is a circuit.
+  \item[(2)] If $C, C'\in\mathcal{C}$, $x\in C\cap C'$ and $y\in C\setminus C'$, then $C\cup C'$ contains a circuit containing $y$ but not $x$.
 \end{enumerate}
 
-\subsection{Characterization via closed sets}
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \node[draw,circle, inner sep=3pt] (q) at (0,0)   {};
+    \node[draw,circle, inner sep=3pt] (w) at (-3,-2) {};
+    \node[draw,circle, inner sep=3pt] (e) at (0,-2)  {};
+    \node[draw,circle, inner sep=3pt] (r) at (3,-2)  {};
+    \node[draw,circle, inner sep=3pt] (t) at (-2,-4) {};
+    \node[draw,circle, inner sep=3pt] (y) at (2,-4)  {};
+    
+    \draw[preaction={draw=darktan, line width=2mm}]           (q) -- (w); 
+    \draw[preaction={draw=averagegreen, line width=2mm}]      (q) -- (e); 
+    \draw[preaction={draw=complementaryblue, line width=2mm}] (q) -- (r); 
+    \draw[preaction={draw=darktan, line width=2mm}] (w) -- (t); 
+    \draw[preaction={draw=darktan, line width=2mm}] (e) -- (t); 
+    \draw[preaction={draw=complementaryblue, line width=2mm}] (e) -- (y); 
+    \draw[preaction={draw=complementaryblue, line width=2mm}] (r) -- (y); 
+    \draw (t) -- (y); 
+  \end{tikzpicture}
+  \caption{Two overlapping circuits on a graph.}
+  \label{fig:ex-graph-circuits}
+\end{figure}
 
-We also need to establish the concept of the \textit{closed sets} of a matroid. A closed set is a set whose cardinality is maximal for its rank. Equivalently to the definition given above, we can define a matroid as $\mathfrak{M} = (E, \mathcal{F})$, where $\mathcal{F}$ is the set of closed sets of $\mathfrak{M}$, satisfying the following properties~\cite{knuth-1975}:
+These properties are easily grokked by studying an example. In Figure~\ref{fig:ex-graph-circuits}, we see two circuits of a graph, highlighted in yellow and blue, overlapping at the edge highlighted in green. Obviously, no circuit in this figure contains a circuit. We can also verify that the union of the yellow edge set and the blue edge set, minus the green edge, is in fact a third, bigger circuit, as promised by property (2) above.
+
+\textbf{Characterization via closed sets.} We also need to establish the concept of the \textit{closed sets} (sometimes referred to as \textit{flats}~\cite{schrijver-2003}) of a matroid. A closed set is a set whose cardinality is maximal for its rank. Equivalently to the definition given above, we can define a matroid as $\mathfrak{M} = (E, \mathcal{F})$, where $\mathcal{F}$ is the set of closed sets of $\mathfrak{M}$, satisfying the following properties~\cite{knuth-1975}:
 
 \begin{enumerate}
   \item The set of all elements is closed: $E \in \mathcal{F}$
@@ -127,15 +214,133 @@ We also need to establish the concept of the \textit{closed sets} of a matroid. 
 
 The \textit{closure function} is the function $\fn{cl} : 2^E \to 2^E$, such that $$\fn{cl}(S) = \bigl\{ x \in E : \fn{r}(S) = \fn{r}(S \cup \{x\}) \bigr\}.$$ That is to say, the closure function, when given a set $S \subseteq E$, returns the set of elements in $x \in E$ such that $x$ can be added to $S$ with no increase in rank. It returns the closed set of the same rank as $S$, that contains $S$. The \textit{nullity} of a subset $S$ is the difference $|S| - r(S)$, ie. the number of elements that must be removed from $S$ to obtain an independent set.
 
+Figure~\ref{fig:ex-graph-closure} shows an independent (acyclic) set $S$ of edges in highlighted yellow, along with its closure $\fn{cl}(S)$ in blue. The closure is the set of edges $e$ such that $v(S+e) = v(S)$, or, equivalently, such that the spanning tree of $S+e$ has the same size as that of $S$.
+
+\begin{figure}
+  \centering
+  \begin{tikzpicture}[every loop/.style={}]
+    \node[draw,circle,inner sep=3pt] (q) at (0,0) {};
+    \node[draw,circle,inner sep=3pt] (w) at (2,0) {};
+    \node[draw,circle,inner sep=3pt] (e) at (-1,-1) {};
+    \node[draw,circle,inner sep=3pt] (r) at (0,-2) {};
+    \node[draw,circle,inner sep=3pt] (t) at (2,-2) {};
+    \node[draw,circle,inner sep=3pt] (y) at (4, 0) {};
+    \node[draw,circle,inner sep=3pt] (u) at (4,-2) {};
+    \node[draw,circle,inner sep=3pt] (i) at (6,-2) {};
+    
+    \begin{scope}[on background layer]
+      \draw[line width=2mm, complementaryblue] (t) to [bend left] (w);
+    \end{scope}
+    
+    \path (q) edge [bend left, preaction={draw=darktan, line width=2mm}] node {} (w);
+    \path (q) edge [bend right, preaction={draw=complementaryblue, line width=2mm}] node {} (w);
+    \draw (q) -- (e);
+    \draw[preaction={draw=darktan, line width=2mm}] (q) -- (r);
+    \path (e) edge [loop left, preaction={draw=complementaryblue, line width=2mm}] node {} (e);
+    \draw (e) -- (r);
+    \draw[preaction={draw=darktan, line width=2mm}] (r) -- (t);
+    \path (t) edge [bend left] node {} (w);
+    \path (t) edge [bend right, preaction={draw=complementaryblue, line width=2mm}] node {} (w);
+    \draw[preaction={draw=darktan, line width=2mm}] (y) -- (u);
+    \draw (u) -- (i);
+  \end{tikzpicture}
+  \caption{An independent subset of edges in yellow, with its closure in blue}
+  \label{fig:ex-graph-closure}
+\end{figure}
+
+\subsection{Matroid union}
+The matroid union is an operation that allows us to produce a new matroid by combining the independent sets of some number of existing matroids. Given $n$ matroids $\mathfrak{M}_i = (E, \mathcal{I}_i)$, their union is given by $$\widehat{\mathfrak{M}} = (E, \{ I_1\cup\ldots\cup I_n : I_i\in\mathcal{I}_i,\ \forall i\in[n] \}).$$ $\widehat{\mathfrak{M}}$ is in fact a matroid~\cite[Ch. 42]{schrijver-2003}, whose independent sets are the the subsets $S\subseteq E$ that allow an $n$-partition $S_1,\ldots,S_n$ such that $S_i\in\mathcal{I}_i$, for all $i\in[n]$. In fair allocation jargon, if each $\mathfrak{M}_i$ is the matroid described by agent $i$'s valuation function $v_i$, a set of goods $S$ is independent in $\widehat{\mathfrak{M}}$ if and only if we can allocate it among the agents and produce utilitarian social welfare equal to $|S|$. Hence, each basis in $\widehat{\mathfrak{M}}$ corresponds to a clean (but not necessarily complete), MAX-USW allocation of the goods in $\mathcal{M}$~\cite{barman2021existence}. It is a classic result of Edmonds~\cite{Edmonds2009} that a basis in $\widehat{\mathfrak{M}}$ can be computed in polynomial time, using the \textit{matroid union algorithm}.
+
+
+
+\subsection{Matroid erection}
+Knuth's general matroid construction, the implementation of which is discussed in Section~\ref{sec:kmc}, requires us to establish a few more matroid concepts. The \textit{rank-k truncation} of a matroid $\mathfrak{M} = (E, \mathcal{I})$, is the matroid $\mathfrak{M}^{(k)} = (E, \mathcal{I}^{(k)})$, where
+$$\mathcal{I}^{(k)} = \{ I \in \mathcal{I} : |I| \leq k \}.$$
+When $\mathfrak{M}$ is of rank $r$, its \textit{truncation} is given as $T(\mathfrak{M}) = \mathfrak{M}^{(r-1)}$. As a simple example, we have that the uniform matroid $U_n^{n-1} = T(\mathfrak{F}_n)$, where $\mathfrak{F}_n$ is the free matroid with $n$ elements. The \textit{erection} (I refer to Crapo for the choice of term~\cite{Crapo1970}) of the matroid $\mathfrak{M}$ is the matroid $\mathfrak{N}$ such that $\mathfrak{M} = T(\mathfrak{N})$~\cite{Crapo1970}. A matroid can have many erections. For example, it is easy to see that $U_n^4$ is an erection of $U_n^3$, since $U_n^4$ by definition has all the same independent sets of the rank-3 matroid $U_n^3$, along with all size-4 subsets of $E$. However, let $\mathfrak{U}$ be the rank-4 matroid over $E$ where every subset of $E$ of rank $\leq 3$ is independent, and which has one size-4 rank-3 dependent set. The rank-3 independent sets of $\mathfrak{U}$ are the same as those of $U_n^3$, so we have $U_n^3 = T({\mathfrak{U}})$, however the introduction of a size-4 dependent set of rank 3 has erected a different rank-4 matroid.
+
+\begin{figure}\centering
+  \resizebox{\columnwidth}{!}{
+         \begin{tikzpicture}[> = stealth,  shorten > = 1pt,   auto,   node distance = 1.5cm, every node/.style={outer sep=0}]
+  
+  %%% LEVEL 1
+  \node[draw, rounded corners]  (x) {1111};
+  %%% LEVEL 2
+  \node[draw, rounded corners]  [below left of=x] (B) {1101};
+  \node[draw, rounded corners, fill=darktan] [below right of=x]  (C) {1011};
+  \node[draw, rounded corners]  [left  of=B] (A) {1110};
+  \node[draw, rounded corners] [right of=C]  (D) {0111};
+  %%%% LEVEL 3
+  \node[draw, rounded corners] [below of=B]  (AD) {0110};
+  \node[draw, rounded corners, fill=darktan] [below of=C]  (BC) {1001};
+  \node[draw, rounded corners] [below of=D]  (BD) {0101};
+  \node[draw, rounded corners, fill=darktan] [below of=A]  (AC) {1010};
+  \node[draw, rounded corners] [left  of=AC] (AB) {1100};
+  \node[draw, rounded corners, fill=darktan] [right of=BD] (CD) {0011};
+  
+  %%  LEVEL   4
+  \node[draw, rounded corners] [below of=AD]  (ABD) {0100};
+  \node[draw, rounded corners, fill=darktan] [below of=BC]  (ACD) {0010};
+  \node[draw, rounded corners, fill=darktan] [left of=ABD]  (ABC) {1000};
+  \node[draw, rounded corners, fill=darktan] [right of=ACD] (BCD) {0001};
+  
+  %%%% LEVEL 5
+  \node[draw, rounded corners, fill=darktan] [below right of=ABD]  (ABCD) {0000};
+  
+  
+  %% LEVEL 1 to LEVEL 2
+      \path (x)  edge node {} (A);
+      \path (x)  edge node {} (B);
+      \path (x)  edge node {} (C);
+      \path (x)  edge node {} (D);
+  
+  %% LEVEL 2 to LEVEL 3
+      \path (A)  edge node {} (AB);
+      \path (A)  edge node {} (AC);
+      \path (A)  edge node {} (AD);
+      \path (B)  edge node {} (AB);
+      \path (B)  edge node {} (BC);
+      \path (B)  edge node {} (BD);
+      \path (C)  edge [preaction={draw=darktan, line width=2mm}] node {} (AC);%
+      \path (C)  edge [preaction={draw=darktan, line width=2mm}] node {} (BC);
+      \path (C)  edge [preaction={draw=darktan, line width=2mm}] node {} (CD);
+      \path (D)  edge node {} (AD);
+      \path (D)  edge node {} (BD);
+      \path (D)  edge node {} (CD);
+  %%% LEVEL 3 TO 4
+  
+      \path (AB)  edge node {} (ABC);
+      \path (AB)  edge node {} (ABD);
+      \path (AC)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABC);
+      \path (AC)  edge [preaction={draw=darktan, line width=2mm}] node {} (ACD);
+      \path (AD)  edge node {} (ABD);
+      \path (AD)  edge node {} (ACD);
+      \path (BC)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABC);
+      \path (BC)  edge [preaction={draw=darktan, line width=2mm}] node {} (BCD);
+      \path (BD)  edge node {} (ABD);
+      \path (BD)  edge node {} (BCD);
+      \path (CD)  edge [preaction={draw=darktan, line width=2mm}] node {} (ACD);
+      \path (CD)  edge [preaction={draw=darktan, line width=2mm}] node {} (BCD);
+  %%%% LEVEL 4 to 5
+      \path (ABC)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABCD);
+      \path (ABD)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABCD);
+      \path (ACD)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABCD);
+      \path (BCD)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABCD);
+        \end{tikzpicture}
+  }
+  \caption{The caption}
+\end{figure}
+
 
 \section{Matroids in fair allocation}
 It should be clear at this point that matroids are compelling structures to work with in the context of fair allocations. There are two main use cases for matroids in fair allocation: matroid-rank valuation functions (as in the example scenario from the introduction) and matroid constraints. Matroids.jl will be developed with the empirical study of algorithms for these two scenarios in mind.
 
 \subsection{Matroid-rank valuations}
-
-Babaioff 2021 -- PE mechanism -- non-redundant Lorenz dominating allocation always exists and is MNW, MAX-USW, leximin, EFX (EF1) and .5-MMS. With a randomized prioritization it is ex ante EF and ex ante proportional as well. Yankee Swap computes prioritized non-redundant Lorenz dominating allocations.
-
 In a fair allocation instance with matroid-rank valuations, each agent $i$ has a corresponding matroid $\mathfrak{M}_i = (\mathcal{M}, \mathcal{I}_i)$, where $\mathcal{M}$ (the set of goods) is the ground set of elements common to all agents' matroids.
+
+Babaioff 2021 -- PE mechanism -- non-redundant Lorenz dominating allocation always exists and is MNW, MAX-USW, leximin, EFX (EF1) and .5-MMS. With a randomized prioritization it is ex ante EF and ex ante proportional as well. 3Yankee Swap computes prioritized non-redundant Lorenz dominating allocations.
+
+
+Limitation: MRFs cannot model complementary goods!
 
 
 \subsection{Matroid constraints}

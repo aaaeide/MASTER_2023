@@ -6,6 +6,8 @@
 %   {\chaptertitlename\ \thechapter}{0pt}{\Huge}
 
 \usepackage[Lenny]{fncychap}
+\usepackage[style=ieee, citestyle=numeric-comp, backend=biber]{biblatex}
+\addbibresource{refs.bib}
 
 % \usepackage[T1]{fontenc}
 % \usepackage{titlesec, blindtext, color}
@@ -22,9 +24,6 @@
 \usepackage{tcolorbox}
 \usepackage{tabto}
 
-\definecolor{lighttan}{cmyk}{0,0.05,0.17,0}
-\definecolor{darktan}{cmyk}{0,0.07,0.26,0.06}
-\pseudoset{label=\small\arabic*, hd-space}
 
 \usepackage{jlcode}
 
@@ -40,6 +39,16 @@
 \usepackage{epigraph}
 
 \usepackage{tikz}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{positioning}
+
+\definecolor{lighttan}{cmyk}{0,0.05,0.17,0}
+\definecolor{darktan}{cmyk}{0,0.07,0.26,0.06}
+% \definecolor{complementaryblue}{RGB}{177,194,240}
+\definecolor{complementaryblue}{RGB}{202,226,248}
+\definecolor{averagegreen}{RGB}{214,232,205}
+
+\pseudoset{label=\small\arabic*, hd-space}
 
 \tcbuselibrary{skins,theorems}
 \newtcbtheorem{algorithm}{Algorithm}{pseudo/ruled}{alg}
@@ -103,10 +112,13 @@ From optimization to graphs
 It can solve so many tasks
 
 Matroid theory, truly a wonderland}{ChatGPT}
+\thispagestyle{empty}
 
 
 
-
+\chapter*{Acknowledgements}
+\thispagestyle{empty}
+I would like to extend a heartfelt thanks to my friends and foes at Radio Revolt, without whom I would have completed this degree years earlier, with far better grades and in significantly better health.
 
 
 
@@ -125,12 +137,13 @@ Matroid theory, truly a wonderland}{ChatGPT}
 
 
 \printskelnotes{}
-\bibliographystyle{plain}
-\bibliography{refs}
+\printbibliography
 
 \begin{appendices}
   \input{src/appendices/binary_tricks.appendix}
+  \chapter{Code snippets}
+  \label{apx:code}
+  \jlinputlisting{src/appendices/knuth_partition.jl}
 \end{appendices}
-
 
 \end{document}

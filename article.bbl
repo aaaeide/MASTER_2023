@@ -1,173 +1,1352 @@
-\begin{thebibliography}{10}
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
 
-\bibitem{barabasi-albert}
-R\'eka Albert and Albert-L\'aszl\'o Barab\'asi.
-\newblock Statistical mechanics of complex networks.
-\newblock {\em Rev. Mod. Phys.}, 74:47--97, Jan 2002.
 
-\bibitem{amanatidis2022fair}
-Georgios Amanatidis, Haris Aziz, Georgios Birmpas, Aris Filos-Ratsikas, Bo~Li,
-  Hervé Moulin, Alexandros~A. Voudouris, and Xiaowei Wu.
-\newblock Fair division of indivisible goods: A survey, 2022.
+\refsection{0}
+  \datalist[entry]{none/global//global/global}
+    \entry{Benabbou_2020}{incollection}{}
+      \name{author}{4}{}{%
+        {{hash=f46ec49be50ee35bc3cd8d1f7aaffb33}{%
+           family={Benabbou},
+           familyi={B\bibinitperiod},
+           given={Nawal},
+           giveni={N\bibinitperiod}}}%
+        {{hash=4c3b4ec5dce5271bb1d06b40ac0f4f05}{%
+           family={Chakraborty},
+           familyi={C\bibinitperiod},
+           given={Mithun},
+           giveni={M\bibinitperiod}}}%
+        {{hash=df3a6732bbc4f1a0427fb6d7e8cc542e}{%
+           family={Igarashi},
+           familyi={I\bibinitperiod},
+           given={Ayumi},
+           giveni={A\bibinitperiod}}}%
+        {{hash=dea7b3080213a6f90044f545b42c4b5a}{%
+           family={Zick},
+           familyi={Z\bibinitperiod},
+           given={Yair},
+           giveni={Y\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer International Publishing}%
+      }
+      \strng{namehash}{b61cfc455df4cc969712b77e1dfc8c93}
+      \strng{fullhash}{70e57bdaa4d0e92bb1fe55615e618042}
+      \strng{bibnamehash}{70e57bdaa4d0e92bb1fe55615e618042}
+      \strng{authorbibnamehash}{70e57bdaa4d0e92bb1fe55615e618042}
+      \strng{authornamehash}{b61cfc455df4cc969712b77e1dfc8c93}
+      \strng{authorfullhash}{70e57bdaa4d0e92bb1fe55615e618042}
+      \field{extraname}{1}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Algorithmic Game Theory}
+      \field{title}{Finding Fair and Efficient Allocations When Valuations Don't Add Up}
+      \field{year}{2020}
+      \field{pages}{32\bibrangedash 46}
+      \range{pages}{15}
+      \verb{doi}
+      \verb 10.1007/978-3-030-57980-7_3
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1007%2F978-3-030-57980-7_3
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1007%2F978-3-030-57980-7_3
+      \endverb
+    \endentry
+    \entry{aumann-1985}{article}{}
+      \name{author}{2}{}{%
+        {{hash=54d1ad957ee8de8247f514d2407c799b}{%
+           family={Aumann},
+           familyi={A\bibinitperiod},
+           given={Robert\bibnamedelima J},
+           giveni={R\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=cd7699aa7129724e159d5ab324a50ac0}{%
+           family={Maschler},
+           familyi={M\bibinitperiod},
+           given={Michael},
+           giveni={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{43b02a3e8c86f85209d98854a7a55bc7}
+      \strng{fullhash}{43b02a3e8c86f85209d98854a7a55bc7}
+      \strng{bibnamehash}{43b02a3e8c86f85209d98854a7a55bc7}
+      \strng{authorbibnamehash}{43b02a3e8c86f85209d98854a7a55bc7}
+      \strng{authornamehash}{43b02a3e8c86f85209d98854a7a55bc7}
+      \strng{authorfullhash}{43b02a3e8c86f85209d98854a7a55bc7}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{For three different bankruptcy problems, the 2000-year old Babylonian Talmud prescribes solutions that equal precisely the nucleoli of the corresponding coalitional games. A rationale for these solutions that is independent of game theory is given in terms of the Talmudic principle of equal division of the contested amount; this rationale leads to a unique solution for all bankruptcy problems, which always coincides with the nucleolus. Two other rationales for the same rule are suggested, in terms of other Talmudic principles. (Needless to say, the rule in question is not proportional division).}
+      \field{issn}{0022-0531}
+      \field{journaltitle}{Journal of Economic Theory}
+      \field{number}{2}
+      \field{title}{Game theoretic analysis of a bankruptcy problem from the {Talmud}}
+      \field{volume}{36}
+      \field{year}{1985}
+      \field{pages}{195\bibrangedash 213}
+      \range{pages}{19}
+      \verb{doi}
+      \verb https://doi.org/10.1016/0022-0531(85)90102-4
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/0022053185901024
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/0022053185901024
+      \endverb
+    \endentry
+    \entry{steinhaus-1948}{article}{}
+      \name{author}{1}{}{%
+        {{hash=13f733bd4fa4d39d4d91cb08ac855b31}{%
+           family={Steinhaus},
+           familyi={S\bibinitperiod},
+           given={Hugo},
+           giveni={H\bibinitperiod}}}%
+      }
+      \strng{namehash}{13f733bd4fa4d39d4d91cb08ac855b31}
+      \strng{fullhash}{13f733bd4fa4d39d4d91cb08ac855b31}
+      \strng{bibnamehash}{13f733bd4fa4d39d4d91cb08ac855b31}
+      \strng{authorbibnamehash}{13f733bd4fa4d39d4d91cb08ac855b31}
+      \strng{authornamehash}{13f733bd4fa4d39d4d91cb08ac855b31}
+      \strng{authorfullhash}{13f733bd4fa4d39d4d91cb08ac855b31}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Econometrica}
+      \field{number}{16}
+      \field{title}{The problem of fair division}
+      \field{year}{1948}
+      \field{pages}{101\bibrangedash 104}
+      \range{pages}{4}
+    \endentry
+    \entry{amanatidis2022fair}{misc}{}
+      \name{author}{8}{}{%
+        {{hash=26d70b086e09df324fe6da215bbedf2d}{%
+           family={Amanatidis},
+           familyi={A\bibinitperiod},
+           given={Georgios},
+           giveni={G\bibinitperiod}}}%
+        {{hash=e0d48a56694b3c162fe6961df8c6fb5b}{%
+           family={Aziz},
+           familyi={A\bibinitperiod},
+           given={Haris},
+           giveni={H\bibinitperiod}}}%
+        {{hash=49bfdcfe41abe0ed584d7452d3202a7a}{%
+           family={Birmpas},
+           familyi={B\bibinitperiod},
+           given={Georgios},
+           giveni={G\bibinitperiod}}}%
+        {{hash=54be7cb480160e9e9d1e07897b7f299d}{%
+           family={Filos-Ratsikas},
+           familyi={F\bibinithyphendelim R\bibinitperiod},
+           given={Aris},
+           giveni={A\bibinitperiod}}}%
+        {{hash=a9c8728e355996d027a7e56b60820a18}{%
+           family={Li},
+           familyi={L\bibinitperiod},
+           given={Bo},
+           giveni={B\bibinitperiod}}}%
+        {{hash=71a70adca4fbfe9ec3ad745b0d94b8f5}{%
+           family={Moulin},
+           familyi={M\bibinitperiod},
+           given={Hervé},
+           giveni={H\bibinitperiod}}}%
+        {{hash=c9a6872fba5cbd228cae975e63ab6eed}{%
+           family={Voudouris},
+           familyi={V\bibinitperiod},
+           given={Alexandros\bibnamedelima A.},
+           giveni={A\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+        {{hash=c656847a4ca0b4b89eaa7c935ee453d2}{%
+           family={Wu},
+           familyi={W\bibinitperiod},
+           given={Xiaowei},
+           giveni={X\bibinitperiod}}}%
+      }
+      \strng{namehash}{c1524a4e5d34a6c6844f3bdb89055b3e}
+      \strng{fullhash}{dc2e20bf7445cbd23f220ea8e6325a7e}
+      \strng{bibnamehash}{c1524a4e5d34a6c6844f3bdb89055b3e}
+      \strng{authorbibnamehash}{c1524a4e5d34a6c6844f3bdb89055b3e}
+      \strng{authornamehash}{c1524a4e5d34a6c6844f3bdb89055b3e}
+      \strng{authorfullhash}{dc2e20bf7445cbd23f220ea8e6325a7e}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{cs.GT}
+      \field{eprinttype}{arXiv}
+      \field{title}{Fair Division of Indivisible Goods: A Survey}
+      \field{year}{2022}
+      \verb{eprint}
+      \verb 2208.08782
+      \endverb
+    \endentry
+    \entry{barman2020fair}{misc}{}
+      \name{author}{2}{}{%
+        {{hash=a77928c6137c4d5cb40eb41e8df45f28}{%
+           family={Barman},
+           familyi={B\bibinitperiod},
+           given={Siddharth},
+           giveni={S\bibinitperiod}}}%
+        {{hash=dab944761f9f3a016872e569b83f42b0}{%
+           family={Biswas},
+           familyi={B\bibinitperiod},
+           given={Arpita},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{a508d4652406e1a628273578357f8aad}
+      \strng{fullhash}{a508d4652406e1a628273578357f8aad}
+      \strng{bibnamehash}{a508d4652406e1a628273578357f8aad}
+      \strng{authorbibnamehash}{a508d4652406e1a628273578357f8aad}
+      \strng{authornamehash}{a508d4652406e1a628273578357f8aad}
+      \strng{authorfullhash}{a508d4652406e1a628273578357f8aad}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{cs.GT}
+      \field{eprinttype}{arXiv}
+      \field{title}{Fair Division Under Cardinality Constraints}
+      \field{year}{2020}
+      \verb{eprint}
+      \verb 1804.09521
+      \endverb
+    \endentry
+    \entry{barman2021existence}{misc}{}
+      \name{author}{2}{}{%
+        {{hash=a77928c6137c4d5cb40eb41e8df45f28}{%
+           family={Barman},
+           familyi={B\bibinitperiod},
+           given={Siddharth},
+           giveni={S\bibinitperiod}}}%
+        {{hash=278e9bff9dbc703037d982c5fe9985b1}{%
+           family={Verma},
+           familyi={V\bibinitperiod},
+           given={Paritosh},
+           giveni={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{2535128c93ff9018ab915739ed50813a}
+      \strng{fullhash}{2535128c93ff9018ab915739ed50813a}
+      \strng{bibnamehash}{2535128c93ff9018ab915739ed50813a}
+      \strng{authorbibnamehash}{2535128c93ff9018ab915739ed50813a}
+      \strng{authornamehash}{2535128c93ff9018ab915739ed50813a}
+      \strng{authorfullhash}{2535128c93ff9018ab915739ed50813a}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{cs.GT}
+      \field{eprinttype}{arXiv}
+      \field{title}{Existence and Computation of Maximin Fair Allocations Under Matroid-Rank Valuations}
+      \field{year}{2021}
+      \verb{eprint}
+      \verb 2012.12710
+      \endverb
+    \endentry
+    \entry{benabbou-2021}{article}{}
+      \name{author}{4}{}{%
+        {{hash=f46ec49be50ee35bc3cd8d1f7aaffb33}{%
+           family={Benabbou},
+           familyi={B\bibinitperiod},
+           given={Nawal},
+           giveni={N\bibinitperiod}}}%
+        {{hash=4c3b4ec5dce5271bb1d06b40ac0f4f05}{%
+           family={Chakraborty},
+           familyi={C\bibinitperiod},
+           given={Mithun},
+           giveni={M\bibinitperiod}}}%
+        {{hash=df3a6732bbc4f1a0427fb6d7e8cc542e}{%
+           family={Igarashi},
+           familyi={I\bibinitperiod},
+           given={Ayumi},
+           giveni={A\bibinitperiod}}}%
+        {{hash=dea7b3080213a6f90044f545b42c4b5a}{%
+           family={Zick},
+           familyi={Z\bibinitperiod},
+           given={Yair},
+           giveni={Y\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {New York, NY, USA}%
+      }
+      \list{publisher}{1}{%
+        {Association for Computing Machinery}%
+      }
+      \strng{namehash}{b61cfc455df4cc969712b77e1dfc8c93}
+      \strng{fullhash}{70e57bdaa4d0e92bb1fe55615e618042}
+      \strng{bibnamehash}{70e57bdaa4d0e92bb1fe55615e618042}
+      \strng{authorbibnamehash}{70e57bdaa4d0e92bb1fe55615e618042}
+      \strng{authornamehash}{b61cfc455df4cc969712b77e1dfc8c93}
+      \strng{authorfullhash}{70e57bdaa4d0e92bb1fe55615e618042}
+      \field{extraname}{2}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{In this article, we present new results on the fair and efficient allocation of indivisible goods to agents whose preferences correspond to matroid rank functions. This is a versatile valuation class with several desirable properties (such as monotonicity and submodularity), which naturally lends itself to a number of real-world domains. We use these properties to our advantage; first, we show that when agent valuations are matroid rank functions, a socially optimal (i.e., utilitarian social welfare-maximizing) allocation that achieves envy-freeness up to one item (EF1) exists and is computationally tractable. We also prove that the Nash welfare-maximizing and the leximin allocations both exhibit this fairness/efficiency combination by showing that they can be achieved by minimizing any symmetric strictly convex function over utilitarian optimal outcomes. To the best of our knowledge, this is the first valuation function class not subsumed by additive valuations for which it has been established that an allocation maximizing Nash welfare is EF1. Moreover, for a subclass of these valuation functions based on maximum (unweighted) bipartite matching, we show that a leximin allocation can be computed in polynomial time. Additionally, we explore possible extensions of our results to fairness criteria other than EF1 as well as to generalizations of the above valuation classes.}
+      \field{issn}{2167-8375}
+      \field{journaltitle}{ACM Trans. Econ. Comput.}
+      \field{month}{10}
+      \field{number}{4}
+      \field{title}{Finding Fair and Efficient Allocations for Matroid Rank Valuations}
+      \field{volume}{9}
+      \field{year}{2021}
+      \verb{doi}
+      \verb 10.1145/3485006
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1145/3485006
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1145/3485006
+      \endverb
+      \keyw{Pareto-optimality,Envy-freeness,resource allocation,fair division,matroid rank valuations}
+    \endentry
+    \entry{viswanathan2023yankee}{misc}{}
+      \name{author}{2}{}{%
+        {{hash=a2082570fe9ae363457dd1d23a31891f}{%
+           family={Viswanathan},
+           familyi={V\bibinitperiod},
+           given={Vignesh},
+           giveni={V\bibinitperiod}}}%
+        {{hash=dea7b3080213a6f90044f545b42c4b5a}{%
+           family={Zick},
+           familyi={Z\bibinitperiod},
+           given={Yair},
+           giveni={Y\bibinitperiod}}}%
+      }
+      \strng{namehash}{6a918ddeb9b977733f9b0228cb278e01}
+      \strng{fullhash}{6a918ddeb9b977733f9b0228cb278e01}
+      \strng{bibnamehash}{6a918ddeb9b977733f9b0228cb278e01}
+      \strng{authorbibnamehash}{6a918ddeb9b977733f9b0228cb278e01}
+      \strng{authornamehash}{6a918ddeb9b977733f9b0228cb278e01}
+      \strng{authorfullhash}{6a918ddeb9b977733f9b0228cb278e01}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{cs.DS}
+      \field{eprinttype}{arXiv}
+      \field{title}{Yankee Swap: a Fast and Simple Fair Allocation Mechanism for Matroid Rank Valuations}
+      \field{year}{2023}
+      \verb{eprint}
+      \verb 2206.08495
+      \endverb
+    \endentry
+    \entry{bezanson2017julia}{article}{}
+      \name{author}{4}{}{%
+        {{hash=17e68031e06f57a7e83caeb4e0aed827}{%
+           family={Bezanson},
+           familyi={B\bibinitperiod},
+           given={Jeff},
+           giveni={J\bibinitperiod}}}%
+        {{hash=01a6ca61fcd12a3a071ec49304df57f8}{%
+           family={Edelman},
+           familyi={E\bibinitperiod},
+           given={Alan},
+           giveni={A\bibinitperiod}}}%
+        {{hash=bca7c93f55e669f71c4ff95e68ac9538}{%
+           family={Karpinski},
+           familyi={K\bibinitperiod},
+           given={Stefan},
+           giveni={S\bibinitperiod}}}%
+        {{hash=de802ff42d9c902868c57a332dbac5e0}{%
+           family={Shah},
+           familyi={S\bibinitperiod},
+           given={Viral\bibnamedelima B},
+           giveni={V\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {SIAM}%
+      }
+      \strng{namehash}{07e3452af3652a626dc1d02355fda942}
+      \strng{fullhash}{651af5e2dc744eabe31cd448eb05d640}
+      \strng{bibnamehash}{651af5e2dc744eabe31cd448eb05d640}
+      \strng{authorbibnamehash}{651af5e2dc744eabe31cd448eb05d640}
+      \strng{authornamehash}{07e3452af3652a626dc1d02355fda942}
+      \strng{authorfullhash}{651af5e2dc744eabe31cd448eb05d640}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{SIAM review}
+      \field{number}{1}
+      \field{title}{Julia: A fresh approach to numerical computing}
+      \field{volume}{59}
+      \field{year}{2017}
+      \field{pages}{65\bibrangedash 98}
+      \range{pages}{34}
+      \verb{urlraw}
+      \verb https://doi.org/10.1137/141000671
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1137/141000671
+      \endverb
+    \endentry
+    \entry{Hetland_Allocations_jl_2022}{software}{}
+      \name{author}{2}{}{%
+        {{hash=c172749719088f569e41fee6d5fa62a2}{%
+           family={Hetland},
+           familyi={H\bibinitperiod},
+           given={Magnus\bibnamedelima Lie},
+           giveni={M\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
+        {{hash=3e0ee3f1df4c536a122a7cb1d1ff6e3a}{%
+           family={Hummel},
+           familyi={H\bibinitperiod},
+           given={Halvard},
+           giveni={H\bibinitperiod}}}%
+      }
+      \strng{namehash}{9080245dfe49016db9c731f5b23f20f6}
+      \strng{fullhash}{9080245dfe49016db9c731f5b23f20f6}
+      \strng{bibnamehash}{9080245dfe49016db9c731f5b23f20f6}
+      \strng{authorbibnamehash}{9080245dfe49016db9c731f5b23f20f6}
+      \strng{authornamehash}{9080245dfe49016db9c731f5b23f20f6}
+      \strng{authorfullhash}{9080245dfe49016db9c731f5b23f20f6}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{month}{11}
+      \field{title}{{Allocations.jl}}
+      \field{version}{0.1}
+      \field{year}{2022}
+      \verb{urlraw}
+      \verb https://github.com/mlhetland/Allocations.jl
+      \endverb
+      \verb{url}
+      \verb https://github.com/mlhetland/Allocations.jl
+      \endverb
+    \endentry
+    \entry{knuth-1975}{article}{}
+      \name{author}{1}{}{%
+        {{hash=ec08e6f01da5f3814f28a70c89c64656}{%
+           family={Knuth},
+           familyi={K\bibinitperiod},
+           given={Donald\bibnamedelima E.},
+           giveni={D\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+      }
+      \strng{namehash}{ec08e6f01da5f3814f28a70c89c64656}
+      \strng{fullhash}{ec08e6f01da5f3814f28a70c89c64656}
+      \strng{bibnamehash}{ec08e6f01da5f3814f28a70c89c64656}
+      \strng{authorbibnamehash}{ec08e6f01da5f3814f28a70c89c64656}
+      \strng{authornamehash}{ec08e6f01da5f3814f28a70c89c64656}
+      \strng{authorfullhash}{ec08e6f01da5f3814f28a70c89c64656}
+      \field{extraname}{1}
+      \field{sortinit}{9}
+      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issue}{4}
+      \field{journaltitle}{Discrete Mathematics}
+      \field{title}{Random Matroids}
+      \field{volume}{12}
+      \field{year}{1975}
+      \field{pages}{341\bibrangedash 358}
+      \range{pages}{18}
+    \endentry
+    \entry{crapo_rota_1970}{book}{}
+      \name{author}{2}{}{%
+        {{hash=2689c59b8dc0526818c51f7711ee1acd}{%
+           family={Crapo},
+           familyi={C\bibinitperiod},
+           given={Henry\bibnamedelima H.},
+           giveni={H\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+        {{hash=95d92b37634ea653c838623f322b4704}{%
+           family={Rota},
+           familyi={R\bibinitperiod},
+           given={Gian-Carlo},
+           giveni={G\bibinithyphendelim C\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {M.I.T. Press}%
+      }
+      \strng{namehash}{b824e0d48e9a33a385cbabb816570e79}
+      \strng{fullhash}{b824e0d48e9a33a385cbabb816570e79}
+      \strng{bibnamehash}{b824e0d48e9a33a385cbabb816570e79}
+      \strng{authorbibnamehash}{b824e0d48e9a33a385cbabb816570e79}
+      \strng{authornamehash}{b824e0d48e9a33a385cbabb816570e79}
+      \strng{authorfullhash}{b824e0d48e9a33a385cbabb816570e79}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{On the foundations of combinatorial theory: Combinatorial geometries}
+      \field{year}{1970}
+    \endentry
+    \entry{whitney-1935}{article}{}
+      \name{author}{1}{}{%
+        {{hash=14cb77dee3837480e61347c808ea6416}{%
+           family={Whitney},
+           familyi={W\bibinitperiod},
+           given={Hassler},
+           giveni={H\bibinitperiod}}}%
+      }
+      \strng{namehash}{14cb77dee3837480e61347c808ea6416}
+      \strng{fullhash}{14cb77dee3837480e61347c808ea6416}
+      \strng{bibnamehash}{14cb77dee3837480e61347c808ea6416}
+      \strng{authorbibnamehash}{14cb77dee3837480e61347c808ea6416}
+      \strng{authornamehash}{14cb77dee3837480e61347c808ea6416}
+      \strng{authorfullhash}{14cb77dee3837480e61347c808ea6416}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issue}{3}
+      \field{journaltitle}{American Journal of Mathematics}
+      \field{month}{7}
+      \field{title}{On the Abstract Properties of Linear Dependence}
+      \field{volume}{57}
+      \field{year}{1935}
+      \field{pages}{509\bibrangedash 533}
+      \range{pages}{25}
+    \endentry
+    \entry{schrijver-2003}{book}{}
+      \name{author}{1}{}{%
+        {{hash=da15a4ad2834bbe5dfa4c05f50489172}{%
+           family={Schrijver},
+           familyi={S\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{da15a4ad2834bbe5dfa4c05f50489172}
+      \strng{fullhash}{da15a4ad2834bbe5dfa4c05f50489172}
+      \strng{bibnamehash}{da15a4ad2834bbe5dfa4c05f50489172}
+      \strng{authorbibnamehash}{da15a4ad2834bbe5dfa4c05f50489172}
+      \strng{authornamehash}{da15a4ad2834bbe5dfa4c05f50489172}
+      \strng{authorfullhash}{da15a4ad2834bbe5dfa4c05f50489172}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Combinatorial Optimization: Polyhedra and Efficiency}
+      \field{year}{2003}
+    \endentry
+    \entry{lipton-2004}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=f79c1f3b4813bbcb4304ec4c38499acc}{%
+           family={Lipton},
+           familyi={L\bibinitperiod},
+           given={R.\bibnamedelimi J.},
+           giveni={R\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=ba7d24278e7911c934e934c6b28167e9}{%
+           family={Markakis},
+           familyi={M\bibinitperiod},
+           given={E.},
+           giveni={E\bibinitperiod}}}%
+        {{hash=4d6b100417d5abfb433c3ccb425c5c7f}{%
+           family={Mossel},
+           familyi={M\bibinitperiod},
+           given={E.},
+           giveni={E\bibinitperiod}}}%
+        {{hash=b001e64cc431370834dc640a1008ffb7}{%
+           family={Saberi},
+           familyi={S\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {New York, NY, USA}%
+      }
+      \list{publisher}{1}{%
+        {Association for Computing Machinery}%
+      }
+      \strng{namehash}{57f29d7c84e4281ad4ea339aebab7ba4}
+      \strng{fullhash}{e572bb523f257218070c01359d134708}
+      \strng{bibnamehash}{e572bb523f257218070c01359d134708}
+      \strng{authorbibnamehash}{e572bb523f257218070c01359d134708}
+      \strng{authornamehash}{57f29d7c84e4281ad4ea339aebab7ba4}
+      \strng{authorfullhash}{e572bb523f257218070c01359d134708}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We study the problem of fairly allocating a set of indivisible goods to a set of people from an algorithmic perspective. fair division has been a central topic in the economic literature and several concepts of fairness have been suggested. The criterion that we focus on is envy-freeness. In our model, a monotone utility function is associated with every player specifying the value of each subset of the goods for the player. An allocation is envy-free if every player prefers her own share than the share of any other player. When the goods are divisible, envy-free allocations always exist. In the presence of indivisibilities, we show that there exist allocations in which the envy is bounded by the maximum marginal utility, and present a simple algorithm for computing such allocations. We then look at the optimization problem of finding an allocation with minimum possible envy. In the general case the problem is not solvable or approximable in polynomial time unless P = NP. We consider natural special cases (e.g.additive utilities) which are closely related to a class of job scheduling problems. Approximation algorithms as well as inapproximability results are obtained. Finally we investigate the problem of designing truthful mechanisms for producing allocations with bounded envy.}
+      \field{booktitle}{Proceedings of the 5th ACM Conference on Electronic Commerce}
+      \field{isbn}{1581137710}
+      \field{series}{EC '04}
+      \field{title}{On Approximately Fair Allocations of Indivisible Goods}
+      \field{year}{2004}
+      \field{pages}{125\bibrangedash 131}
+      \range{pages}{7}
+      \verb{doi}
+      \verb 10.1145/988772.988792
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1145/988772.988792
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1145/988772.988792
+      \endverb
+      \keyw{truthfulness,approximation algorithm,fairness,envy}
+    \endentry
+    \entry{caragiannis-Unreasonable}{article}{}
+      \name{author}{6}{}{%
+        {{hash=01d5a6791659109e20db5e5b0fbc9b50}{%
+           family={Caragiannis},
+           familyi={C\bibinitperiod},
+           given={Ioannis},
+           giveni={I\bibinitperiod}}}%
+        {{hash=f3ef975fa7d5d1af649e3c5f1bf6b7b9}{%
+           family={Kurokawa},
+           familyi={K\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod}}}%
+        {{hash=71a70adca4fbfe9ec3ad745b0d94b8f5}{%
+           family={Moulin},
+           familyi={M\bibinitperiod},
+           given={Hervé},
+           giveni={H\bibinitperiod}}}%
+        {{hash=7ff34acec04d8032d96671d5ccbe05bc}{%
+           family={Procaccia},
+           familyi={P\bibinitperiod},
+           given={Ariel\bibnamedelima D.},
+           giveni={A\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+        {{hash=89c887fd6cd263b082aa519a5a7b8538}{%
+           family={Shah},
+           familyi={S\bibinitperiod},
+           given={Nisarg},
+           giveni={N\bibinitperiod}}}%
+        {{hash=a23052d54dccc7544b599bacbb8aa1bb}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Junxing},
+           giveni={J\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {New York, NY, USA}%
+      }
+      \list{publisher}{1}{%
+        {Association for Computing Machinery}%
+      }
+      \strng{namehash}{040f65e13cee6231d56bacb431b3e274}
+      \strng{fullhash}{820d72794e81fc1c4549deb8d754d0a4}
+      \strng{bibnamehash}{820d72794e81fc1c4549deb8d754d0a4}
+      \strng{authorbibnamehash}{820d72794e81fc1c4549deb8d754d0a4}
+      \strng{authornamehash}{040f65e13cee6231d56bacb431b3e274}
+      \strng{authorfullhash}{820d72794e81fc1c4549deb8d754d0a4}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{The maximum Nash welfare (MNW) solution—which selects an allocation that maximizes the product of utilities—is known to provide outstanding fairness guarantees when allocating divisible goods. And while it seems to lose its luster when applied to indivisible goods, we show that, in fact, the MNW solution is strikingly fair even in that setting. In particular, we prove that it selects allocations that are envy-free up to one good—a compelling notion that is quite elusive when coupled with economic efficiency. We also establish that the MNW solution provides a good approximation to another popular (yet possibly infeasible) fairness property, the maximin share guarantee, in theory and—even more so—in practice. While finding the MNW solution is computationally hard, we develop a nontrivial implementation and demonstrate that it scales well on real data. These results establish MNW as a compelling solution for allocating indivisible goods and underlie its deployment on a popular fair-division website.}
+      \field{issn}{2167-8375}
+      \field{journaltitle}{ACM Trans. Econ. Comput.}
+      \field{month}{9}
+      \field{number}{3}
+      \field{title}{The Unreasonable Fairness of Maximum Nash Welfare}
+      \field{volume}{7}
+      \field{year}{2019}
+      \verb{doi}
+      \verb 10.1145/3355902
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1145/3355902
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1145/3355902
+      \endverb
+      \keyw{Nash welfare,resource allocation,Fair division}
+    \endentry
+    \entry{plaut2017envyfreeness}{misc}{}
+      \name{author}{2}{}{%
+        {{hash=b9c11969a35029c046997d75112cbed5}{%
+           family={Plaut},
+           familyi={P\bibinitperiod},
+           given={Benjamin},
+           giveni={B\bibinitperiod}}}%
+        {{hash=efce6f6d496cdcc1bb07fb47dfecb3aa}{%
+           family={Roughgarden},
+           familyi={R\bibinitperiod},
+           given={Tim},
+           giveni={T\bibinitperiod}}}%
+      }
+      \strng{namehash}{6d22a8a218ec577b43ab0a4d61bf45c3}
+      \strng{fullhash}{6d22a8a218ec577b43ab0a4d61bf45c3}
+      \strng{bibnamehash}{6d22a8a218ec577b43ab0a4d61bf45c3}
+      \strng{authorbibnamehash}{6d22a8a218ec577b43ab0a4d61bf45c3}
+      \strng{authornamehash}{6d22a8a218ec577b43ab0a4d61bf45c3}
+      \strng{authorfullhash}{6d22a8a218ec577b43ab0a4d61bf45c3}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{cs.GT}
+      \field{eprinttype}{arXiv}
+      \field{title}{Almost Envy-Freeness with General Valuations}
+      \field{year}{2017}
+      \verb{eprint}
+      \verb 1707.04769
+      \endverb
+    \endentry
+    \entry{Budish2011}{article}{}
+      \name{author}{1}{}{%
+        {{hash=5654ccd726dd2cd1aeb2383476790b32}{%
+           family={Budish},
+           familyi={B\bibinitperiod},
+           given={Eric},
+           giveni={E\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {University of Chicago Press}%
+      }
+      \strng{namehash}{5654ccd726dd2cd1aeb2383476790b32}
+      \strng{fullhash}{5654ccd726dd2cd1aeb2383476790b32}
+      \strng{bibnamehash}{5654ccd726dd2cd1aeb2383476790b32}
+      \strng{authorbibnamehash}{5654ccd726dd2cd1aeb2383476790b32}
+      \strng{authornamehash}{5654ccd726dd2cd1aeb2383476790b32}
+      \strng{authorfullhash}{5654ccd726dd2cd1aeb2383476790b32}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Political Economy}
+      \field{month}{12}
+      \field{number}{6}
+      \field{title}{The Combinatorial Assignment Problem: Approximate Competitive Equilibrium from Equal Incomes}
+      \field{volume}{119}
+      \field{year}{2011}
+      \field{pages}{1061\bibrangedash 1103}
+      \range{pages}{43}
+      \verb{doi}
+      \verb 10.1086/664613
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1086/664613
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1086/664613
+      \endverb
+    \endentry
+    \entry{Edmonds2009}{incollection}{}
+      \name{author}{1}{}{%
+        {{hash=4512d981a2fac684e867257fcb2c5419}{%
+           family={Edmonds},
+           familyi={E\bibinitperiod},
+           given={Jack},
+           giveni={J\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer Berlin Heidelberg}%
+      }
+      \strng{namehash}{4512d981a2fac684e867257fcb2c5419}
+      \strng{fullhash}{4512d981a2fac684e867257fcb2c5419}
+      \strng{bibnamehash}{4512d981a2fac684e867257fcb2c5419}
+      \strng{authorbibnamehash}{4512d981a2fac684e867257fcb2c5419}
+      \strng{authornamehash}{4512d981a2fac684e867257fcb2c5419}
+      \strng{authorfullhash}{4512d981a2fac684e867257fcb2c5419}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{50 Years of Integer Programming 1958-2008}
+      \field{month}{11}
+      \field{title}{Matroid Partition}
+      \field{year}{2009}
+      \field{pages}{199\bibrangedash 217}
+      \range{pages}{19}
+      \verb{doi}
+      \verb 10.1007/978-3-540-68279-0_7
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1007/978-3-540-68279-0_7
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1007/978-3-540-68279-0_7
+      \endverb
+    \endentry
+    \entry{Crapo1970}{article}{}
+      \name{author}{1}{}{%
+        {{hash=2689c59b8dc0526818c51f7711ee1acd}{%
+           family={Crapo},
+           familyi={C\bibinitperiod},
+           given={Henry\bibnamedelima H.},
+           giveni={H\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Wiley}%
+      }
+      \strng{namehash}{2689c59b8dc0526818c51f7711ee1acd}
+      \strng{fullhash}{2689c59b8dc0526818c51f7711ee1acd}
+      \strng{bibnamehash}{2689c59b8dc0526818c51f7711ee1acd}
+      \strng{authorbibnamehash}{2689c59b8dc0526818c51f7711ee1acd}
+      \strng{authornamehash}{2689c59b8dc0526818c51f7711ee1acd}
+      \strng{authorfullhash}{2689c59b8dc0526818c51f7711ee1acd}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Annals of the New York Academy of Sciences}
+      \field{month}{7}
+      \field{number}{1}
+      \field{title}{Erecting Geometries}
+      \field{volume}{175}
+      \field{year}{1970}
+      \field{pages}{89\bibrangedash 92}
+      \range{pages}{4}
+      \verb{doi}
+      \verb 10.1111/j.1749-6632.1970.tb56458.x
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1111/j.1749-6632.1970.tb56458.x
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1111/j.1749-6632.1970.tb56458.x
+      \endverb
+    \endentry
+    \entry{suksumpong-constraints}{article}{}
+      \name{author}{1}{}{%
+        {{hash=394c573f5ce4558eaffe3a6e4eaa967f}{%
+           family={Suksompong},
+           familyi={S\bibinitperiod},
+           given={Warut},
+           giveni={W\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {New York, NY, USA}%
+      }
+      \list{publisher}{1}{%
+        {Association for Computing Machinery}%
+      }
+      \strng{namehash}{394c573f5ce4558eaffe3a6e4eaa967f}
+      \strng{fullhash}{394c573f5ce4558eaffe3a6e4eaa967f}
+      \strng{bibnamehash}{394c573f5ce4558eaffe3a6e4eaa967f}
+      \strng{authorbibnamehash}{394c573f5ce4558eaffe3a6e4eaa967f}
+      \strng{authornamehash}{394c573f5ce4558eaffe3a6e4eaa967f}
+      \strng{authorfullhash}{394c573f5ce4558eaffe3a6e4eaa967f}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{The fair allocation of resources to interested agents is a fundamental problem in society. While the majority of the fair division literature assumes that all allocations are feasible, in practice there are often constraints on the allocation that can be chosen. In this survey, we discuss fairness guarantees for both divisible (cake cutting) and indivisible resources under several common types of constraints, including connectivity, cardinality, matroid, geometric, separation, budget, and conflict constraints. We also outline a number of open questions and directions.}
+      \field{journaltitle}{SIGecom Exch.}
+      \field{month}{12}
+      \field{number}{2}
+      \field{title}{Constraints in Fair Division}
+      \field{volume}{19}
+      \field{year}{2021}
+      \field{pages}{46\bibrangedash 61}
+      \range{pages}{16}
+      \verb{doi}
+      \verb 10.1145/3505156.3505162
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1145/3505156.3505162
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1145/3505156.3505162
+      \endverb
+      \keyw{social choice,fair division,constraints}
+    \endentry
+    \entry{fienberg-2012}{article}{}
+      \name{author}{1}{}{%
+        {{hash=05db46edd38d5670035ac0b33e85c58f}{%
+           family={Fienberg},
+           familyi={F\bibinitperiod},
+           given={Stephen\bibnamedelima E.},
+           giveni={S\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Taylor & Francis}%
+      }
+      \strng{namehash}{05db46edd38d5670035ac0b33e85c58f}
+      \strng{fullhash}{05db46edd38d5670035ac0b33e85c58f}
+      \strng{bibnamehash}{05db46edd38d5670035ac0b33e85c58f}
+      \strng{authorbibnamehash}{05db46edd38d5670035ac0b33e85c58f}
+      \strng{authornamehash}{05db46edd38d5670035ac0b33e85c58f}
+      \strng{authorfullhash}{05db46edd38d5670035ac0b33e85c58f}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Computational and Graphical Statistics}
+      \field{number}{4}
+      \field{title}{A Brief History of Statistical Models for Network Analysis and Open Challenges}
+      \field{volume}{21}
+      \field{year}{2012}
+      \field{pages}{825\bibrangedash 839}
+      \range{pages}{15}
+      \verb{doi}
+      \verb 10.1080/10618600.2012.738106
+      \endverb
+      \verb{eprint}
+      \verb https://doi.org/10.1080/10618600.2012.738106
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1080/10618600.2012.738106
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1080/10618600.2012.738106
+      \endverb
+    \endentry
+    \entry{erdos-1959}{article}{}
+      \name{author}{2}{}{%
+        {{hash=e0d0e2888dbc45cf93a1050ca44edf47}{%
+           family={Erdős},
+           familyi={E\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod}}}%
+        {{hash=521964110ba87bcde0674f8657ab7287}{%
+           family={Rényi},
+           familyi={R\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {University of Debrecen/ Debreceni Egyetem}%
+      }
+      \strng{namehash}{d89a6052835ef5b877e93f78f0832cfc}
+      \strng{fullhash}{d89a6052835ef5b877e93f78f0832cfc}
+      \strng{bibnamehash}{d89a6052835ef5b877e93f78f0832cfc}
+      \strng{authorbibnamehash}{d89a6052835ef5b877e93f78f0832cfc}
+      \strng{authornamehash}{d89a6052835ef5b877e93f78f0832cfc}
+      \strng{authorfullhash}{d89a6052835ef5b877e93f78f0832cfc}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Publicationes Mathematicae Debrecen}
+      \field{month}{7}
+      \field{number}{3-4}
+      \field{title}{On random graphs {I}.}
+      \field{volume}{6}
+      \field{year}{1959}
+      \field{pages}{290\bibrangedash 297}
+      \range{pages}{8}
+      \verb{doi}
+      \verb 10.5486/pmd.1959.6.3-4.12
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.5486/pmd.1959.6.3-4.12
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.5486/pmd.1959.6.3-4.12
+      \endverb
+    \endentry
+    \entry{gilbert-1959}{article}{}
+      \name{author}{1}{}{%
+        {{hash=75e064428eb19a4e37600fca4b6dcdc6}{%
+           family={Gilbert},
+           familyi={G\bibinitperiod},
+           given={E.\bibnamedelimi N.},
+           giveni={E\bibinitperiod\bibinitdelim N\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Institute of Mathematical Statistics}%
+      }
+      \strng{namehash}{75e064428eb19a4e37600fca4b6dcdc6}
+      \strng{fullhash}{75e064428eb19a4e37600fca4b6dcdc6}
+      \strng{bibnamehash}{75e064428eb19a4e37600fca4b6dcdc6}
+      \strng{authorbibnamehash}{75e064428eb19a4e37600fca4b6dcdc6}
+      \strng{authornamehash}{75e064428eb19a4e37600fca4b6dcdc6}
+      \strng{authorfullhash}{75e064428eb19a4e37600fca4b6dcdc6}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{The Annals of Mathematical Statistics}
+      \field{number}{4}
+      \field{title}{{Random Graphs}}
+      \field{volume}{30}
+      \field{year}{1959}
+      \field{pages}{1141\bibrangedash 1144}
+      \range{pages}{4}
+      \verb{doi}
+      \verb 10.1214/aoms/1177706098
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1214/aoms/1177706098
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1214/aoms/1177706098
+      \endverb
+    \endentry
+    \entry{janson1993birth}{misc}{}
+      \name{author}{4}{}{%
+        {{hash=f636aecaf9ea5bf3a641d2c20e59a907}{%
+           family={Janson},
+           familyi={J\bibinitperiod},
+           given={Svante},
+           giveni={S\bibinitperiod}}}%
+        {{hash=ec08e6f01da5f3814f28a70c89c64656}{%
+           family={Knuth},
+           familyi={K\bibinitperiod},
+           given={Donald\bibnamedelima E.},
+           giveni={D\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{hash=3e6992c2f1276926fdfe855e416a1e24}{%
+           family={Łuczak},
+           familyi={Ł\bibinitperiod},
+           given={Tomasz},
+           giveni={T\bibinitperiod}}}%
+        {{hash=f129a1da21d13438e8ef129746c0df4b}{%
+           family={Pittel},
+           familyi={P\bibinitperiod},
+           given={Boris},
+           giveni={B\bibinitperiod}}}%
+      }
+      \strng{namehash}{df200c52591bd29f61217bc5b0d0fd64}
+      \strng{fullhash}{c298ea7b4d0d6f69c1213d4e4fd81d87}
+      \strng{bibnamehash}{c298ea7b4d0d6f69c1213d4e4fd81d87}
+      \strng{authorbibnamehash}{c298ea7b4d0d6f69c1213d4e4fd81d87}
+      \strng{authornamehash}{df200c52591bd29f61217bc5b0d0fd64}
+      \strng{authorfullhash}{c298ea7b4d0d6f69c1213d4e4fd81d87}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{math.PR}
+      \field{eprinttype}{arXiv}
+      \field{title}{The birth of the giant component}
+      \field{year}{1993}
+      \verb{eprint}
+      \verb math/9310236
+      \endverb
+    \endentry
+    \entry{barabasi-albert}{article}{}
+      \name{author}{2}{}{%
+        {{hash=d85e8d2b76e8626b1a45373f4e027914}{%
+           family={Albert},
+           familyi={A\bibinitperiod},
+           given={Réka},
+           giveni={R\bibinitperiod}}}%
+        {{hash=15bacd7ddfc866c5dd96976d4b0244d5}{%
+           family={Barabási},
+           familyi={B\bibinitperiod},
+           given={Albert-László},
+           giveni={A\bibinithyphendelim L\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {American Physical Society}%
+      }
+      \strng{namehash}{9f15905aa70d375b6853be520f5f5dc2}
+      \strng{fullhash}{9f15905aa70d375b6853be520f5f5dc2}
+      \strng{bibnamehash}{9f15905aa70d375b6853be520f5f5dc2}
+      \strng{authorbibnamehash}{9f15905aa70d375b6853be520f5f5dc2}
+      \strng{authornamehash}{9f15905aa70d375b6853be520f5f5dc2}
+      \strng{authorfullhash}{9f15905aa70d375b6853be520f5f5dc2}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issue}{1}
+      \field{journaltitle}{Rev. Mod. Phys.}
+      \field{month}{1}
+      \field{title}{Statistical mechanics of complex networks}
+      \field{volume}{74}
+      \field{year}{2002}
+      \field{pages}{47\bibrangedash 97}
+      \range{pages}{51}
+      \verb{doi}
+      \verb 10.1103/RevModPhys.74.47
+      \endverb
+      \verb{urlraw}
+      \verb https://link.aps.org/doi/10.1103/RevModPhys.74.47
+      \endverb
+      \verb{url}
+      \verb https://link.aps.org/doi/10.1103/RevModPhys.74.47
+      \endverb
+    \endentry
+    \entry{Watts-1998}{article}{}
+      \name{author}{2}{}{%
+        {{hash=8749174d8ea73cb9cc7eda222618b353}{%
+           family={Watts},
+           familyi={W\bibinitperiod},
+           given={Duncan\bibnamedelima J.},
+           giveni={D\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=b0115f77df78376c68429033349375fc}{%
+           family={Strogatz},
+           familyi={S\bibinitperiod},
+           given={Steven\bibnamedelima H.},
+           giveni={S\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+      }
+      \list{publisher}{2}{%
+        {Springer Science}%
+        {Business Media {LLC}}%
+      }
+      \strng{namehash}{61ec8115bb61a3bd19135c7c8b217c6a}
+      \strng{fullhash}{61ec8115bb61a3bd19135c7c8b217c6a}
+      \strng{bibnamehash}{61ec8115bb61a3bd19135c7c8b217c6a}
+      \strng{authorbibnamehash}{61ec8115bb61a3bd19135c7c8b217c6a}
+      \strng{authornamehash}{61ec8115bb61a3bd19135c7c8b217c6a}
+      \strng{authorfullhash}{61ec8115bb61a3bd19135c7c8b217c6a}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Nature}
+      \field{month}{6}
+      \field{number}{6684}
+      \field{title}{Collective dynamics of `small-world' networks}
+      \field{volume}{393}
+      \field{year}{1998}
+      \field{pages}{440\bibrangedash 442}
+      \range{pages}{3}
+      \verb{doi}
+      \verb 10.1038/30918
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1038/30918
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1038/30918
+      \endverb
+    \endentry
+    \entry{Graphs2021}{misc}{}
+      \name{author}{6}{}{%
+        {{hash=1d30a8595a636bf14fcd181b6822212d}{%
+           family={Fairbanks},
+           familyi={F\bibinitperiod},
+           given={James},
+           giveni={J\bibinitperiod}}}%
+        {{hash=145e91a29c8cef5733e25e9bf3810db6}{%
+           family={Besançon},
+           familyi={B\bibinitperiod},
+           given={Mathieu},
+           giveni={M\bibinitperiod}}}%
+        {{hash=23e648d46c17f5dd1d7d82db93d2a81e}{%
+           family={Simon},
+           familyi={S\bibinitperiod},
+           given={Schölly},
+           giveni={S\bibinitperiod}}}%
+        {{hash=be20c25c36e22aee998ae7d9c6101046}{%
+           family={Hoffiman},
+           familyi={H\bibinitperiod},
+           given={Júlio},
+           giveni={J\bibinitperiod}}}%
+        {{hash=df18de09176e25e0595b07a7ec10e31b}{%
+           family={Eubank},
+           familyi={E\bibinitperiod},
+           given={Nick},
+           giveni={N\bibinitperiod}}}%
+        {{hash=bca7c93f55e669f71c4ff95e68ac9538}{%
+           family={Karpinski},
+           familyi={K\bibinitperiod},
+           given={Stefan},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{385ecca80dc1205dd8d9627c781d7b1f}
+      \strng{fullhash}{74bfb5a9ecbf126c98ede4232cccb178}
+      \strng{bibnamehash}{74bfb5a9ecbf126c98ede4232cccb178}
+      \strng{authorbibnamehash}{74bfb5a9ecbf126c98ede4232cccb178}
+      \strng{authornamehash}{385ecca80dc1205dd8d9627c781d7b1f}
+      \strng{authorfullhash}{74bfb5a9ecbf126c98ede4232cccb178}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{{JuliaGraphs/Graphs.jl}: an optimized graphs package for the Julia programming language}
+      \field{year}{2021}
+      \verb{urlraw}
+      \verb https://github.com/JuliaGraphs/Graphs.jl/
+      \endverb
+      \verb{url}
+      \verb https://github.com/JuliaGraphs/Graphs.jl/
+      \endverb
+    \endentry
+    \entry{Cormen2009-zm}{book}{}
+      \name{author}{4}{}{%
+        {{hash=835b8c52757d98c15859b416316d9820}{%
+           family={Cormen},
+           familyi={C\bibinitperiod},
+           given={Thomas\bibnamedelima H},
+           giveni={T\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+        {{hash=a389dea91a76366c4b4af5f52a928a76}{%
+           family={Leiserson},
+           familyi={L\bibinitperiod},
+           given={Charles\bibnamedelima E},
+           giveni={C\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{hash=3a964821f97ee17f8bb285bc61c52899}{%
+           family={Rivest},
+           familyi={R\bibinitperiod},
+           given={Ronald\bibnamedelima L},
+           giveni={R\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
+        {{hash=bc78426660400760f77758aec45e71a8}{%
+           family={Stein},
+           familyi={S\bibinitperiod},
+           given={Clifford},
+           giveni={C\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {London, England}%
+      }
+      \list{publisher}{1}{%
+        {MIT Press}%
+      }
+      \strng{namehash}{c251cdfd036d9474565c517e73c19c5d}
+      \strng{fullhash}{10f004e08c7c03d98be0da1231a869ce}
+      \strng{bibnamehash}{10f004e08c7c03d98be0da1231a869ce}
+      \strng{authorbibnamehash}{10f004e08c7c03d98be0da1231a869ce}
+      \strng{authornamehash}{c251cdfd036d9474565c517e73c19c5d}
+      \strng{authorfullhash}{10f004e08c7c03d98be0da1231a869ce}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{3}
+      \field{month}{7}
+      \field{series}{The MIT Press}
+      \field{title}{Introduction to Algorithms}
+      \field{year}{2009}
+    \endentry
+    \entry{wirth-1966}{article}{}
+      \name{author}{2}{}{%
+        {{hash=adb5cb357bd35f89888522cf765e576c}{%
+           family={Wirth},
+           familyi={W\bibinitperiod},
+           given={Niklaus},
+           giveni={N\bibinitperiod}}}%
+        {{hash=d6facc8397f631d3ef01dd70be993640}{%
+           family={Hoare},
+           familyi={H\bibinitperiod},
+           given={C.\bibnamedelimi A.\bibnamedelimi R.},
+           giveni={C\bibinitperiod\bibinitdelim A\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {New York, NY, USA}%
+      }
+      \list{publisher}{1}{%
+        {Association for Computing Machinery}%
+      }
+      \strng{namehash}{2d1e788896d138d62ca3630de2bf4649}
+      \strng{fullhash}{2d1e788896d138d62ca3630de2bf4649}
+      \strng{bibnamehash}{2d1e788896d138d62ca3630de2bf4649}
+      \strng{authorbibnamehash}{2d1e788896d138d62ca3630de2bf4649}
+      \strng{authornamehash}{2d1e788896d138d62ca3630de2bf4649}
+      \strng{authorfullhash}{2d1e788896d138d62ca3630de2bf4649}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0001-0782}
+      \field{journaltitle}{Commun. ACM}
+      \field{month}{6}
+      \field{number}{6}
+      \field{title}{A Contribution to the Development of {ALGOL}}
+      \field{volume}{9}
+      \field{year}{1966}
+      \field{pages}{413\bibrangedash 432}
+      \range{pages}{20}
+      \verb{doi}
+      \verb 10.1145/365696.365702
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1145/365696.365702
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1145/365696.365702
+      \endverb
+    \endentry
+    \entry{knuth-2003}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=ec08e6f01da5f3814f28a70c89c64656}{%
+           family={Knuth},
+           familyi={K\bibinitperiod},
+           given={Donald\bibnamedelima E.},
+           giveni={D\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+      }
+      \strng{namehash}{ec08e6f01da5f3814f28a70c89c64656}
+      \strng{fullhash}{ec08e6f01da5f3814f28a70c89c64656}
+      \strng{bibnamehash}{ec08e6f01da5f3814f28a70c89c64656}
+      \strng{authorbibnamehash}{ec08e6f01da5f3814f28a70c89c64656}
+      \strng{authornamehash}{ec08e6f01da5f3814f28a70c89c64656}
+      \strng{authorfullhash}{ec08e6f01da5f3814f28a70c89c64656}
+      \field{extraname}{2}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://www-cs-faculty.stanford.edu/~knuth/programs/erection.w}}
+      \field{journaltitle}{Stanford Computer Science}
+      \field{month}{3}
+      \field{title}{{ERECTION.W}}
+      \field{year}{2003}
+      \verb{urlraw}
+      \verb https://www-cs-faculty.stanford.edu/~knuth/programs/erection.w
+      \endverb
+      \verb{url}
+      \verb https://www-cs-faculty.stanford.edu/~knuth/programs/erection.w
+      \endverb
+    \endentry
+    \entry{greene-1991}{article}{}
+      \name{author}{1}{}{%
+        {{hash=80a1aacdb370cb12c9b0c7c4e82cb160}{%
+           family={Greene},
+           familyi={G\bibinitperiod},
+           given={Tom},
+           giveni={T\bibinitperiod}}}%
+      }
+      \strng{namehash}{80a1aacdb370cb12c9b0c7c4e82cb160}
+      \strng{fullhash}{80a1aacdb370cb12c9b0c7c4e82cb160}
+      \strng{bibnamehash}{80a1aacdb370cb12c9b0c7c4e82cb160}
+      \strng{authorbibnamehash}{80a1aacdb370cb12c9b0c7c4e82cb160}
+      \strng{authornamehash}{80a1aacdb370cb12c9b0c7c4e82cb160}
+      \strng{authorfullhash}{80a1aacdb370cb12c9b0c7c4e82cb160}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{A concept of descriptive sufficiency is introduced to characterize the subcollections of flats from which the key properties of a matroid can be determined by certain convenient conditions. The concept of descriptive sufficiency is related to the essential flats, and an algorithm is proposed which constructs the erections of an arbitrary matroid in terms of a particular descriptively sufficient subcollection of flats.}
+      \field{issn}{0012-365X}
+      \field{journaltitle}{Discrete Mathematics}
+      \field{number}{2}
+      \field{title}{Descriptively sufficient subcollections of flats in matroids}
+      \field{volume}{87}
+      \field{year}{1991}
+      \field{pages}{149\bibrangedash 161}
+      \range{pages}{13}
+      \verb{doi}
+      \verb https://doi.org/10.1016/0012-365X(91)90044-3
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/0012365X91900443
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/0012365X91900443
+      \endverb
+    \endentry
+    \entry{BitIntegers.jl}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=c2f725420d858d857349241951121999}{%
+           family={Fourquet},
+           familyi={F\bibinitperiod},
+           given={Rafael},
+           giveni={R\bibinitperiod}}}%
+      }
+      \strng{namehash}{c2f725420d858d857349241951121999}
+      \strng{fullhash}{c2f725420d858d857349241951121999}
+      \strng{bibnamehash}{c2f725420d858d857349241951121999}
+      \strng{authorbibnamehash}{c2f725420d858d857349241951121999}
+      \strng{authornamehash}{c2f725420d858d857349241951121999}
+      \strng{authorfullhash}{c2f725420d858d857349241951121999}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{https://github.com/rfourquet/BitIntegers.jl}
+      \field{note}{Accessed: 2023-05-20}
+      \field{title}{{BitIntegers.jl}}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
 
-\bibitem{aumann-1985}
-Robert~J Aumann and Michael Maschler.
-\newblock Game theoretic analysis of a bankruptcy problem from the {Talmud}.
-\newblock {\em Journal of Economic Theory}, 36(2):195--213, 1985.
-
-\bibitem{barman2020fair}
-Siddharth Barman and Arpita Biswas.
-\newblock Fair division under cardinality constraints, 2020.
-
-\bibitem{barman2021existence}
-Siddharth Barman and Paritosh Verma.
-\newblock Existence and computation of maximin fair allocations under
-  matroid-rank valuations, 2021.
-
-\bibitem{Benabbou_2020}
-Nawal Benabbou, Mithun Chakraborty, Ayumi Igarashi, and Yair Zick.
-\newblock Finding fair and efficient allocations when valuations don't add up.
-\newblock In {\em Algorithmic Game Theory}, pages 32--46. Springer
-  International Publishing, 2020.
-
-\bibitem{benabbou-2021}
-Nawal Benabbou, Mithun Chakraborty, Ayumi Igarashi, and Yair Zick.
-\newblock Finding fair and efficient allocations for matroid rank valuations.
-\newblock {\em ACM Trans. Econ. Comput.}, 9(4), oct 2021.
-
-\bibitem{bezanson2017julia}
-Jeff Bezanson, Alan Edelman, Stefan Karpinski, and Viral~B Shah.
-\newblock Julia: A fresh approach to numerical computing.
-\newblock {\em SIAM review}, 59(1):65--98, 2017.
-
-\bibitem{Budish2011}
-Eric Budish.
-\newblock The combinatorial assignment problem: Approximate competitive
-  equilibrium from equal incomes.
-\newblock {\em Journal of Political Economy}, 119(6):1061--1103, December 2011.
-
-\bibitem{caragiannis-Unreasonable}
-Ioannis Caragiannis, David Kurokawa, Herv\'{e} Moulin, Ariel~D. Procaccia,
-  Nisarg Shah, and Junxing Wang.
-\newblock The unreasonable fairness of maximum nash welfare.
-\newblock {\em ACM Trans. Econ. Comput.}, 7(3), sep 2019.
-
-\bibitem{Cormen2009-zm}
-Thomas~H Cormen, Charles~E Leiserson, Ronald~L Rivest, and Clifford Stein.
-\newblock {\em Introduction to Algorithms}.
-\newblock The MIT Press. MIT Press, London, England, 3 edition, July 2009.
-
-\bibitem{Crapo1970}
-Henry~H. Crapo.
-\newblock Erecting geometries.
-\newblock {\em Annals of the New York Academy of Sciences}, 175(1):89--92, July
-  1970.
-
-\bibitem{crapo_rota_1970}
-Henry~H. Crapo and Gian-Carlo Rota.
-\newblock {\em On the foundations of combinatorial theory: Combinatorial
-  geometries}.
-\newblock M.I.T. Press, 1970.
-
-\bibitem{erdos-1959}
-P.~Erd{\H{o}}s and A.~R{\'{e}}nyi.
-\newblock On random graphs {I}.
-\newblock {\em Publicationes Mathematicae Debrecen}, 6(3-4):290--297, July
-  1959.
-
-\bibitem{Graphs2021}
-James Fairbanks, Mathieu Besan{\c{c}}on, Sch{\"o}lly Simon, J{\'u}lio Hoffiman,
-  Nick Eubank, and Stefan Karpinski.
-\newblock {JuliaGraphs/Graphs.jl}: an optimized graphs package for the julia
-  programming language, 2021.
-
-\bibitem{fienberg-2012}
-Stephen~E. Fienberg.
-\newblock A brief history of statistical models for network analysis and open
-  challenges.
-\newblock {\em Journal of Computational and Graphical Statistics},
-  21(4):825--839, 2012.
-
-\bibitem{BitIntegers.jl}
-Rafael Fourquet.
-\newblock {BitIntegers.jl}.
-\newblock https://github.com/rfourquet/BitIntegers.jl.
-\newblock Accessed: 2023-05-20.
-
-\bibitem{gilbert-1959}
-E.~N. Gilbert.
-\newblock {Random Graphs}.
-\newblock {\em The Annals of Mathematical Statistics}, 30(4):1141 -- 1144,
-  1959.
-
-\bibitem{greene-1991}
-Tom Greene.
-\newblock Descriptively sufficient subcollections of flats in matroids.
-\newblock {\em Discrete Mathematics}, 87(2):149--161, 1991.
-
-\bibitem{Hetland_Allocations_jl_2022}
-Magnus~Lie Hetland and Halvard Hummel.
-\newblock {Allocations.jl}, November 2022.
-
-\bibitem{janson1993birth}
-Svante Janson, Donald~E. Knuth, Tomasz Łuczak, and Boris Pittel.
-\newblock The birth of the giant component, 1993.
-
-\bibitem{knuth-1975}
-Donald~E. Knuth.
-\newblock Random matroids.
-\newblock {\em Discrete Mathematics}, 12:341--358, 1975.
-
-\bibitem{knuth-2003}
-Donald~E. Knuth.
-\newblock {ERECTION.W}.
-\newblock \url{https://www-cs-faculty.stanford.edu/~knuth/programs/erection.w},
-  Mar 2003.
-
-\bibitem{lipton-2004}
-R.~J. Lipton, E.~Markakis, E.~Mossel, and A.~Saberi.
-\newblock On approximately fair allocations of indivisible goods.
-\newblock In {\em Proceedings of the 5th ACM Conference on Electronic
-  Commerce}, EC '04, page 125–131, New York, NY, USA, 2004. Association for
-  Computing Machinery.
-
-\bibitem{plaut2017envyfreeness}
-Benjamin Plaut and Tim Roughgarden.
-\newblock Almost envy-freeness with general valuations, 2017.
-
-\bibitem{schrijver-2003}
-A.~Schrijver.
-\newblock {\em Combinatorial Optimization: Polyhedra and Efficiency}.
-\newblock Springer, 2003.
-
-\bibitem{steinhaus-1948}
-Hugo Steinhaus.
-\newblock The problem of fair division.
-\newblock {\em Econometrica}, (16):101--104, 1948.
-
-\bibitem{suksumpong-constraints}
-Warut Suksompong.
-\newblock Constraints in fair division.
-\newblock {\em SIGecom Exch.}, 19(2):46–61, dec 2021.
-
-\bibitem{viswanathan2023yankee}
-Vignesh Viswanathan and Yair Zick.
-\newblock Yankee swap: a fast and simple fair allocation mechanism for matroid
-  rank valuations, 2023.
-
-\bibitem{Watts-1998}
-Duncan~J. Watts and Steven~H. Strogatz.
-\newblock Collective dynamics of `small-world' networks.
-\newblock {\em Nature}, 393(6684):440--442, June 1998.
-
-\bibitem{whitney-1935}
-Hassler Whitney.
-\newblock On the abstract properties of linear dependence.
-\newblock {\em American Journal of Mathematics}, 57:509--533, July 1935.
-
-\bibitem{wirth-1966}
-Niklaus Wirth and C.~A.~R. Hoare.
-\newblock A contribution to the development of {ALGOL}.
-\newblock {\em Commun. ACM}, 9(6):413--432, jun 1966.
-
-\end{thebibliography}

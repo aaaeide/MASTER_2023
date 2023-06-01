@@ -716,8 +716,8 @@
       \strng{authorbibnamehash}{5654ccd726dd2cd1aeb2383476790b32}
       \strng{authornamehash}{5654ccd726dd2cd1aeb2383476790b32}
       \strng{authorfullhash}{5654ccd726dd2cd1aeb2383476790b32}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Journal of Political Economy}
@@ -755,8 +755,8 @@
       \strng{authorbibnamehash}{4512d981a2fac684e867257fcb2c5419}
       \strng{authornamehash}{4512d981a2fac684e867257fcb2c5419}
       \strng{authorfullhash}{4512d981a2fac684e867257fcb2c5419}
-      \field{sortinit}{2}
-      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{booktitle}{50 Years of Integer Programming 1958-2008}
@@ -774,6 +774,32 @@
       \verb{url}
       \verb https://doi.org/10.1007/978-3-540-68279-0_7
       \endverb
+    \endentry
+    \entry{knuth1973matroidpartitioning}{book}{}
+      \name{author}{1}{}{%
+        {{hash=c7986b8f9a74e8a99dd8346c98b35f3e}{%
+           family={Knuth},
+           familyi={K\bibinitperiod},
+           given={D.E.},
+           giveni={D\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Computer Science Department, Stanford University}%
+      }
+      \strng{namehash}{c7986b8f9a74e8a99dd8346c98b35f3e}
+      \strng{fullhash}{c7986b8f9a74e8a99dd8346c98b35f3e}
+      \strng{bibnamehash}{c7986b8f9a74e8a99dd8346c98b35f3e}
+      \strng{authorbibnamehash}{c7986b8f9a74e8a99dd8346c98b35f3e}
+      \strng{authornamehash}{c7986b8f9a74e8a99dd8346c98b35f3e}
+      \strng{authorfullhash}{c7986b8f9a74e8a99dd8346c98b35f3e}
+      \field{extraname}{2}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{series}{Report (Stanford University. Computer Science Department)}
+      \field{title}{Matroid partitioning}
+      \field{year}{1973}
     \endentry
     \entry{Crapo1970}{article}{}
       \name{author}{1}{}{%
@@ -871,8 +897,8 @@
       \strng{authorbibnamehash}{394c573f5ce4558eaffe3a6e4eaa967f}
       \strng{authornamehash}{394c573f5ce4558eaffe3a6e4eaa967f}
       \strng{authorfullhash}{394c573f5ce4558eaffe3a6e4eaa967f}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{The fair allocation of resources to interested agents is a fundamental problem in society. While the majority of the fair division literature assumes that all allocations are feasible, in practice there are often constraints on the allocation that can be chosen. In this survey, we discuss fairness guarantees for both divisible (cake cutting) and indivisible resources under several common types of constraints, including connectivity, cardinality, matroid, geometric, separation, budget, and conflict constraints. We also outline a number of open questions and directions.}
@@ -912,8 +938,8 @@
       \strng{authorbibnamehash}{05db46edd38d5670035ac0b33e85c58f}
       \strng{authornamehash}{05db46edd38d5670035ac0b33e85c58f}
       \strng{authorfullhash}{05db46edd38d5670035ac0b33e85c58f}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Journal of Computational and Graphical Statistics}
@@ -1081,8 +1107,8 @@
       \strng{authorbibnamehash}{9f15905aa70d375b6853be520f5f5dc2}
       \strng{authornamehash}{9f15905aa70d375b6853be520f5f5dc2}
       \strng{authorfullhash}{9f15905aa70d375b6853be520f5f5dc2}
-      \field{sortinit}{4}
-      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{issue}{1}
@@ -1126,8 +1152,8 @@
       \strng{authorbibnamehash}{61ec8115bb61a3bd19135c7c8b217c6a}
       \strng{authornamehash}{61ec8115bb61a3bd19135c7c8b217c6a}
       \strng{authorfullhash}{61ec8115bb61a3bd19135c7c8b217c6a}
-      \field{sortinit}{4}
-      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Nature}
@@ -1187,8 +1213,8 @@
       \strng{authorbibnamehash}{74bfb5a9ecbf126c98ede4232cccb178}
       \strng{authornamehash}{385ecca80dc1205dd8d9627c781d7b1f}
       \strng{authorfullhash}{74bfb5a9ecbf126c98ede4232cccb178}
-      \field{sortinit}{4}
-      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{{JuliaGraphs/Graphs.jl}: an optimized graphs package for the Julia programming language}
@@ -1235,8 +1261,8 @@
       \strng{authorbibnamehash}{10f004e08c7c03d98be0da1231a869ce}
       \strng{authornamehash}{c251cdfd036d9474565c517e73c19c5d}
       \strng{authorfullhash}{10f004e08c7c03d98be0da1231a869ce}
-      \field{sortinit}{4}
-      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{edition}{3}
@@ -1307,7 +1333,7 @@
       \strng{authorbibnamehash}{ec08e6f01da5f3814f28a70c89c64656}
       \strng{authornamehash}{ec08e6f01da5f3814f28a70c89c64656}
       \strng{authorfullhash}{ec08e6f01da5f3814f28a70c89c64656}
-      \field{extraname}{2}
+      \field{extraname}{3}
       \field{sortinit}{5}
       \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labelnamesource}{author}
@@ -1338,8 +1364,8 @@
       \strng{authorbibnamehash}{c2f725420d858d857349241951121999}
       \strng{authornamehash}{c2f725420d858d857349241951121999}
       \strng{authorfullhash}{c2f725420d858d857349241951121999}
-      \field{sortinit}{5}
-      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{howpublished}{https://github.com/rfourquet/BitIntegers.jl}

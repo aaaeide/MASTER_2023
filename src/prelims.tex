@@ -254,37 +254,37 @@ The matroid union is an operation that allows us to produce a new matroid by com
 
 
 \subsection{Matroid erection}
-Knuth's general matroid construction, the implementation of which is discussed in Section~\ref{sec:kmc}, requires us to establish a few more matroid concepts. The \textit{rank-k truncation} of a matroid $\mathfrak{M} = (E, \mathcal{I})$, is the matroid $\mathfrak{M}^{(k)} = (E, \mathcal{I}^{(k)})$, where
+Knuth's general matroid construction, the implementation of which is discussed in Section~\ref{sec:kmc}, requires us to establish a few more matroid concepts. The \textit{rank-k truncation} of a matroid $\mathfrak{M} = (E, \mathcal{I})$, is the rank-$k$ matroid $\mathfrak{M}^{(k)} = (E, \mathcal{I}^{(k)})$, where
 $$\mathcal{I}^{(k)} = \{ I \in \mathcal{I} : |I| \leq k \}.$$
-When $\mathfrak{M}$ is of rank $r$, its \textit{truncation} is given as $T(\mathfrak{M}) = \mathfrak{M}^{(r-1)}$. As a simple example, we have that the uniform matroid $U_n^{n-1} = T(\mathfrak{F}_n)$, where $\mathfrak{F}_n$ is the free matroid with $n$ elements. The \textit{erection} (I refer to Crapo for the choice of term~\cite{Crapo1970}) of the matroid $\mathfrak{M}$ is the matroid $\mathfrak{N}$ such that $\mathfrak{M} = T(\mathfrak{N})$~\cite{Crapo1970}. A matroid can have many erections. For example, it is easy to see that $U_n^4$ is an erection of $U_n^3$, since $U_n^4$ by definition has all the same independent sets of the rank-3 matroid $U_n^3$, along with all size-4 subsets of $E$. However, let $\mathfrak{U}$ be the rank-4 matroid over $E$ where every subset of $E$ of rank $\leq 3$ is independent, and which has one size-4 rank-3 dependent set. The rank-3 independent sets of $\mathfrak{U}$ are the same as those of $U_n^3$, so we have $U_n^3 = T({\mathfrak{U}})$, however the introduction of a size-4 dependent set of rank 3 has erected a different rank-4 matroid.
+When $\mathfrak{M}$ is of rank $r$, its \textit{truncation} is given as $T(\mathfrak{M}) = \mathfrak{M}^{(r-1)}$. As a simple example, we have that the uniform matroid $U_n^{n-1} = T(\mathfrak{F}_n)$, where $\mathfrak{F}_n$ is the free matroid with $n$ elements. The \textit{erection} (I refer to Crapo for the choice of term~\cite{Crapo1970}) of the matroid $\mathfrak{M}$ is the matroid $\mathfrak{N}$ such that $\mathfrak{M} = T(\mathfrak{N})$. In other words, when taking the truncation of a matroid, we produce a new matroid by disregarding all independent sets of cardinality higher than some $k$. When taking the erection of a rank-$k$ matroid, we produce a new matroid by declaring some number of subsets $S \subseteq E$ such that $|S|>k$ to be independent.
 
 \begin{figure}\centering
   \resizebox{\columnwidth}{!}{
-         \begin{tikzpicture}[> = stealth,  shorten > = 1pt,   auto,   node distance = 1.5cm, every node/.style={outer sep=0}]
+         \begin{tikzpicture}[> = stealth,  shorten > = 1pt,   auto,   node distance = 1.5cm, mynode/.style={pattern=north east lines, circle, draw,inner sep=2pt,outer sep=0pt}]
   
   %%% LEVEL 1
-  \node[draw, rounded corners]  (x) {1111};
+  \node[draw, mynode]  (x) {1111};
   %%% LEVEL 2
-  \node[draw, rounded corners]  [below left of=x] (B) {1101};
-  \node[draw, rounded corners, fill=darktan] [below right of=x]  (C) {1011};
-  \node[draw, rounded corners]  [left  of=B] (A) {1110};
-  \node[draw, rounded corners] [right of=C]  (D) {0111};
+  \node[draw, mynode]  [below left of=x] (B) {1101};
+  \node[draw, mynode, fill=darktan] [below right of=x]  (C) {1011};
+  \node[draw, mynode]  [left  of=B] (A) {1110};
+  \node[draw, mynode] [right of=C]  (D) {0111};
   %%%% LEVEL 3
-  \node[draw, rounded corners] [below of=B]  (AD) {0110};
-  \node[draw, rounded corners, fill=darktan] [below of=C]  (BC) {1001};
-  \node[draw, rounded corners] [below of=D]  (BD) {0101};
-  \node[draw, rounded corners, fill=darktan] [below of=A]  (AC) {1010};
-  \node[draw, rounded corners] [left  of=AC] (AB) {1100};
-  \node[draw, rounded corners, fill=darktan] [right of=BD] (CD) {0011};
+  \node[draw, mynode] [below of=B]  (AD) {0110};
+  \node[draw, mynode, fill=darktan] [below of=C]  (BC) {1001};
+  \node[draw, mynode] [below of=D]  (BD) {0101};
+  \node[draw, mynode, fill=darktan] [below of=A]  (AC) {1010};
+  \node[draw, mynode] [left  of=AC] (AB) {1100};
+  \node[draw, mynode, fill=darktan] [right of=BD] (CD) {0011};
   
   %%  LEVEL   4
-  \node[draw, rounded corners] [below of=AD]  (ABD) {0100};
-  \node[draw, rounded corners, fill=darktan] [below of=BC]  (ACD) {0010};
-  \node[draw, rounded corners, fill=darktan] [left of=ABD]  (ABC) {1000};
-  \node[draw, rounded corners, fill=darktan] [right of=ACD] (BCD) {0001};
+  \node[draw, mynode] [below of=AD]  (ABD) {0100};
+  \node[draw, mynode, fill=darktan] [below of=BC]  (ACD) {0010};
+  \node[draw, mynode, fill=darktan] [left of=ABD]  (ABC) {1000};
+  \node[draw, mynode, fill=darktan] [right of=ACD] (BCD) {0001};
   
   %%%% LEVEL 5
-  \node[draw, rounded corners, fill=darktan] [below right of=ABD]  (ABCD) {0000};
+  \node[draw, mynode, fill=darktan] [below right of=ABD]  (ABCD) {0000};
   
   
   %% LEVEL 1 to LEVEL 2
@@ -329,6 +329,10 @@ When $\mathfrak{M}$ is of rank $r$, its \textit{truncation} is given as $T(\math
   }
   \caption{The caption}
 \end{figure}
+
+A matroid can have many erections. For example, it is easy to see that $U_n^4$ is an erection of $U_n^3$, since $U_n^4$ by definition has all the same independent sets of the rank-3 matroid $U_n^3$, along with all size-4 subsets of $E$. However, let $\mathfrak{U}$ be the rank-4 matroid over $E$ where every subset of $E$ of rank $\leq 3$ is independent, and which has one size-4 rank-3 dependent set. The rank-3 independent sets of $\mathfrak{U}$ are the same as those of $U_n^3$, so we have $U_n^3 = T({\mathfrak{U}})$, however the introduction of a size-4 dependent set of rank 3 has erected a different rank-4 matroid.
+
+
 
 
 \section{Matroids in fair allocation}

@@ -1,0 +1,71 @@
+\begin{figure}\centering
+  \resizebox{\columnwidth}{!}{
+         \begin{tikzpicture}[> = stealth,  shorten > = 1pt,   auto,   node distance = 1.5cm, mynode/.style={pattern=north east lines, circle, draw,inner sep=2pt,outer sep=0pt}]
+  
+  %%% LEVEL 1
+  \node[draw, mynode]  (x) {1111};
+  %%% LEVEL 2
+  \node[draw, mynode]  [below left of=x] (B) {1101};
+  \node[draw, mynode, fill=darktan] [below right of=x]  (C) {1011};
+  \node[draw, mynode]  [left  of=B] (A) {1110};
+  \node[draw, mynode] [right of=C]  (D) {0111};
+  %%%% LEVEL 3
+  \node[draw, mynode] [below of=B]  (AD) {0110};
+  \node[draw, mynode, fill=darktan] [below of=C]  (BC) {1001};
+  \node[draw, mynode] [below of=D]  (BD) {0101};
+  \node[draw, mynode, fill=darktan] [below of=A]  (AC) {1010};
+  \node[draw, mynode] [left  of=AC] (AB) {1100};
+  \node[draw, mynode, fill=darktan] [right of=BD] (CD) {0011};
+  
+  %%  LEVEL   4
+  \node[draw, mynode] [below of=AD]  (ABD) {0100};
+  \node[draw, mynode, fill=darktan] [below of=BC]  (ACD) {0010};
+  \node[draw, mynode, fill=darktan] [left of=ABD]  (ABC) {1000};
+  \node[draw, mynode, fill=darktan] [right of=ACD] (BCD) {0001};
+  
+  %%%% LEVEL 5
+  \node[draw, mynode, fill=darktan] [below right of=ABD]  (ABCD) {0000};
+  
+  
+  %% LEVEL 1 to LEVEL 2
+      \path (x)  edge node {} (A);
+      \path (x)  edge node {} (B);
+      \path (x)  edge node {} (C);
+      \path (x)  edge node {} (D);
+  
+  %% LEVEL 2 to LEVEL 3
+      \path (A)  edge node {} (AB);
+      \path (A)  edge node {} (AC);
+      \path (A)  edge node {} (AD);
+      \path (B)  edge node {} (AB);
+      \path (B)  edge node {} (BC);
+      \path (B)  edge node {} (BD);
+      \path (C)  edge [preaction={draw=darktan, line width=2mm}] node {} (AC);%
+      \path (C)  edge [preaction={draw=darktan, line width=2mm}] node {} (BC);
+      \path (C)  edge [preaction={draw=darktan, line width=2mm}] node {} (CD);
+      \path (D)  edge node {} (AD);
+      \path (D)  edge node {} (BD);
+      \path (D)  edge node {} (CD);
+  %%% LEVEL 3 TO 4
+  
+      \path (AB)  edge node {} (ABC);
+      \path (AB)  edge node {} (ABD);
+      \path (AC)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABC);
+      \path (AC)  edge [preaction={draw=darktan, line width=2mm}] node {} (ACD);
+      \path (AD)  edge node {} (ABD);
+      \path (AD)  edge node {} (ACD);
+      \path (BC)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABC);
+      \path (BC)  edge [preaction={draw=darktan, line width=2mm}] node {} (BCD);
+      \path (BD)  edge node {} (ABD);
+      \path (BD)  edge node {} (BCD);
+      \path (CD)  edge [preaction={draw=darktan, line width=2mm}] node {} (ACD);
+      \path (CD)  edge [preaction={draw=darktan, line width=2mm}] node {} (BCD);
+  %%%% LEVEL 4 to 5
+      \path (ABC)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABCD);
+      \path (ABD)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABCD);
+      \path (ACD)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABCD);
+      \path (BCD)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABCD);
+        \end{tikzpicture}
+  }
+  \caption{The caption}
+\end{figure}

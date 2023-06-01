@@ -9,8 +9,8 @@
 \contentsline {subsection}{\numberline {2.2.2}Other characterizations of a matroid}{15}{subsection.2.2.2}%
 \contentsline {subsection}{\numberline {2.2.3}Matroid union}{17}{subsection.2.2.3}%
 \contentsline {subsection}{\numberline {2.2.4}Matroid erection}{18}{subsection.2.2.4}%
-\contentsline {section}{\numberline {2.3}Matroids in fair allocation}{18}{section.2.3}%
-\contentsline {subsection}{\numberline {2.3.1}Matroid-rank valuations}{19}{subsection.2.3.1}%
+\contentsline {section}{\numberline {2.3}Matroids in fair allocation}{20}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Matroid-rank valuations}{20}{subsection.2.3.1}%
 \contentsline {subsection}{\numberline {2.3.2}Matroid constraints}{20}{subsection.2.3.2}%
 \contentsline {chapter}{\numberline {3}The Matroids.jl API}{21}{chapter.3}%
 \contentsline {section}{\numberline {3.1}Fairness under matroid-rank valuations}{22}{section.3.1}%

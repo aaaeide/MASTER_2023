@@ -254,9 +254,9 @@ The matroid union is an operation that allows us to produce a new matroid by com
 
 
 \subsection{Matroid erection}
-Knuth's general matroid construction, the implementation of which is discussed in Section~\ref{sec:kmc}, requires us to establish a few more matroid concepts. The \textit{rank-k truncation} of a matroid $\mathfrak{M} = (E, \mathcal{I})$, is the rank-$k$ matroid $\mathfrak{M}^{(k)} = (E, \mathcal{I}^{(k)})$, where
+Knuth's general matroid construction, the implementation of which is discussed in Section~\ref{sec:kmc}, requires us to establish a few more matroid concepts. The \textit{rank-k truncation} of a rank-$r$ matroid $\mathfrak{M} = (E, \mathcal{I})$, is the rank-$k$ matroid $\mathfrak{M}^{(k)} = (E, \mathcal{I}^{(k)})$, where
 $$\mathcal{I}^{(k)} = \{ I \in \mathcal{I} : |I| \leq k \}.$$
-When $\mathfrak{M}$ is of rank $r$, its \textit{truncation} is given as $T(\mathfrak{M}) = \mathfrak{M}^{(r-1)}$. As a simple example, we have that the uniform matroid $U_n^{n-1} = T(\mathfrak{F}_n)$, where $\mathfrak{F}_n$ is the free matroid with $n$ elements. The \textit{erection} (I refer to Crapo for the choice of term~\cite{Crapo1970}) of the matroid $\mathfrak{M}$ is the matroid $\mathfrak{N}$ such that $\mathfrak{M} = T(\mathfrak{N})$. In other words, when taking the truncation of a matroid, we produce a new matroid by disregarding all independent sets of cardinality higher than some $k$. When taking the erection of a rank-$k$ matroid, we produce a new matroid by declaring some number of subsets $S \subseteq E$ such that $|S|>k$ to be independent.
+The \textit{truncation} of $\mathfrak{M}$ is given as $T(\mathfrak{M}) = \mathfrak{M}^{(r-1)}$. As a simple example, we have that the uniform matroid $U_n^{n-1} = T(F_n)$, where $F_n$ is the free matroid with $n$ elements. The \textit{erection} (I defer to Crapo for the choice of term~\cite{Crapo1970}) of the matroid $\mathfrak{M}$ is the matroid $\mathfrak{N}$ of rank $\leq r+1$ such that $\mathfrak{M} = T(\mathfrak{N})$. In other words, when taking the truncation of a matroid, we produce a new matroid by disregarding all independent sets of cardinality higher than some $k$. When taking the erection of a rank-$k$ matroid, we produce a new matroid by declaring some number of subsets $S \subseteq E$ such that $|S|=r+1$ to be independent, or equivalently, declaring some number of them to be closed sets of rank $r$. By declaring all of them to be dependent, we get the \textit{trivial erection} $\mathfrak{N} = \mathfrak{M}$. By declaring none of them dependent (ie. they are all independent sets $r(S) = |S| = r+1$), $\mathfrak{N}$ is the \textit{free erection} of $\mathfrak{M}$~\cite{greene-1991}.
 
 \begin{figure}\centering
   \resizebox{\columnwidth}{!}{
@@ -266,19 +266,19 @@ When $\mathfrak{M}$ is of rank $r$, its \textit{truncation} is given as $T(\math
   \node[draw, mynode]  (x) {1111};
   %%% LEVEL 2
   \node[draw, mynode]  [below left of=x] (B) {1101};
-  \node[draw, mynode, fill=darktan] [below right of=x]  (C) {1011};
+  \node[draw, mynode] [below right of=x]  (C) {1011};
   \node[draw, mynode]  [left  of=B] (A) {1110};
   \node[draw, mynode] [right of=C]  (D) {0111};
   %%%% LEVEL 3
-  \node[draw, mynode] [below of=B]  (AD) {0110};
+  \node[draw, mynode, fill=darktan] [below of=B]  (AD) {0110};
   \node[draw, mynode, fill=darktan] [below of=C]  (BC) {1001};
-  \node[draw, mynode] [below of=D]  (BD) {0101};
+  \node[draw, mynode, fill=darktan] [below of=D]  (BD) {0101};
   \node[draw, mynode, fill=darktan] [below of=A]  (AC) {1010};
-  \node[draw, mynode] [left  of=AC] (AB) {1100};
+  \node[draw, mynode, fill=darktan] [left  of=AC] (AB) {1100};
   \node[draw, mynode, fill=darktan] [right of=BD] (CD) {0011};
   
   %%  LEVEL   4
-  \node[draw, mynode] [below of=AD]  (ABD) {0100};
+  \node[draw, mynode, fill=darktan] [below of=AD]  (ABD) {0100};
   \node[draw, mynode, fill=darktan] [below of=BC]  (ACD) {0010};
   \node[draw, mynode, fill=darktan] [left of=ABD]  (ABC) {1000};
   \node[draw, mynode, fill=darktan] [right of=ACD] (BCD) {0001};
@@ -300,6 +300,91 @@ When $\mathfrak{M}$ is of rank $r$, its \textit{truncation} is given as $T(\math
       \path (B)  edge node {} (AB);
       \path (B)  edge node {} (BC);
       \path (B)  edge node {} (BD);
+      \path (C)  edge node {} (AC);%
+      \path (C)  edge node {} (BC);
+      \path (C)  edge node {} (CD);
+      \path (D)  edge node {} (AD);
+      \path (D)  edge node {} (BD);
+      \path (D)  edge node {} (CD);
+  %%% LEVEL 3 TO 4
+  
+      \path (AB)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABC);
+      \path (AB)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABD);
+      \path (AC)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABC);
+      \path (AC)  edge [preaction={draw=darktan, line width=2mm}] node {} (ACD);
+      \path (AD)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABD);
+      \path (AD)  edge [preaction={draw=darktan, line width=2mm}] node {} (ACD);
+      \path (BC)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABC);
+      \path (BC)  edge [preaction={draw=darktan, line width=2mm}] node {} (BCD);
+      \path (BD)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABD);
+      \path (BD)  edge [preaction={draw=darktan, line width=2mm}] node {} (BCD);
+      \path (CD)  edge [preaction={draw=darktan, line width=2mm}] node {} (ACD);
+      \path (CD)  edge [preaction={draw=darktan, line width=2mm}] node {} (BCD);
+  %%%% LEVEL 4 to 5
+      \path (ABC)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABCD);
+      \path (ABD)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABCD);
+      \path (ACD)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABCD);
+      \path (BCD)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABCD);
+
+      %%%% Dashed lines
+% \draw[dashed] (-6,-0.5) -- (6,-0.5); 
+% \node[] at (-6,0) {Rank 4};
+% \draw[dashed] (-6,-1.75) -- (6,-1.75); 
+% \node[] at (-6,-1) {Rank 3};
+\draw[dashed] (-6,-3.5) -- (6,-3.5); 
+\node[] at (-6,-2.625) {Rank 2};
+\draw[dashed] (-6,-4.625) -- (6,-4.625); 
+\node[] at (-6,-4) {Rank 1};
+\node[] at (-6,-5) {Rank 0};
+
+        \end{tikzpicture}
+  }
+  \caption{The uniform matroid $U_4^2$.}
+  \label{fig:hasse-uniform}
+\end{figure}
+
+\begin{figure}\centering
+  \resizebox{\columnwidth}{!}{
+         \begin{tikzpicture}[> = stealth,  shorten > = 1pt,   auto,   node distance = 1.5cm, mynode/.style={pattern=north east lines, circle, draw,inner sep=2pt,outer sep=0pt}]
+  
+  %%% LEVEL 1
+  \node[draw, mynode]  (x) {1111};
+  %%% LEVEL 2
+  \node[draw, mynode, fill=darktan]  [below left of=x] (B) {1101};
+  \node[draw, mynode, fill=darktan] [below right of=x]  (C) {1011};
+  \node[draw, mynode, fill=darktan]  [left  of=B] (A) {1110};
+  \node[draw, mynode] [right of=C]  (D) {0111};
+  %%%% LEVEL 3
+  \node[draw, mynode, fill=darktan] [below of=B]  (AD) {0110};
+  \node[draw, mynode, fill=darktan] [below of=C]  (BC) {1001};
+  \node[draw, mynode, fill=darktan] [below of=D]  (BD) {0101};
+  \node[draw, mynode, fill=darktan] [below of=A]  (AC) {1010};
+  \node[draw, mynode, fill=darktan] [left  of=AC] (AB) {1100};
+  \node[draw, mynode, fill=darktan] [right of=BD] (CD) {0011};
+  
+  %%  LEVEL   4
+  \node[draw, mynode, fill=darktan] [below of=AD]  (ABD) {0100};
+  \node[draw, mynode, fill=darktan] [below of=BC]  (ACD) {0010};
+  \node[draw, mynode, fill=darktan] [left of=ABD]  (ABC) {1000};
+  \node[draw, mynode, fill=darktan] [right of=ACD] (BCD) {0001};
+  
+  %%%% LEVEL 5
+  \node[draw, mynode, fill=darktan] [below right of=ABD]  (ABCD) {0000};
+  
+  
+  %% LEVEL 1 to LEVEL 2
+      \path (x)  edge node {} (A);
+      \path (x)  edge node {} (B);
+      \path (x)  edge node {} (C);
+      \path (x)  edge node {} (D);
+  
+  %% LEVEL 2 to LEVEL 3
+      \path (A)  edge [preaction={draw=darktan, line width=2mm}] node {} (AB);
+      \path (A)  edge [preaction={draw=darktan, line width=2mm}] node {} (AC);
+      \path (A)  edge [preaction={draw=darktan, line width=2mm}] node {} (AD);
+      \path (B)  edge [preaction={draw=darktan, line width=2mm}] node {} (AB);
+      \path (B)  edge [preaction={draw=darktan, line width=2mm}] node {} (BC);
+      \path (B)  edge [preaction={draw=darktan, line width=2mm}] node {} (BD);
       \path (C)  edge [preaction={draw=darktan, line width=2mm}] node {} (AC);%
       \path (C)  edge [preaction={draw=darktan, line width=2mm}] node {} (BC);
       \path (C)  edge [preaction={draw=darktan, line width=2mm}] node {} (CD);
@@ -308,16 +393,16 @@ When $\mathfrak{M}$ is of rank $r$, its \textit{truncation} is given as $T(\math
       \path (D)  edge node {} (CD);
   %%% LEVEL 3 TO 4
   
-      \path (AB)  edge node {} (ABC);
-      \path (AB)  edge node {} (ABD);
+      \path (AB)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABC);
+      \path (AB)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABD);
       \path (AC)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABC);
       \path (AC)  edge [preaction={draw=darktan, line width=2mm}] node {} (ACD);
-      \path (AD)  edge node {} (ABD);
-      \path (AD)  edge node {} (ACD);
+      \path (AD)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABD);
+      \path (AD)  edge [preaction={draw=darktan, line width=2mm}] node {} (ACD);
       \path (BC)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABC);
       \path (BC)  edge [preaction={draw=darktan, line width=2mm}] node {} (BCD);
-      \path (BD)  edge node {} (ABD);
-      \path (BD)  edge node {} (BCD);
+      \path (BD)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABD);
+      \path (BD)  edge [preaction={draw=darktan, line width=2mm}] node {} (BCD);
       \path (CD)  edge [preaction={draw=darktan, line width=2mm}] node {} (ACD);
       \path (CD)  edge [preaction={draw=darktan, line width=2mm}] node {} (BCD);
   %%%% LEVEL 4 to 5
@@ -325,13 +410,27 @@ When $\mathfrak{M}$ is of rank $r$, its \textit{truncation} is given as $T(\math
       \path (ABD)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABCD);
       \path (ACD)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABCD);
       \path (BCD)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABCD);
+      
+      %%%% Dashed lines
+% \draw[dashed] (-6,-0.5) -- (6,-0.5); 
+% \node[] at (-6,0) {Rank 4};
+\draw[dashed] (-6,-1.75) -- (1.75,-1.75); 
+\draw[dashed] (1.75,-1.75) -- (1.75,-0.25); 
+\draw[dashed] (1.75,-0.25) -- (6,-0.25); 
+\node[] at (-6,-1) {Rank 3};
+\draw[dashed] (-6,-3.5) -- (6,-3.5); 
+\node[] at (-6,-2.625) {Rank 2};
+\draw[dashed] (-6,-4.625) -- (6,-4.625); 
+\node[] at (-6,-4) {Rank 1};
+\node[] at (-6,-5) {Rank 0};
+
         \end{tikzpicture}
   }
-  \caption{The caption}
+  \caption{An erection of $U_4^2$.}
+  \label{fig:hasse-erection}
 \end{figure}
 
-A matroid can have many erections. For example, it is easy to see that $U_n^4$ is an erection of $U_n^3$, since $U_n^4$ by definition has all the same independent sets of the rank-3 matroid $U_n^3$, along with all size-4 subsets of $E$. However, let $\mathfrak{U}$ be the rank-4 matroid over $E$ where every subset of $E$ of rank $\leq 3$ is independent, and which has one size-4 rank-3 dependent set. The rank-3 independent sets of $\mathfrak{U}$ are the same as those of $U_n^3$, so we have $U_n^3 = T({\mathfrak{U}})$, however the introduction of a size-4 dependent set of rank 3 has erected a different rank-4 matroid.
-
+A matroid can have many erections. Figure~\ref{fig:hasse-uniform} shows the Hasse diagram for the matroid of 4 elements, where every subset of two or fewer elements is independent (denoted in yellow). Each subset is encoded as a binary string, where a 1 designates membership in the set (a syntax we will become very familiar with in Chapter~\ref{chap:generating_matroids}). This matroid is known as the uniform matroid $U_4^2$. The uniform matroid $U_4^3$ is the free erection of $U_4^2$, where we have simply designated all sets of rank 3 as independent. Figure~\ref{fig:hasse-erection} shows another erection of $U_4^2$, one in which only three of the subsets with three elements are designated as independent. The final set, 0111, remains a dependent set, and has therefore in fact been designated as a closed set of rank $2$. By starting from the rank-0 matroid $\mathfrak{M}^{(0)}$, one can iteratively erect any matroid $\mathfrak{M}$, at each iteration $i$ designating the sets to be closed sets of rank $i$ (all the while ensuring that the axioms for the closed sets of a matroid are obeyed). This is the approach taken by Knuth in his matroid erection algorithm, which is discussed in Chapter~\ref{sec:kmc}.
 
 
 

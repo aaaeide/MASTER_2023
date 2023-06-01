@@ -814,6 +814,43 @@
       \verb https://doi.org/10.1111/j.1749-6632.1970.tb56458.x
       \endverb
     \endentry
+    \entry{greene-1991}{article}{}
+      \name{author}{1}{}{%
+        {{hash=80a1aacdb370cb12c9b0c7c4e82cb160}{%
+           family={Greene},
+           familyi={G\bibinitperiod},
+           given={Tom},
+           giveni={T\bibinitperiod}}}%
+      }
+      \strng{namehash}{80a1aacdb370cb12c9b0c7c4e82cb160}
+      \strng{fullhash}{80a1aacdb370cb12c9b0c7c4e82cb160}
+      \strng{bibnamehash}{80a1aacdb370cb12c9b0c7c4e82cb160}
+      \strng{authorbibnamehash}{80a1aacdb370cb12c9b0c7c4e82cb160}
+      \strng{authornamehash}{80a1aacdb370cb12c9b0c7c4e82cb160}
+      \strng{authorfullhash}{80a1aacdb370cb12c9b0c7c4e82cb160}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{A concept of descriptive sufficiency is introduced to characterize the subcollections of flats from which the key properties of a matroid can be determined by certain convenient conditions. The concept of descriptive sufficiency is related to the essential flats, and an algorithm is proposed which constructs the erections of an arbitrary matroid in terms of a particular descriptively sufficient subcollection of flats.}
+      \field{issn}{0012-365X}
+      \field{journaltitle}{Discrete Mathematics}
+      \field{number}{2}
+      \field{title}{Descriptively sufficient subcollections of flats in matroids}
+      \field{volume}{87}
+      \field{year}{1991}
+      \field{pages}{149\bibrangedash 161}
+      \range{pages}{13}
+      \verb{doi}
+      \verb https://doi.org/10.1016/0012-365X(91)90044-3
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/0012365X91900443
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/0012365X91900443
+      \endverb
+    \endentry
     \entry{suksumpong-constraints}{article}{}
       \name{author}{1}{}{%
         {{hash=394c573f5ce4558eaffe3a6e4eaa967f}{%
@@ -921,8 +958,8 @@
       \strng{authorbibnamehash}{d89a6052835ef5b877e93f78f0832cfc}
       \strng{authornamehash}{d89a6052835ef5b877e93f78f0832cfc}
       \strng{authorfullhash}{d89a6052835ef5b877e93f78f0832cfc}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Publicationes Mathematicae Debrecen}
@@ -960,8 +997,8 @@
       \strng{authorbibnamehash}{75e064428eb19a4e37600fca4b6dcdc6}
       \strng{authornamehash}{75e064428eb19a4e37600fca4b6dcdc6}
       \strng{authorfullhash}{75e064428eb19a4e37600fca4b6dcdc6}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{The Annals of Mathematical Statistics}
@@ -1233,8 +1270,8 @@
       \strng{authorbibnamehash}{2d1e788896d138d62ca3630de2bf4649}
       \strng{authornamehash}{2d1e788896d138d62ca3630de2bf4649}
       \strng{authorfullhash}{2d1e788896d138d62ca3630de2bf4649}
-      \field{sortinit}{4}
-      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{issn}{0001-0782}
@@ -1285,43 +1322,6 @@
       \endverb
       \verb{url}
       \verb https://www-cs-faculty.stanford.edu/~knuth/programs/erection.w
-      \endverb
-    \endentry
-    \entry{greene-1991}{article}{}
-      \name{author}{1}{}{%
-        {{hash=80a1aacdb370cb12c9b0c7c4e82cb160}{%
-           family={Greene},
-           familyi={G\bibinitperiod},
-           given={Tom},
-           giveni={T\bibinitperiod}}}%
-      }
-      \strng{namehash}{80a1aacdb370cb12c9b0c7c4e82cb160}
-      \strng{fullhash}{80a1aacdb370cb12c9b0c7c4e82cb160}
-      \strng{bibnamehash}{80a1aacdb370cb12c9b0c7c4e82cb160}
-      \strng{authorbibnamehash}{80a1aacdb370cb12c9b0c7c4e82cb160}
-      \strng{authornamehash}{80a1aacdb370cb12c9b0c7c4e82cb160}
-      \strng{authorfullhash}{80a1aacdb370cb12c9b0c7c4e82cb160}
-      \field{sortinit}{5}
-      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{abstract}{A concept of descriptive sufficiency is introduced to characterize the subcollections of flats from which the key properties of a matroid can be determined by certain convenient conditions. The concept of descriptive sufficiency is related to the essential flats, and an algorithm is proposed which constructs the erections of an arbitrary matroid in terms of a particular descriptively sufficient subcollection of flats.}
-      \field{issn}{0012-365X}
-      \field{journaltitle}{Discrete Mathematics}
-      \field{number}{2}
-      \field{title}{Descriptively sufficient subcollections of flats in matroids}
-      \field{volume}{87}
-      \field{year}{1991}
-      \field{pages}{149\bibrangedash 161}
-      \range{pages}{13}
-      \verb{doi}
-      \verb https://doi.org/10.1016/0012-365X(91)90044-3
-      \endverb
-      \verb{urlraw}
-      \verb https://www.sciencedirect.com/science/article/pii/0012365X91900443
-      \endverb
-      \verb{url}
-      \verb https://www.sciencedirect.com/science/article/pii/0012365X91900443
       \endverb
     \endentry
     \entry{BitIntegers.jl}{misc}{}

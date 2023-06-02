@@ -470,32 +470,27 @@ Covers are generated and sets inserted in the same manner as in\linebreak\jlinl{
 \skelpar
 
 \subsubsection{Determining matroid properties after erection}
-In his 1989 paper, Greene introduces the concept of \textit{descriptive sufficiency}. A subcollection of closed sets of a matroid is descriptively sufficient if it can be used to identify the fundamental properties of the matroid using certain easily applied conditions~\cite{greene-1991}. 
-\begin{jllisting}
-"""
-  function is_indep(M::ClosedSetsMatroid, S::Integer)
+In his 1989 paper, Greene introduces the concept of \textit{descriptive sufficiency}. A subcollection of closed sets of a matroid is descriptively sufficient if it can be used to identify the fundamental properties of the matroid using certain easily applied conditions. The collection of all closed sets of a matroid is one descriptively sufficient such collection~\cite{greene-1991}. 
 
-Determines whether a given set S is independent in the matroid M, given by the closed sets of M grouped by rank. Uses (I.1) in Greene (1989).
-"""
+\paragraph{Indepence oracle.} To check if a set $S$ is independent, we compare it with the closed sets of rank $|S|-1$. If $S$ is indeed independent, it cannot be a subset of a closed set of lower rank, so if we find one such set we return false. Otherwise, $S$ is independent.
+
+\begin{jllisting}
 function is_indep(M::ClosedSetsMatroid, S::Integer)
   t = Base.count_ones(S)
 
+  if t > length(M.F) return false end
+
   for F in M.F[t]
-    if Base.count_ones(S&F) > t-1 return false end
+    if S&F==S return false end
   end
 
   return true
 end
 \end{jllisting}
 
-\textbf{Indepence oracle.} \skelpar
 
+\textbf{Circuit oracle.} This method uses (C.1) and (C.2) from Greene's paper~\cite{greene-1991}.
 \begin{jllisting}
-"""
-    function is_circuit(M::ClosedSetsMatroid, S::Integer)
-
-Determines whether a given set S is a circuit in the matroid M, given by the closed sets of M. Uses (C.1) and (C.2) in Greene (1989).
-"""
 function is_circuit(M::ClosedSetsMatroid, S::Integer)
   t = Base.count_ones(S)
 
@@ -512,8 +507,6 @@ function is_circuit(M::ClosedSetsMatroid, S::Integer)
   return true
 end
 \end{jllisting}
-
-\textbf{Circuit oracle.} \skelpars[2]
 
 \begin{jllisting}
 """

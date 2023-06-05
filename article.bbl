@@ -938,8 +938,8 @@
       \strng{authorbibnamehash}{05db46edd38d5670035ac0b33e85c58f}
       \strng{authornamehash}{05db46edd38d5670035ac0b33e85c58f}
       \strng{authorfullhash}{05db46edd38d5670035ac0b33e85c58f}
-      \field{sortinit}{4}
-      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Journal of Computational and Graphical Statistics}
@@ -984,8 +984,8 @@
       \strng{authorbibnamehash}{d89a6052835ef5b877e93f78f0832cfc}
       \strng{authornamehash}{d89a6052835ef5b877e93f78f0832cfc}
       \strng{authorfullhash}{d89a6052835ef5b877e93f78f0832cfc}
-      \field{sortinit}{4}
-      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Publicationes Mathematicae Debrecen}
@@ -1023,8 +1023,8 @@
       \strng{authorbibnamehash}{75e064428eb19a4e37600fca4b6dcdc6}
       \strng{authornamehash}{75e064428eb19a4e37600fca4b6dcdc6}
       \strng{authorfullhash}{75e064428eb19a4e37600fca4b6dcdc6}
-      \field{sortinit}{4}
-      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{The Annals of Mathematical Statistics}
@@ -1073,8 +1073,8 @@
       \strng{authorbibnamehash}{c298ea7b4d0d6f69c1213d4e4fd81d87}
       \strng{authornamehash}{df200c52591bd29f61217bc5b0d0fd64}
       \strng{authorfullhash}{c298ea7b4d0d6f69c1213d4e4fd81d87}
-      \field{sortinit}{4}
-      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{eprintclass}{math.PR}
@@ -1296,8 +1296,8 @@
       \strng{authorbibnamehash}{2d1e788896d138d62ca3630de2bf4649}
       \strng{authornamehash}{2d1e788896d138d62ca3630de2bf4649}
       \strng{authorfullhash}{2d1e788896d138d62ca3630de2bf4649}
-      \field{sortinit}{5}
-      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{issn}{0001-0782}
@@ -1334,8 +1334,8 @@
       \strng{authornamehash}{ec08e6f01da5f3814f28a70c89c64656}
       \strng{authorfullhash}{ec08e6f01da5f3814f28a70c89c64656}
       \field{extraname}{3}
-      \field{sortinit}{5}
-      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{howpublished}{\url{https://www-cs-faculty.stanford.edu/~knuth/programs/erection.w}}

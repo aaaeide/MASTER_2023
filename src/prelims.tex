@@ -15,7 +15,9 @@ An instance of a fair allocation problem consists of a set of agents $N = \{1,2,
 \end{enumerate}
 Any function $v_i$ adhering to these properties is a valid characterization of exactly one matroid in terms of its rank function~\cite{schrijver-2003}. There are many other ways to characterize matroids, some of which are given in Section~\ref{sec:matroid-theory}.
 
-The output of an algorithm for fair allocation is an allocation of the goods to the agents. An allocation $A$ is an $n$-partition of $E$, $A = (A_1, A_2, \dots, A_n)$, where each $A_i$ is the bundle of goods allocated to agent $i$. Sharing is not allowed, so we require that $A_i\cap A_j = \emptyset$ for all $i\neq j$. We say that an allocation is \textit{clean} (also known as \textit{non-redundant} in the literature) if no agent has received any good they value at 0. An allocation is \textit{complete} if all goods are allocated. It might not be possible to guarantee both cleanness and completeness; for instance in a case where a good is 0-valued by all agents.
+Throughout this thesis, I will use the terms \textit{allocation} and \textit{partition} somewhat interchangeably. In set theory, an $n$-partition of a set is a grouping of its elements into $n$ subsets, such that each element occurs in exactly one subset. It is often required that the subsets be non-empty---when working with matroids this requirement is usually omitted since the empty set is independent (see Section~\ref{sec:matroid-theory}). In a fair allocation instance with $n$ agents, an allocation is an $n$-partition of $E$. 
+
+The output of an algorithm for fair allocation is an allocation of the goods to the agents. An allocation $A$ is an $n$-partition of $E$, $A = (A_1, A_2, \dots, A_n)$, where each $A_i$ is the bundle of goods allocated to agent $i$. Sharing is not allowed, so we require that $A_i\cap A_j = \emptyset$ for all $i\neq j$. We say that an allocation is \textit{clean} (also known as \textit{non-redundant} in the literature) if no agent has received any good they value at 0. An allocation is \textit{complete} if all goods are allocated, if not it is \textit{partially}. It might not be possible to guarantee both cleanness and completeness; for instance in a case where a good is 0-valued by all agents.
 
 \subsection{Envy-freeness}
 We are interested in producing \textit{fair} allocations. One of the most popular notions of fairness in the literature is envy-freeness (EF), which states that no agent should prefer another agent's bundle over her own (in fair allocation, an agent is \textit{envious} of another agent if she prefers that agent's bundle). An allocation $A$ is EF iff, for all agents $i,j\in N$,
@@ -255,7 +257,17 @@ Figure~\ref{fig:ex-graph-closure} shows an independent (acyclic) set $S$ of edge
 \end{figure}
 
 \subsection{Matroid union}
-The matroid union is an operation that allows us to produce a new matroid by combining the independent sets of some number of existing matroids. Given $n$ matroids $\mathfrak{M}_i = (E, \mathcal{I}_i)$, their union is given by $$\widehat{\mathfrak{M}} = (E, \{ I_1\cup\ldots\cup I_n : I_i\in\mathcal{I}_i,\ \forall i\in[n] \}).$$ $\widehat{\mathfrak{M}}$ is in fact a matroid~\cite[Ch. 42]{schrijver-2003}, whose independent sets are the the subsets $S\subseteq E$ that allow an $n$-partition $S_1,\ldots,S_n$ such that $S_i\in\mathcal{I}_i$, for all $i\in[n]$. In fair allocation jargon, if each $\mathfrak{M}_i$ is the matroid described by agent $i$'s valuation function $v_i$, a set of goods $S$ is independent in $\widehat{\mathfrak{M}}$ if and only if we can allocate it among the agents and produce utilitarian social welfare equal to $|S|$. Hence, each basis in $\widehat{\mathfrak{M}}$ corresponds to a clean (but not necessarily complete), MAX-USW allocation of the goods in $E$~\cite{barman2021existence}. It is a classic result of Edmonds~\cite{Edmonds2009} that a basis in $\widehat{\mathfrak{M}}$ can be computed in polynomial time, using the \textit{matroid union algorithm}. This is achieved by making use of two additional concepts, the \textit{exchange graph} and \textit{transfer paths}. 
+\label{sec:matroid-union}
+The matroid union is an operation that allows us to produce a new matroid by combining the independent sets of a collection of existing matroids. This is a powerful tool, as it allows us to reason about independence across multiple matroids, and has found several practical applications within fair allocation.
+
+Given $n$ matroids $\mathfrak{M}_i = (E, \mathcal{I}_i)$, their union is given, somewhat obtusely, by $$\widehat{\mathfrak{M}} = (E, \widehat{\mathcal{I}}) = (E, \{ I_1\cup\ldots\cup I_n : I_i\in\mathcal{I}_i,\ \forall i\in N \}).$$ 
+$\widehat{\mathfrak{M}}$ is in fact a matroid~\cite[Ch. 42]{schrijver-2003}, whose independent sets are the the subsets $S\subseteq E$ that allow an $n$-partition $S_1,\ldots,S_n$ such that $S_i\in\mathcal{I}_i$, for all $i\in N$. The following holds for all $n$-partitions of the elements of $E$:
+$$S=(S_1,\dots,S_n)\in\mathcal{I}_i\times\dots\times\mathcal{I}_n 
+\iff \bigcup_{i=1}^n S_i \in \widehat{\mathcal{I}}.$$
+
+In fair allocation jargon, if each $\mathfrak{M}_i$ is the matroid described by agent $i$'s valuation function $v_i$, a set of goods $S$ is independent in $\widehat{\mathfrak{M}}$ if and only if we can allocate it among the agents and produce utilitarian social welfare (ie. total value) equal to $|S|$. This follows from the fact that if $\mathcal{S}$ is an $n$-partition of $S$ such that $\mathcal{S} = (S_1,\dots,S_n)\in\mathcal{I}_1\times\dots\times\mathcal{I}_n$, then $S_i\in\mathcal{I}_i$ for each $i$. When this is the case, we have $v_i(S_i) = |S_i|$, and so SW$(S) = \sum_{i\in N}v_i(S_i) = \sum_{i\in N}|S_i| = |S|$.
+
+Hence, each basis in $\widehat{\mathfrak{M}}$ corresponds to a clean (but not necessarily complete), MAX-USW allocation of the goods in $E$~\cite{barman2021existence}. It is a classic result of Edmonds~\cite{Edmonds2009} that a basis in $\widehat{\mathfrak{M}}$ can be computed in polynomial time, using the \textit{matroid union algorithm}. This is achieved by making use of two additional concepts, the \textit{exchange graph} and \textit{transfer paths}. 
 
 \subsubsection*{The exchange graph}
 Given $n$ matroids $\mathfrak{M}_1 = (E, \mathcal{I}_1),\ldots,\mathfrak{M}_n = (E,\mathcal{I}_n)$, let $A$ be a collection of $n$ sets $A_1,\dots,A_n$ such that (a) $A_i\cap A_j = \emptyset$ when $i\neq j$, and (b) for each $i$, $A_i\subseteq E$ and $A_i\in\mathcal{I}_i$. In the context of a matroid-rank-valued fair allocation problem, $A$ is a clean allocation of the goods in $E$ to the agents in $N$.
@@ -278,7 +290,7 @@ By greedily growing clean bundles in this manner, we can find a maximal independ
 \subsection{Matroid erection}
 Knuth's general matroid construction, the implementation of which is discussed in Section~\ref{sec:kmc}, requires us to establish a few more matroid concepts. The \textit{rank-k truncation} of a rank-$r$ matroid $\mathfrak{M} = (E, \mathcal{I})$, is the rank-$k$ matroid $\mathfrak{M}^{(k)} = (E, \mathcal{I}^{(k)})$, where
 $$\mathcal{I}^{(k)} = \{ I \in \mathcal{I} : |I| \leq k \}.$$
-The \textit{truncation} of $\mathfrak{M}$ is given as $T(\mathfrak{M}) = \mathfrak{M}^{(r-1)}$. As a simple example, we have that the uniform matroid $U_n^{n-1} = T(F_n)$, where $F_n$ is the free matroid with $n$ elements. The \textit{erection} (I defer to Crapo for the choice of term~\cite{Crapo1970}) of the matroid $\mathfrak{M}$ is the matroid $\mathfrak{N}$ of rank $\leq r+1$ such that $\mathfrak{M} = T(\mathfrak{N})$. In other words, when taking the truncation of a matroid, we produce a new matroid by disregarding all independent sets of cardinality higher than some $k$. When taking the erection of a rank-$k$ matroid, we produce a new matroid by declaring some number of subsets $S \subseteq E$ such that $|S|=r+1$ to be independent, or equivalently, declaring some number of them to be closed sets of rank $r$. By declaring all of them to be dependent, we get the \textit{trivial erection} $\mathfrak{N} = \mathfrak{M}$. By declaring none of them dependent (ie. they are all independent sets $r(S) = |S| = r+1$), $\mathfrak{N}$ is the \textit{free erection} of $\mathfrak{M}$~\cite{greene-1991}.
+The \textit{truncation} of $\mathfrak{M}$ is given as $T(\mathfrak{M}) = \mathfrak{M}^{(r-1)}$. As a simple example, we have that the uniform matroid $U_n^{n-1} = T(F_n)$, where $F_n$ is the free matroid with $n$ elements. The \textit{erection} (I defer to Crapo for the somewhat esoteric choice of term~\cite{Crapo1970}) of the matroid $\mathfrak{M}$ is the matroid $\mathfrak{N}$ of rank $\leq r+1$ such that $\mathfrak{M} = T(\mathfrak{N})$. In other words, when taking the truncation of a matroid, we produce a new matroid by disregarding all independent sets of cardinality higher than some $k$. When taking the erection of a rank-$k$ matroid, we produce a new matroid by declaring some number of subsets $S \subseteq E$ such that $|S|=r+1$ to be independent, or equivalently, declaring some number of them to be closed sets of rank $r$. By declaring all of them to be dependent, we get the \textit{trivial erection} $\mathfrak{N} = \mathfrak{M}$. By declaring none of them dependent (ie. they are all independent sets $r(S) = |S| = r+1$), $\mathfrak{N}$ is the \textit{free erection} of $\mathfrak{M}$~\cite{greene-1991}.
 
 \begin{figure}\centering
   \resizebox{\columnwidth}{!}{
@@ -307,6 +319,21 @@ The \textit{truncation} of $\mathfrak{M}$ is given as $T(\mathfrak{M}) = \mathfr
   
   %%%% LEVEL 5
   \node[draw, mynode, fill=darktan] [below right of=ABD]  (ABCD) {0000};
+
+  \begin{scope}[on background layer]
+    \draw[line width=2mm, darktan] (AB) to (ABC);
+    \draw[line width=2mm, darktan] (AB) to (ABD);
+    \draw[line width=2mm, darktan] (AC) to (ABC);
+    \draw[line width=2mm, darktan] (AC) to (ACD);
+    \draw[line width=2mm, darktan] (AD) to (ABD);
+    \draw[line width=2mm, darktan] (AD) to (ACD);
+    \draw[line width=2mm, darktan] (BC) to (ABC);
+    \draw[line width=2mm, darktan] (BC) to (BCD);
+    \draw[line width=2mm, darktan] (BD) to (ABD);
+    \draw[line width=2mm, darktan] (BD) to (BCD);
+    \draw[line width=2mm, darktan] (CD) to (ACD);
+    \draw[line width=2mm, darktan] (CD) to (BCD);
+  \end{scope}
   
   
   %% LEVEL 1 to LEVEL 2
@@ -330,18 +357,18 @@ The \textit{truncation} of $\mathfrak{M}$ is given as $T(\mathfrak{M}) = \mathfr
       \path (D)  edge node {} (CD);
   %%% LEVEL 3 TO 4
   
-      \path (AB)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABC);
-      \path (AB)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABD);
-      \path (AC)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABC);
-      \path (AC)  edge [preaction={draw=darktan, line width=2mm}] node {} (ACD);
-      \path (AD)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABD);
-      \path (AD)  edge [preaction={draw=darktan, line width=2mm}] node {} (ACD);
-      \path (BC)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABC);
-      \path (BC)  edge [preaction={draw=darktan, line width=2mm}] node {} (BCD);
-      \path (BD)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABD);
-      \path (BD)  edge [preaction={draw=darktan, line width=2mm}] node {} (BCD);
-      \path (CD)  edge [preaction={draw=darktan, line width=2mm}] node {} (ACD);
-      \path (CD)  edge [preaction={draw=darktan, line width=2mm}] node {} (BCD);
+      \path (AB)  edge node {} (ABC);
+      \path (AB)  edge node {} (ABD);
+      \path (AC)  edge node {} (ABC);
+      \path (AC)  edge node {} (ACD);
+      \path (AD)  edge node {} (ABD);
+      \path (AD)  edge node {} (ACD);
+      \path (BC)  edge node {} (ABC);
+      \path (BC)  edge node {} (BCD);
+      \path (BD)  edge node {} (ABD);
+      \path (BD)  edge node {} (BCD);
+      \path (CD)  edge node {} (ACD);
+      \path (CD)  edge node {} (BCD);
   %%%% LEVEL 4 to 5
       \path (ABC)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABCD);
       \path (ABD)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABCD);
@@ -392,6 +419,31 @@ The \textit{truncation} of $\mathfrak{M}$ is given as $T(\mathfrak{M}) = \mathfr
   
   %%%% LEVEL 5
   \node[draw, mynode, fill=darktan] [below right of=ABD]  (ABCD) {0000};
+
+  \begin{scope}[on background layer]
+    \draw[line width=2mm, darktan] (A) to (AB);
+    \draw[line width=2mm, darktan] (A) to (AC);
+    \draw[line width=2mm, darktan] (A) to (AD);
+    \draw[line width=2mm, darktan] (B) to (AB);
+    \draw[line width=2mm, darktan] (B) to (BC);
+    \draw[line width=2mm, darktan] (B) to (BD);
+    \draw[line width=2mm, darktan] (C) to (AC);
+    \draw[line width=2mm, darktan] (C) to (BC);
+    \draw[line width=2mm, darktan] (C) to (CD);
+    
+    \draw[line width=2mm, darktan] (AB) to (ABC);
+    \draw[line width=2mm, darktan] (AB) to (ABD);
+    \draw[line width=2mm, darktan] (AC) to (ABC);
+    \draw[line width=2mm, darktan] (AC) to (ACD);
+    \draw[line width=2mm, darktan] (AD) to (ABD);
+    \draw[line width=2mm, darktan] (AD) to (ACD);
+    \draw[line width=2mm, darktan] (BC) to (ABC);
+    \draw[line width=2mm, darktan] (BC) to (BCD);
+    \draw[line width=2mm, darktan] (BD) to (ABD);
+    \draw[line width=2mm, darktan] (BD) to (BCD);
+    \draw[line width=2mm, darktan] (CD) to (ACD);
+    \draw[line width=2mm, darktan] (CD) to (BCD);
+  \end{scope}
   
   
   %% LEVEL 1 to LEVEL 2
@@ -401,32 +453,32 @@ The \textit{truncation} of $\mathfrak{M}$ is given as $T(\mathfrak{M}) = \mathfr
       \path (x)  edge node {} (D);
   
   %% LEVEL 2 to LEVEL 3
-      \path (A)  edge [preaction={draw=darktan, line width=2mm}] node {} (AB);
-      \path (A)  edge [preaction={draw=darktan, line width=2mm}] node {} (AC);
-      \path (A)  edge [preaction={draw=darktan, line width=2mm}] node {} (AD);
-      \path (B)  edge [preaction={draw=darktan, line width=2mm}] node {} (AB);
-      \path (B)  edge [preaction={draw=darktan, line width=2mm}] node {} (BC);
-      \path (B)  edge [preaction={draw=darktan, line width=2mm}] node {} (BD);
-      \path (C)  edge [preaction={draw=darktan, line width=2mm}] node {} (AC);%
-      \path (C)  edge [preaction={draw=darktan, line width=2mm}] node {} (BC);
-      \path (C)  edge [preaction={draw=darktan, line width=2mm}] node {} (CD);
+      \path (A)  edge node {} (AB);
+      \path (A)  edge node {} (AC);
+      \path (A)  edge node {} (AD);
+      \path (B)  edge node {} (AB);
+      \path (B)  edge node {} (BC);
+      \path (B)  edge node {} (BD);
+      \path (C)  edge node {} (AC);%
+      \path (C)  edge node {} (BC);
+      \path (C)  edge node {} (CD);
       \path (D)  edge node {} (AD);
       \path (D)  edge node {} (BD);
       \path (D)  edge node {} (CD);
   %%% LEVEL 3 TO 4
   
-      \path (AB)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABC);
-      \path (AB)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABD);
-      \path (AC)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABC);
-      \path (AC)  edge [preaction={draw=darktan, line width=2mm}] node {} (ACD);
-      \path (AD)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABD);
-      \path (AD)  edge [preaction={draw=darktan, line width=2mm}] node {} (ACD);
-      \path (BC)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABC);
-      \path (BC)  edge [preaction={draw=darktan, line width=2mm}] node {} (BCD);
-      \path (BD)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABD);
-      \path (BD)  edge [preaction={draw=darktan, line width=2mm}] node {} (BCD);
-      \path (CD)  edge [preaction={draw=darktan, line width=2mm}] node {} (ACD);
-      \path (CD)  edge [preaction={draw=darktan, line width=2mm}] node {} (BCD);
+      \path (AB)  edge node {} (ABC);
+      \path (AB)  edge node {} (ABD);
+      \path (AC)  edge node {} (ABC);
+      \path (AC)  edge node {} (ACD);
+      \path (AD)  edge node {} (ABD);
+      \path (AD)  edge node {} (ACD);
+      \path (BC)  edge node {} (ABC);
+      \path (BC)  edge node {} (BCD);
+      \path (BD)  edge node {} (ABD);
+      \path (BD)  edge node {} (BCD);
+      \path (CD)  edge node {} (ACD);
+      \path (CD)  edge node {} (BCD);
   %%%% LEVEL 4 to 5
       \path (ABC)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABCD);
       \path (ABD)  edge [preaction={draw=darktan, line width=2mm}] node {} (ABCD);

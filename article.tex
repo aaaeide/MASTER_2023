@@ -38,6 +38,8 @@
 
 \usepackage{epigraph}
 
+\usepackage{afterpage}
+\usepackage{subcaption}
 \usepackage{tikz}
 \usetikzlibrary{backgrounds}
 \usetikzlibrary{positioning}
@@ -52,7 +54,7 @@
 \pseudoset{label=\small\arabic*, hd-space}
 
 \tcbuselibrary{skins,theorems}
-\newtcbtheorem{algorithm}{Algorithm}{pseudo/ruled}{alg}
+\newtcbtheorem{algorithm}{Algorithm}{pseudo/filled, colback=lighttan, colbacktitle=darktan}{alg}
 \TabPositions{2cm}
 
 \setlength\epigraphwidth{.5\textwidth}
@@ -131,9 +133,8 @@ I would like to extend a heartfelt thanks to my friends and foes at Radio Revolt
 \input{src/introduction}
 \input{src/prelims.tex}
 \input{src/matroids.jl}
-\input{src/yankeeswap}
 \input{src/random_matroids/main}
-\input{src/results}
+\input{src/yankeeswap}
 \input{src/conclusions}
 
 

@@ -921,6 +921,98 @@
       \endverb
       \keyw{social choice,fair division,constraints}
     \endentry
+    \entry{Graphs2021}{misc}{}
+      \name{author}{6}{}{%
+        {{hash=1d30a8595a636bf14fcd181b6822212d}{%
+           family={Fairbanks},
+           familyi={F\bibinitperiod},
+           given={James},
+           giveni={J\bibinitperiod}}}%
+        {{hash=145e91a29c8cef5733e25e9bf3810db6}{%
+           family={Besançon},
+           familyi={B\bibinitperiod},
+           given={Mathieu},
+           giveni={M\bibinitperiod}}}%
+        {{hash=23e648d46c17f5dd1d7d82db93d2a81e}{%
+           family={Simon},
+           familyi={S\bibinitperiod},
+           given={Schölly},
+           giveni={S\bibinitperiod}}}%
+        {{hash=be20c25c36e22aee998ae7d9c6101046}{%
+           family={Hoffiman},
+           familyi={H\bibinitperiod},
+           given={Júlio},
+           giveni={J\bibinitperiod}}}%
+        {{hash=df18de09176e25e0595b07a7ec10e31b}{%
+           family={Eubank},
+           familyi={E\bibinitperiod},
+           given={Nick},
+           giveni={N\bibinitperiod}}}%
+        {{hash=bca7c93f55e669f71c4ff95e68ac9538}{%
+           family={Karpinski},
+           familyi={K\bibinitperiod},
+           given={Stefan},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{385ecca80dc1205dd8d9627c781d7b1f}
+      \strng{fullhash}{74bfb5a9ecbf126c98ede4232cccb178}
+      \strng{bibnamehash}{74bfb5a9ecbf126c98ede4232cccb178}
+      \strng{authorbibnamehash}{74bfb5a9ecbf126c98ede4232cccb178}
+      \strng{authornamehash}{385ecca80dc1205dd8d9627c781d7b1f}
+      \strng{authorfullhash}{74bfb5a9ecbf126c98ede4232cccb178}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{{JuliaGraphs/Graphs.jl}: an optimized graphs package for the Julia programming language}
+      \field{year}{2021}
+      \verb{urlraw}
+      \verb https://github.com/JuliaGraphs/Graphs.jl/
+      \endverb
+      \verb{url}
+      \verb https://github.com/JuliaGraphs/Graphs.jl/
+      \endverb
+    \endentry
+    \entry{Dijkstra1959}{article}{}
+      \name{author}{1}{}{%
+        {{hash=fa6182769b69c9f7b1559f8430d88929}{%
+           family={Dijkstra},
+           familyi={D\bibinitperiod},
+           given={E.\bibnamedelimi W.},
+           giveni={E\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+      }
+      \list{publisher}{2}{%
+        {Springer Science}%
+        {Business Media {LLC}}%
+      }
+      \strng{namehash}{fa6182769b69c9f7b1559f8430d88929}
+      \strng{fullhash}{fa6182769b69c9f7b1559f8430d88929}
+      \strng{bibnamehash}{fa6182769b69c9f7b1559f8430d88929}
+      \strng{authorbibnamehash}{fa6182769b69c9f7b1559f8430d88929}
+      \strng{authornamehash}{fa6182769b69c9f7b1559f8430d88929}
+      \strng{authorfullhash}{fa6182769b69c9f7b1559f8430d88929}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Numerische Mathematik}
+      \field{month}{12}
+      \field{number}{1}
+      \field{title}{A note on two problems in connexion with graphs}
+      \field{volume}{1}
+      \field{year}{1959}
+      \field{pages}{269\bibrangedash 271}
+      \range{pages}{3}
+      \verb{doi}
+      \verb 10.1007/bf01386390
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1007/bf01386390
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1007/bf01386390
+      \endverb
+    \endentry
     \entry{fienberg-2012}{article}{}
       \name{author}{1}{}{%
         {{hash=05db46edd38d5670035ac0b33e85c58f}{%
@@ -1073,8 +1165,8 @@
       \strng{authorbibnamehash}{c298ea7b4d0d6f69c1213d4e4fd81d87}
       \strng{authornamehash}{df200c52591bd29f61217bc5b0d0fd64}
       \strng{authorfullhash}{c298ea7b4d0d6f69c1213d4e4fd81d87}
-      \field{sortinit}{5}
-      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{eprintclass}{math.PR}
@@ -1107,8 +1199,8 @@
       \strng{authorbibnamehash}{9f15905aa70d375b6853be520f5f5dc2}
       \strng{authornamehash}{9f15905aa70d375b6853be520f5f5dc2}
       \strng{authorfullhash}{9f15905aa70d375b6853be520f5f5dc2}
-      \field{sortinit}{5}
-      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{issue}{1}
@@ -1152,8 +1244,8 @@
       \strng{authorbibnamehash}{61ec8115bb61a3bd19135c7c8b217c6a}
       \strng{authornamehash}{61ec8115bb61a3bd19135c7c8b217c6a}
       \strng{authorfullhash}{61ec8115bb61a3bd19135c7c8b217c6a}
-      \field{sortinit}{5}
-      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Nature}
@@ -1172,58 +1264,6 @@
       \endverb
       \verb{url}
       \verb https://doi.org/10.1038/30918
-      \endverb
-    \endentry
-    \entry{Graphs2021}{misc}{}
-      \name{author}{6}{}{%
-        {{hash=1d30a8595a636bf14fcd181b6822212d}{%
-           family={Fairbanks},
-           familyi={F\bibinitperiod},
-           given={James},
-           giveni={J\bibinitperiod}}}%
-        {{hash=145e91a29c8cef5733e25e9bf3810db6}{%
-           family={Besançon},
-           familyi={B\bibinitperiod},
-           given={Mathieu},
-           giveni={M\bibinitperiod}}}%
-        {{hash=23e648d46c17f5dd1d7d82db93d2a81e}{%
-           family={Simon},
-           familyi={S\bibinitperiod},
-           given={Schölly},
-           giveni={S\bibinitperiod}}}%
-        {{hash=be20c25c36e22aee998ae7d9c6101046}{%
-           family={Hoffiman},
-           familyi={H\bibinitperiod},
-           given={Júlio},
-           giveni={J\bibinitperiod}}}%
-        {{hash=df18de09176e25e0595b07a7ec10e31b}{%
-           family={Eubank},
-           familyi={E\bibinitperiod},
-           given={Nick},
-           giveni={N\bibinitperiod}}}%
-        {{hash=bca7c93f55e669f71c4ff95e68ac9538}{%
-           family={Karpinski},
-           familyi={K\bibinitperiod},
-           given={Stefan},
-           giveni={S\bibinitperiod}}}%
-      }
-      \strng{namehash}{385ecca80dc1205dd8d9627c781d7b1f}
-      \strng{fullhash}{74bfb5a9ecbf126c98ede4232cccb178}
-      \strng{bibnamehash}{74bfb5a9ecbf126c98ede4232cccb178}
-      \strng{authorbibnamehash}{74bfb5a9ecbf126c98ede4232cccb178}
-      \strng{authornamehash}{385ecca80dc1205dd8d9627c781d7b1f}
-      \strng{authorfullhash}{74bfb5a9ecbf126c98ede4232cccb178}
-      \field{sortinit}{6}
-      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{title}{{JuliaGraphs/Graphs.jl}: an optimized graphs package for the Julia programming language}
-      \field{year}{2021}
-      \verb{urlraw}
-      \verb https://github.com/JuliaGraphs/Graphs.jl/
-      \endverb
-      \verb{url}
-      \verb https://github.com/JuliaGraphs/Graphs.jl/
       \endverb
     \endentry
     \entry{Cormen2009-zm}{book}{}
@@ -1334,8 +1374,8 @@
       \strng{authornamehash}{ec08e6f01da5f3814f28a70c89c64656}
       \strng{authorfullhash}{ec08e6f01da5f3814f28a70c89c64656}
       \field{extraname}{3}
-      \field{sortinit}{6}
-      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{howpublished}{\url{https://www-cs-faculty.stanford.edu/~knuth/programs/erection.w}}
@@ -1364,8 +1404,8 @@
       \strng{authorbibnamehash}{c2f725420d858d857349241951121999}
       \strng{authornamehash}{c2f725420d858d857349241951121999}
       \strng{authorfullhash}{c2f725420d858d857349241951121999}
-      \field{sortinit}{6}
-      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{howpublished}{https://github.com/rfourquet/BitIntegers.jl}

@@ -1,0 +1,179 @@
+\begin{figure}[ht!]
+  \begin{subfigure}{0.3\textwidth}
+    \centering
+    \begin{tikzpicture}
+        \node[circle, draw] (1) at (0,0) {};
+        \node[circle, draw] (2) at (2,0) {};
+        \node[circle, draw] (3) at (1,1.73) {};
+        
+        \draw (1) --               node[above] {3} (2);
+        \draw (2) --               node[right] {2} (3);
+        \draw[preaction={draw=darktan, line width=2mm}] 
+              (3) --               node[left]  {1} (1);
+        \draw (1) edge[loop left]  node        {4} (1);
+        \draw (2) edge[loop right] node        {6} (2);
+        \draw (3) edge[loop above] node        {5} (3);
+    \end{tikzpicture}
+    \caption{Agent $a_1$}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.3\textwidth}
+    \centering
+    \begin{tikzpicture}
+        \node[draw,circle] (r) at (0,0) {};
+        \node[draw,circle] (q) at (0,1.73) {};
+        \node[draw,circle] (w) at (1.73,1.73) {};
+        \node[draw,circle] (t) at (1.73,0) {};
+
+        \draw[preaction={draw=darktan, line width=2mm}] 
+        (q) -- node[above] {2} (w);
+        \draw
+        (q) -- node[left] {1} (r);
+        \draw
+        (r) -- node[above] {4} (t);
+        \path (t) 
+        edge [bend left, preaction={draw=darktan, line width=2mm}] 
+        node[left] {3} (w);
+        \path (t) 
+        edge [bend right]
+        node[right] {5} (w);
+        \path (r) 
+        edge [loop left] 
+        node[left] {6} (r);
+    \end{tikzpicture}
+    \caption{Agent $a_2$}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.3\textwidth}
+    \centering
+    \begin{tikzpicture}        
+        \node[draw, circle] (q) at (0,0)       {};
+        \node[draw, circle] (w) at (1,0)       {};
+        \node[draw, circle] (e) at (1.5,0.87)  {};
+        \node[draw, circle] (r) at (1,1.73)    {};
+        \node[draw, circle] (t) at (0,1.73)    {};
+        \node[draw, circle] (y) at (-0.5,0.87) {};
+
+        % Draw the edges
+        \draw[preaction={draw=darktan, line width=2mm}] 
+              (q) -- node[above] {6} (w);
+        \draw[preaction={draw=darktan, line width=2mm}] 
+              (w) -- node[right] {5} (e);
+        \draw[preaction={draw=darktan, line width=2mm}] 
+              (e) -- node[right] {4} (r);
+        \draw (r) -- node[above] {3} (t);
+        \draw (t) -- node[left]  {2} (y);
+        \draw (y) -- node[left]  {1} (q);
+    \end{tikzpicture}
+    \caption{Agent $a_3$}
+  \end{subfigure}
+  \caption{Three agents represented by their valuation matroids, the allocation $A$ highlighted in yellow.}
+  \label{fig:not_mms}
+\end{figure}
+
+
+\begin{figure}[ht!]
+  \centering
+  \begin{tikzpicture}[scale=1.5]
+      \node[draw, circle]                         (1) at (0,0)       {1};
+      \node[draw, circle, fill=darktan]           (2) at (1,0)       {2};
+      \node[draw, circle, fill=darktan]           (3) at (1.5,0.87)  {3};
+      \node[draw, circle, fill=complementaryblue] (4) at (1,1.73)    {4};
+      \node[draw, circle, fill=complementaryblue] (5) at (0,1.73)    {5};
+      \node[draw, circle, fill=complementaryblue] (6) at (-0.5,0.87) {6};
+  
+      \begin{scope}[on background layer]
+          \draw[line width=2mm, averagegreen] (2) to (4);
+          \draw[line width=2mm, averagegreen] (3) to (4);
+      \end{scope}
+  
+      \draw[<->] (1) -- (2);
+      \draw[<->] (1) -- (3);
+      \draw[<-]  (1) -- (4);
+      \draw[<->] (2) -- (4);
+      \draw[<->] (3) -- (4);
+      \draw[<->] (3) -- (5);
+      \draw[->]  (5) -- (1);
+      \draw[->]  (5) -- (2);
+      \draw[->]  (5) -- (3);
+      \draw[->]  (6) -- (1);
+      \draw[->]  (6) -- (2);
+      \draw[->]  (6) -- (3);
+      \draw[->]  (6) -- (3);
+  \end{tikzpicture}
+  \caption{The exchange graph of the allocation during an intermediate step of \pr{AlgMMS}, with $F_{a_1}$ highlighted in yellow, goods belonging to agents in $S_>$ in blue and the transfer paths in green.}
+  \label{fig:exchange-graph}
+  \end{figure}
+
+
+\begin{figure}[ht!]
+  \begin{subfigure}{0.3\textwidth}
+    \centering
+    \begin{tikzpicture}
+        \node[circle, draw] (1) at (0,0) {};
+        \node[circle, draw] (2) at (2,0) {};
+        \node[circle, draw] (3) at (1,1.73) {};
+        
+        \draw (1) --               node[above] {3} (2);
+        \draw[preaction={draw=darktan, line width=2mm}]
+              (2) --               node[right] {2} (3);
+        \draw[preaction={draw=darktan, line width=2mm}] 
+              (3) --               node[left]  {1} (1);
+        \draw (1) edge[loop left]  node        {4} (1);
+        \draw (2) edge[loop right] node        {6} (2);
+        \draw (3) edge[loop above] node        {5} (3);
+    \end{tikzpicture}
+    \caption{Agent $a_1$}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.3\textwidth}
+    \centering
+    \begin{tikzpicture}
+        \node[draw,circle] (r) at (0,0) {};
+        \node[draw,circle] (q) at (0,1.73) {};
+        \node[draw,circle] (w) at (1.73,1.73) {};
+        \node[draw,circle] (t) at (1.73,0) {};
+
+        \draw (q) -- node[above] {2} (w);
+        \draw (q) -- node[left] {1} (r);
+        \draw[preaction={draw=darktan, line width=2mm}] 
+              (r) -- node[above] {4} (t);
+        \path (t) 
+        edge [bend left, preaction={draw=darktan, line width=2mm}] 
+        node[left] {3} (w);
+        \path (t) 
+        edge [bend right]
+        node[right] {5} (w);
+        \path (r) 
+        edge [loop left] 
+        node[left] {6} (r);
+    \end{tikzpicture}
+    \caption{Agent $a_2$}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.3\textwidth}
+    \centering
+    \begin{tikzpicture}        
+        \node[draw, circle] (q) at (0,0)       {};
+        \node[draw, circle] (w) at (1,0)       {};
+        \node[draw, circle] (e) at (1.5,0.87)  {};
+        \node[draw, circle] (r) at (1,1.73)    {};
+        \node[draw, circle] (t) at (0,1.73)    {};
+        \node[draw, circle] (y) at (-0.5,0.87) {};
+
+        % Draw the edges
+        \draw[preaction={draw=darktan, line width=2mm}] 
+              (q) -- node[above] {6} (w);
+        \draw[preaction={draw=darktan, line width=2mm}] 
+              (w) -- node[right] {5} (e);
+        \draw (e) -- node[right] {4} (r);
+        \draw (r) -- node[above] {3} (t);
+        \draw (t) -- node[left]  {2} (y);
+        \draw (y) -- node[left]  {1} (q);
+    \end{tikzpicture}
+    \caption{Agent $a_3$}
+  \end{subfigure}
+
+  \caption{The resulting MMS-fair allocation after augmenting along $(2,4)$.}
+  \label{fig:yes_mms}
+\end{figure}

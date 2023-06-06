@@ -1,0 +1,435 @@
+\chapter{The Matroids.jl API}
+\label{chap:matroids.jl}
+Matroids.jl exists to enable the empirical study of matroidal fair allocation. In this chapter, I consider what fair allocation-specific methods the Matroids.jl API should expose to achieve this goal, and how they might be implemented. While doing so, I keep track of which properties are required from the matroids being used. Chapter~\ref{chap:generating_matroids} describes how Matroids.jl generates a number of different matroid types, and how the getter functions for the properties we need are implemented.
+
+The implementation will draw inspiration from, and be designed to integrate with, Hummel and Hetland's well-organized Allocations.jl library~\cite{Hetland_Allocations_jl_2022}, which provides a range of algorithms for fair allocation of indivisible items. Allocations.jl currently supports additive and submodular valuations and a number of constraint types, including conflict constraints and cardinality constraints. Matroids.jl should extend Allocations.jl with support for matroid-rank valuations and matroidal constraints. As such, Matroids.jl should be structured in such a manner as to be familiar to those acquainted with Allocations.jl.
+
+In this chapter, I describe how the Matroids.jl API is designed to enable experimentation with fair allocation algorithms for matroid-rank valuations. First, I describe how Matroids.jl extends the fairness and efficiency measures of Allocations.jl to handle matroid-rank valuations. With that in hand, I enumerate a few recent, interesting algorithms for this use case, and discuss which requirements their implementation would pose to Matroids.jl. Finally, I show how Matroids.jl supports the matroid union operation, using a classic matroid procedure attributable to Knuth~\cite{knuth1973matroidpartitioning} and Edmonds~\cite{Edmonds2009} that have found widespread use in fair allocation with matroid-rank valuations.
+
+Implementing support for matroidal constraints is out of scope for this thesis. A discussion on how one might go about doing this in the future is included in Chapter~\ref{chap:conclusions}.
+
+\section{Fairness under matroid-rank valuations}
+If Matroids.jl is to be of use in the empirical study of matroidal fair allocation algorithms, we need to be able to evaluate the fairness of an allocation. In this chapter, I show how Matroids.jl implements the fairness criteria given in Chapter~\ref{chap:prelims}. The valuation profile of matroid-rank-valued allocation problem instance gives the valuation function of each agent. This is represented as a struct containing the matroid $\mathfrak{M}_i$ for each agent $i$. Agent $i$'s value for the set of goods $S$, $v_i(S)$, is the rank of $S$ in $\mathfrak{M}_i$.
+\begin{figure}[ht!]
+\begin{jllisting}
+"""
+    struct MatroidRank <: Profile
+
+A matroid rank valuation profile, representing how each agent values all possible bundles. The profile is constructed from `n` matroids, one for each agents, each matroid over the set of goods {1, ..., m}. 
+"""
+struct MatroidRank <: Profile
+    Ms::Vector{Matroid}
+    m::Int
+end
+
+value(V::MatroidRank, i, S) = rank(V.Ms[i], S)
+value(V::MatroidRank, i, g::Int) = value(V, i, Set(g))
+\end{jllisting}
+\caption{\jlinl{MatroidRank} represents a fair allocation instance with matroid-rank valuations.}
+\end{figure}
+
+\subsection*{Envy-freeness}
+Checking if an allocation is EF is the same for matroid-rank valuations as for additive valuations -- simply compare each agent's own bundle value with that agent's subjective valuation of each other agent's bundle. This is already implemented in Allocations.jl. In this section, I give the functions \jlinl{value_1}, \jlinl{value_x} and \jlinl{value_x0}, which are used for computing EF1, EFX$_+$ and EFX$_0$, respectively. These functions take in a valuation profile, an agent $i$ and a bundle $S$, and return the agent $i$'s value for $S$, up to some item. 
+
+To check efficiently if an allocation is EF1, we make use of the fact that a matroid rank function has binary marginals; in other words, the highest valued good in a bundle will always have value 1, unless the bundle value is 0. This gives us a simple way of checking for EF1. Similarly, since the least positively-valued good also has value 1, EFX$_+$ is the same as EF1.
+\begin{figure}[ht!]
+\begin{jllisting}
+value_1(V::MatroidRank, i, S) = max(value(V, i, S) - 1, 0)
+value_x(V::MatroidRank, i, S) = value_1(V, i, S)
+value_x0(V::MatroidRank, i, A) =
+    is_indep(V.Ms[i], A) ? value_1(V, i, A) : value(V, i, A)
+\end{jllisting}
+\caption{Methods for computing EF1, EFX$_+$ and EFX$_0$.}
+\end{figure}
+
+The value of the least valued good overall (including 0-values) depend on whether the bundle is independent. An independent set contains by definition no redundant elements, so if the bundle is independent, the least-valued good has value 1. If the bundle is dependent, it contains at least one 0-valued good, or, equivalently, a good whose removal does not affect the bundle value. This gives us EFX$_0$.
+
+\subsection*{Proportionality}
+To check whether an allocation $A$ is PROP or some relaxation thereof, we compare $v_i(A_i)$ against some threshold for every agent $i$. In this section, we give the functions for computing the threshold for PROP and its relaxations.
+
+\begin{figure}[ht!]
+\begin{jllisting}
+prop(V::MatroidRank, i, _) = rank(V.Ms[i])/na(V)
+prop_1(V::MatroidRank, i, A) = prop(V, i, A) - 1
+prop_x(V::MatroidRank, i, A) = prop_1(V, i, A)
+prop_x(V::MatroidRank, i, A) = 
+    is_closed(V.Ms[i], A) ? prop_1(V, i, A) : prop(V, i, A)
+\end{jllisting}
+\caption{Methods for computing PROP, PROP1, PROPX$_+$ and PROPX$_0$.}
+\end{figure}
+
+PROP$_i$ is simply the rank of $\mathfrak{M}_i$, $v_i(\mathcal{M})$, as this is the maximum value achievable for agent $i$, divided by the number of agents in the problem instance.
+
+To check for PROP1, we need to figure out if there exists some $g\in\mathcal{M}$ such that $v_i(A_i+g)\geq \frac{1}{n}v_i(\mathcal{M})$. We know, due to the hereditary property (as given in Section~\ref{sec:characterizations}) that unless $v_i(A_i) = v_i(\mathcal{M})$ already (in which case we have trivial PROP1), there exists $g\in\mathcal{M}\setminus A_i$ such that $\Delta_i(A_i, g) = 1$. To figure out if $A$ is PROP1, then, we need to check whether $v_i(A_i) + 1 \geq \frac{1}{n}v_i(\mathcal{M})$, or equivalently, whether $v_i(A_i) \geq \frac{1}{n}v_i(\mathcal{M})-1 = \text{PROP}_i - 1$. This is our PROP1 threshold. Since the least positively-valued element will also have a marginal value of 1, PROPX$_+$ is the same as PROP1.
+
+When checking for PROPX$_0$, we want the $g\in E\setminus A_i$ whose addition would increase the value of $A_i$ the least. The question, then, is whether there exists an element $g\in E\setminus A_i$ such that $\Delta_i(A_i, g) = 0$. If $A_i$ is a closed set (ie. maximal for its rank), then any additional good will increase the rank by 1, otherwise there exists some such $g$.
+
+\subsubsection*{Maximin share}
+Matroids.jl implements Barman and Verma's~\cite[Appendix A]{barman2021existence} method for computing agent $i$'s maximin share in polynomial time. Recall that the maximin share for agent $i$,  $\mu_i$, is the best bundle value she can achieve by allocating the goods to the $n$ agents and choosing the worst bundle for herself. Barman and Verma show that even if we require each bundle considered to be clean (ie. independent in $\mathfrak{M}_i$), we still find $\mu_i$. The task, therefore, is to find the partition of $E$ into $n$ sets independent in $\mathfrak{M}_i$ maximizing the minimum bundle value.
+
+This is equivalent to finding a maximum-size independent set in the $n$-fold union of $\mathfrak{M}_i$ with itself, ie.
+$$\widehat{\mathfrak{M}}_{i \times n} = (E, \widehat{\mathcal{I}}_{i\times n}) = (E, \{ I_1\cup\dots\cup I_n : I_t \in \mathcal{I}_i,\ \forall t \in N \}),$$ 
+which can be produced in polynomial time using the matroid union algorithm~\cite[Ch. 42]{schrijver-2003}. Let $\widehat{A}\in\widehat{\mathcal{I}}_{i\times n}$ be such a set. As shown in Section~\ref{sec:matroid-union}, $\widehat{A}$ allows an $n$-partition $A = (A_1,\dots,A_n)$ such that, in this case, $A_t\in\mathcal{I}_i$ for all $t\in N$.
+
+\include{src/matroids.jl/mms_i.jl}
+
+Matroids.jl implements Knuth's 1973 matroid union algorithm~\cite{knuth1973matroidpartitioning}. This is detailed in Section~\ref{sec:matroid-union}, for now let it suffice to say that we have a function called\linebreak\jlinl{matroid_partition_knuth73}, which, when given $k$ matroids $(\mathfrak{M}_1,\dots,\mathfrak{M}_k)$ over the same ground set $E$, returns a partition of $E$ into $k$ sets $S = (S_1, \dots, S_k)$ such that each set $S_t$ is independent in $\mathfrak{M}_t$. By passing $n$ copies of $\mathfrak{M}_i$, we get the $n$-partition $A$ as above.
+
+With $A$ in hand, Barman and Verma's procedure iteratively update the sets of $A$ as long as there exist $j, k \in N$ such that $v_i(A_j) - v_i(A_k) \geq 2$. This is equivalent to $|A_j| - |A_k| \geq 2$, since the sets are all independent in $\mathfrak{M}_i$. When this is the case, there exists (due to the exchange property) a good $g'\in A_j$ such that $A_k + g' \in \mathcal{I}_i$. The sets are updated $A_j \leftarrow A_j - g'$ and $A_k \leftarrow A_k + g'$ until no two sets differ in cardinality by more than one. Now, we have a partition of $E$ into $n$ evenly sized subsets that are independent in $\mathfrak{M}_i$. The value of worst of these is agent $i$'s maximin share. Matroids.jl's implementation of this procedure is given in Figure~\ref{code:mms_i}.
+
+
+
+
+\section{Three selected algorithms}
+\label{sec:three-algos}
+The purpose of Matroids.jl being to enable the empirical study of matroidal fair allocation, we should investigate what requirements algorithms in this space pose of a library that purports to enable their implementation. In order to maintain a manageable scope for this thesis, I restrict my attention to three recent algorithms for fair allocation with matroid-rank valuations, that, while relatively short and sweet, make use of some deep results from matroid theory to deliver well on a range of fairness criteria.
+
+\begin{algorithm}{\pr{Envy-Induced-Transfers}~\cite{benabbou-2021}}{eit}
+
+\textbf{Input:}  \tab A matroid-rank-valued fair allocation instance $(N, E, \{\mathfrak{M}_i\}_{i\in N})$.\\
+\textbf{Output:} \tab A clean, MAX-USW, EF1 allocation $A = (A_1,\dots,A_n)$.
+
+\begin{pseudo}[label=\small\arabic*, indent-mark]
+    Let $A =$ \pr{Matroid-Partition}$(\{\mathfrak{M}_i\}_{i\in N}, E)$ \ct{clean and MAX-USW} \\
+    \kw{while} there are two agents $i,j\in N$ st. $i$ envies $j$ more than 1 good, \kw{do}  \\+
+        Find good $g \in A_j$ with $\Delta_i(A_i, g) = 1$ \\
+        Update $A_j \leftarrow A_j - g$ \\
+        Update $A_i \leftarrow A_i + g$ \\-
+    \kw{end} \\
+    \kw{return} $A$
+\end{pseudo}
+  
+\end{algorithm}
+
+\paragraph{The Envy-Induced Transfers algorithm.} This algorithm is due to Benabbou, Chakraborty, Igarashi and Zick~\cite{benabbou-2021}. Named Algorithm 1 in the paper, it relies on a subroutine the authors name \textit{Envy-Induced Transfers} (EIT)---hence the name. Benabbou et al show that, for matroid-rank valuations, a Pareto Optimal, MAX-USW and EF1 allocation always exist and can be computed efficiently, using the simple greedy algorithm given in Algorithm~\ref{alg:eit}.
+
+The algorithm should look familiar; it is very similar to Barman and Verma's procedure for computing an agent's maximin share detailed in the previous section. The crux of both approaches is the concept of the matroid union: a maximum-size independent set in the union of the matroids in play is a clean MAX-USW allocation. We find such a clean allocation using the \pr{Matroid-Partition} subroutine, which accepts the matroids and the set of elements.
+
+With that in hand, we can use the exchange property of independent sets to greedily choose goods to transfer until the allocation has the desired properties. In this case, the algorithm continues transfering as long some agent envies another agent for more than one good; when it terminates, the allocation is thus EF1.
+
+\begin{algorithm}{\pr{AlgMMS}~\cite{barman2021existence}}{mms}
+
+\textbf{Input:}  \tab A matroid-rank-valued fair allocation instance $(N, E, \{\mathfrak{M}_i\}_{i\in N})$, \\
+\mbox{}\tab and $\mu_i =$ \pr{mms}$(N, E, \mathfrak{M}_i)$ for every $i\in N$.\\
+\textbf{Output:} \tab A clean, MAX-USW, MMS-fair allocation $A = (A_1,\dots,A_n)$.
+
+\begin{pseudo}[label=\small\arabic*, indent-mark]
+Let $A =$ \pr{Matroid-Partition}$(\{\mathfrak{M}_i\}_{i\in N}, E)$ \ct{clean and MAX-USW} \\
+Initialize $S_< = \{ i\in N : v_i(A_i) < \mu_i \}$ \\
+Initialize $S_> = \{ i\in N : v_i(A_i) > \mu_i \}$ \\
+\kw{while} $S_<\neq\emptyset$, \kw{do}  \\+
+    Select any agent $i \in S_<$\\
+    Let $F_i = \{ g\in E : \Delta_i(A_i, g) = 1 \}$ \\
+    Let $D$ = \pr{Build-Exchange-Graph}$(A)$ \\
+    Let $P =$ \pr{Shortest-Path}$(D, F_i, \bigcup_{j\in S_>}A_j)$ \\
+    % Update $A_k \leftarrow A_k\Lambda P$ for all $k\in N$ \\
+    % Update $A_i \leftarrow A_i + g_1$ and $A_j \leftarrow A_j - g_t$ \\
+    Update $A \leftarrow$ \pr{Transfer}$(A,P)$ \\
+    Reset $S_< = \{ i\in N : v_i(A_i) < \mu_i \}$ \\
+    Reset $S_> = \{ i\in N : v_i(A_i) > \mu_i \}$ \\-
+\kw{end} \\
+Let $junk = E \setminus \bigcup_{i=1}^n A_i$ be the set of unallocated goods \\
+\kw{return} $(A_1 \cup junk, A_2,\dots,A_n)$
+\end{pseudo}
+  
+\end{algorithm}
+
+\paragraph{AlgMMS.} This algorithm is given in Algorithm~\ref{alg:mms}, and is due to Barman and Verma~\cite{barman2021existence}. It is similar to \pr{Envy-Induced-Transfers} in that it first generates an initial clean, MAX-USW allocation using \pr{Martoid-Partition}, before massaging this allocation until the desired properties are met. In this case, the desired property is that of MMS-fairness; each agent should receive at least their share $\mu_i$, computed using the \pr{mms} subroutine, an implementation of which is described in the previous section.
+
+\pr{AlgMMS} achieves this by keeping track of which agents have received more than their MMS (these make up the set $S_>$), and which have received less ($S_<$). While there are agents $i$ such that $v_i(A_i) < \mu_i$, the algorithm constructs an exchange graph $D$ with the \pr{Build-Exchange-Graph} subroutine. It then finds a shortest path $P$ in $D$ from a good for which $i$ has positive marginal value (the set of goods $F_i$), to a good currently located in $A_j$, for some $j\in S_>$. Finally it augments, with \pr{Transfer} subroutine, the allocation along a transfer path  Barman and Verma show that MMS-fair MAX-USW allocations always exist for instances with matroid-rank valuations, and that \pr{AlgMMS} finds them in polynomial time. To build an intuitive understanding of how the algorithm works, let us take a look at an instructive example.
+
+\include{src/matroids.jl/fig.algmms}
+
+Figure~\ref{fig:not_mms} illustrates a situation in which we have three agents $a_1, a_2$ and $a_3$, whose valuation functions are the rank functions over three different graphic matroids, and six goods $E=\{1,\dots,6\}$. The allocation $A$ is highlighted in yellow: $A_{a_1} = \{1\}$, $A_{a_2} = \{2,3\}$ and $A_{a_3} = \{4,5,6\}$. This might be the initial allocation output from \pr{Matroid-Partition}, as it is MAX-USW (SW$(A) = 6 = |E|$). It should be clear that the maximin share of each agent is 2; in the situation depicted, $a_3$ has received a bundle of value 3, at the expense of $a_1$, who only received a bundle of value 1. Yet, $a_1$ is not envious of $a_3$'s bundle, since the goods in $A_{a_3}$ are all worthless to $a_1$. So $A$ is EF1, but not MMS-fair. 
+
+We begin to see that \pr{Envy-Induced-Transfers} has it easy; it can eliminate the envy one good at a time by moving a good directly from the envied to the envious agent, stopping when no agent directly envies another. This is equivalent to augmenting along a length-1 transfer path on the exchange graph. \pr{AlgMMS}, on the other hand, might encounter a situation such as this one, in which some agent has more than their MMS, whilst another has less, yet no good in the fortunate agent's bundle will improve the situation of the unfortunate one---in that case, there must be a transfer path of length > 1 between the two agents.
+
+Figure~\ref{fig:exchange-graph} shows the exchange graph $D(A)$ (ie. the directed graph with a node per good, and an edge $(u,v)$ iff good $u$ can be exchanged with good $v$ for no loss in value for the current holder of $u$). Highlighted in yellow are the goods in $F_{a_1}$, the set of goods $g$ such that $\Delta_{a_1}(A_{a_1}, g) = 1$. The blue nodes are the goods belonging to an agent in $S_>$, the set of agents who have received more than their MMS. The green edges show the paths between these two sets of goods. As we can see, the available transfer paths are $(2,4)$ and $(3,4)$, representing a transfer of good 4 from $A_{a_3}$ to $A_{a_2}$, and good 2 or 3 from $A_{a_2}$ to $A_{a_1}$, respectively.
+
+We augment along the transfer path $(2,4)$ and end up with the allocation shown in Figure~\ref{fig:yes_mms}, in which every agent has their maximin share of value. Success! After all agents have received their MMS, any remaining unallocated goods (none in the example case) are simply allocated to agent 1. This ensures that the allocation is complete, though not necessarily clean. These goods, denoted $junk$ in Algorithm~\ref{alg:mms}, are the goods for which no agent has any additional value, either because they were always 0-valued or because every agent has achieved a basis in their matroid.
+
+\pr{AlgMMS} highlights how simple algorithms can deliver strong fairness guarantees when working with matroid-rank valuations, compared to the general, additive case, where even computing the MMS of a single agent is NP-hard. With this short, highly grokkable algorithm, we can produce MMS-fair allocations in polynomial time.
+
+\paragraph{Yankee Swap.} The most recent of the three algorithms discussed in this chapter is due to Viswanathan and Zick~\cite{viswanathan2023yankee}, and is named Yankee Swap\footnote{Named after the gift exchange game also known as White Elephant and Dirty Santa, in which participants, upon receiving a gift, can choose to keep it or steal another player's gift. See \href{https://en.wikipedia.org/wiki/White_elephant_gift_exchange}{https://en.wikipedia.org/wiki/White\_elephant\_gift\_exchange} for details.}. This algorithm delivers very well on a range of fairness and efficiency notions; it finds, in polynomial time, a clean allocation that is MNW, MAX-USW, EFX, leximin and $\frac{1}{2}$-MMS-fair (every agent receiving at least half of their maximin share). In addition to this, the authors argue that a major selling point of the algorithm is that it is easy to reason about, as it does not use complex matroid optimization operations (ie. \pr{Matroid-Partition}) as subroutines.
+
+In the paper, the algorithm requires that a priority order $\pi$ of the agents is passed along with the fair allocation instance, where $\pi$ represents some permutation of the agents in $N$, denoting the prioritization of the agents. By choosing $\pi$ uniformly at random, the algorithm produces allocations that are also, in expectation, EF and PROP (known as \textit{ex ante envy-freeness} and \textit{ex ante proportionality}). When discussing Yankee Swap in this thesis, I will without loss of generality assume that the ordering of the agents in $N$ is selected in such a manner elsewhere beforehand; that is, it has been randomly chosen which agent is to be agent 1 before the algorithm is run.
+
+The pseudocode is given in Algorithm~\ref{alg:yankee-swap}. Similarly to \pr{Envy-Induced-Transfers} and \pr{AlgMMS}, it starts out with an initial allocation; in this case, however, this initial allocation is the one in which every good is allocated to the new agent $0$, whose bundle $A_0$ represents the unallocated goods. After this, the procedure is reminiscent of the other algorithms described in this section. At each iteration, $i$ is the highest priority (ie. first) agent with the least value whose bundle can still improve. We find $F_i$ as above, and build the exchange graph $D$ for the allocation $A$. If there exists a transfer path $P$ from $F_i$ to the set of unallocated good $A_0$, we augment $A$ along $P$. The transfer operation can be understood as a sequence of thefts, wherein agent $i$ improves her lot by stealing a good from another agent's bundle, whereupon the robbed agent compensate for this by stealing from another agent, and so on. The last agent in the path will lose a good, and so we are only interested in transfer paths ending at $A_0$, as these are the paths representing the allocation of one additional good, thereby increasing the social welfare of the allocation by one. If no such path exists, we know that $A_i$ cannot improve and we disregard $i$ in future iterations. The algorithm terminates when no bundles can be further improved, and the resulting allocation has the properties above.
+
+\begin{algorithm}{\pr{Yankee-Swap}~\cite{viswanathan2023yankee}}{yankee-swap}
+
+\textbf{Input:}  \tab A matroid-rank-valued fair allocation instance $(N, E, \{\mathfrak{M}_i\}_{i\in N})$. \\
+\textbf{Output:} \tab A clean, MAX-USW, EFX, leximin $\frac{1}{2}$-MMS-fair allocation\\
+\mbox{}\tab$A = (A_1,\dots,A_n)$.
+
+\begin{pseudo}[label=\small\arabic*, indent-mark]
+    $A = (A_0, A_1, \dots, A_n) = (E, \emptyset, \dots, \emptyset)$ \\
+    \id{flag}$_j =$ \cn{false} for all $j\in N$ \\
+    \kw{while} \id{flag}$_j = false$ for some $j\in N$, \kw{do}  \\+
+        Let $T$ be the agents $j\in N$ with \id{flag}$_j =$ \cn{false} \\
+        Let $T'$ be the agents in $T$ with least value in $A$ \\
+        Let $i$ be the first agent in $T'$ \ct{The highest priority agent in $T'$} \\
+        Let $F_i = \{ g\in E : \Delta_i(A_i, g) = 1 \}$ \\
+        Let $D$ = \pr{Build-Exchange-Graph}$(A)$ \\
+        \kw{if} there exists a shortest path $P =$ \pr{Shortest-Path}$(D, F_i, A_0)$, \kw{do} \\+
+            Update $A \leftarrow$ \pr{Transfer}$(A, P)$ \\-
+        \kw{else} \\+
+            \id{flag}$_i \leftarrow$ \cn{true} \\-
+        \kw{end} \\-
+    \kw{end} \\
+    \kw{return} $A$
+\end{pseudo}
+    
+\end{algorithm}
+
+\begin{table}[ht!]
+    \centering
+    \begin{tabular}{|l|m{6cm}|} % Adjust the width of the right column (2nd argument) as per your needs
+        \hline
+        \textbf{Algorithm} & \textbf{Requirements} \\
+        \hline
+        \pr{Envy-Induced Transfers} & \begin{itemize}
+                    \item \pr{Matroid-Partition}
+                    \item \pr{rank}
+                \end{itemize} \\
+                \hline
+                \pr{AlgMMS} & \begin{itemize}
+                    \item \pr{Matroid-Partition}
+                    \item \pr{mms}
+                    \item \pr{rank}
+                    \item \pr{indep}
+                    \item \pr{Build-Exchange-Graph}
+                    \item \pr{Shortest-Path}
+                    \item \pr{Transfer}
+                  \end{itemize} \\
+        \hline
+        \pr{Yankee-Swap} & \begin{itemize}
+                    \item \pr{Build-Exchange-Graph}
+                    \item \pr{Shortest-Path}
+                    \item \pr{Transfer}
+                    \item \pr{rank}
+                    \item \pr{indep}
+                  \end{itemize} \\
+        \hline
+    \end{tabular}
+    \caption{Functional requirements for Matroids.jl posed by three recent fair allocation algorithms}
+    \label{tab:algo_reqs}
+\end{table}
+
+Having understood the three algorithms we will try to implement, we can now enumerate the functional requirements they pose to Matroids.jl. Common logic has been extracted into separate subroutines, viz. \pr{Matroid-Partition}, \pr{Build-Exchange-Graph}, \pr{Shortest-Path} and \pr{Transger}. The marginal value function $\Delta_i$ is also required---depending on the circumstance, this can be implemented using either a rank function \pr{rank} or an independence oracle \pr{indep}. \pr{AlgMMS} also requires the ability to compute an agent's maximin share with the \pr{mms} subroutine. With all of this in place, we should be able to implement these algorithms. The requirements are listed in Table~\ref{tab:algo_reqs}.
+
+The implementation of \pr{rank} and \pr{indep} will depend on the specific type of matroid in question, and is discussed in the next chapter. We have already seen how Matroids.jl implements \pr{mms}. To finish off this chapter, then, let us examine how Matroids.jl supports the matroid partitioning procedure, and related operations on the exchange graph.
+
+\section{Matroid partitioning}
+\label{sec:matroid-union-impl}
+A common pattern for matroid-rank-valued fair allocation algorithms is, as we have seen, to initialize an allocation that corresponds to a maximum-sized independent set in the union of the matroids in play. This allocation must needs be MAX-USW and clean, but any other fairness notions are not guaranteed. The algorithms then exploit the exchange property of independent sets to massage the allocation into one that has the desired properties, in polynomial time. This being such a widespread approach, Matroids.jl should include the functionality for initializing such an allocation. 
+
+This procedure is referred to as both the matroid union algorithm and the matroid partitioning algorithm in the literature, since the task of finding a maximum-size independent set in a union of $n$ matroids over $E$ is equivalent to finding an $n$-partition of $E$, such that each part $i$ is independent in the $i$th matroid $\mathfrak{M}_i$. In this thesis, I refer to the procedure as \pr{Matroid-Partition}, following the example of Knuth, who in a 1973 paper describe the algorithm that will be implemented in this section. In the paper, Knuth expresses the problem in the following manner: 
+\begin{quote}
+  If $\mathfrak{M}_1,\dots,\mathfrak{M}_k$ are matroids defined on a finite set $E$, [find] whether or not the elements-of-$E$ can be colored with $k$ colors such that (i) all elements of color $j$ are independent in $\mathfrak{M}_j$, and (ii) the number of elements of color $j$ lies between given limits, $n_j\leq |E_j| \leq n_j'$.~\cite{knuth1973matroidpartitioning}
+\end{quote}
+If such a coloring exists, the algorithm produces it, otherwise it finds a proof to the contrary. While the terminology differs, we can see that this is in fact a colorful way of asking a question about a fair allocation instance with matroid-rank valuations. The ground set of goods $E$ we are already familiar with. There are $k$ agents, each of whom has her own color. A good is ``colored'' $j$ if it is allocated to agent $j$---we can picture each agent equipped with a can of spray paint they use to denote their goods. The question we are asking then, is whether we can find a clean allocation of the goods, such that each bundle is between certain size limits. Knuth shows that we can find the answer to this question in $\mathcal{O}(n^3 + n^2k)$ calls to the independence oracle.
+
+The Matroids.jl implementation of \pr{Matroid-Partition} is called\linebreak\jlinl{matroid_partition_knuth73} and is given Figure~\ref{code:matroid_partition_knuth73}. TODO: beskriv denne
+\skelpar
+
+\begin{figure}
+\begin{jllisting}
+    
+function matroid_partition_knuth73(Ms, floors=nothing)
+  n = Ms[1].n; k = length(Ms)
+  S0 = Set(1:n) # The unallocated items.
+  S = [Set() for _ in 1:k] # The partition-to-be.
+  color = Dict(x=>0 for x in 1:n) # color[x] = j iff x ∈ S[j].
+  for y in 1:k color[-y] = y end # -y is the 'standard' element of color y.
+  succ = [0 for _ in 1:n]
+
+  floors = floors === nothing ? [0 for _ in 1:k] : floors
+
+  # Ensure every part gets at least its lower limit.
+  for j in 1:k, i in 1:floors[j]
+    augment!(j, n, k, Ms, S, S0, succ, color)
+  end
+
+  # Allocate the rest.
+  while S0 != Set()
+    X = augment!(0, n, k, Ms, S, S0, succ, color)
+    
+    if length(X) != 0
+      return (S, X)
+    end
+  end
+
+  return (S, Set())
+end
+    
+\end{jllisting}
+\caption{\jlinl{matroid_partition_knuth73}}
+\label{code:matroid_partition_knuth73}
+\end{figure}
+
+\begin{figure}[ht!]
+\begin{jllisting}
+
+function augment!(r, n, k, Ms, S, S0, succ, color)
+  for x in 1:n succ[x] = 0 end
+  
+  A = Set(1:n)
+  B = r > 0 ? Set(-r) : Set(-j for j in 1:k)
+  
+  while B != Set()
+    C = Set()
+    for y ∈ B, x ∈ A
+      j = color[y]
+
+      if x ∉ S[j] && is_indep(Ms[j], x ∪ setdiff(S[j], y))
+        succ[x] = y
+        A = setdiff(A, x)
+        C = C ∪ x
+        if color[x] == 0 
+
+          # x is uncolored - transfer:
+          while x ∈ 1:n
+            y = succ[x]
+            j = color[x]
+            
+            if j == 0 setdiff!(S0, x) else setdiff!(S[j], x) end
+        
+            j = color[y]
+            S[j] = S[j] ∪ x
+            color[x] = j
+            x = y
+          end
+
+          return Set() 
+        end
+      end
+    end
+    B = C
+  end
+
+  # We did not find a transfer path to 0.
+  return setdiff(A, reduce(∪, S))
+end
+
+\end{jllisting}
+\caption{The \jlinl{augment!} subroutine in \jlinl{matroid_partition_knuth73}}
+\end{figure}
+
+\section{Exchange graphs and transfer paths}
+As shown in Section~\ref{sec:three-algos}, exchange graphs and transfer paths on these are useful tools for fair allocation with matroid-rank valuations. Therefore, Matroids.jl exposes functions for computing the exchange graph $D(A)$ of an allocation $A$, finding a shortest (transfer) path $P$ between two sets of nodes in $D(A)$, and producing a new allocation $A \Lambda P$ by augmenting $A$ along $P$.
+
+\paragraph{Building the exchange graph.} The implementation of \pr{Build-Exchange-Graph} is given in Figure~\ref{code:exchange_graph}. Matroids.jl uses the Graphs.jl library~\cite{Graphs2021} to handle graphs, and the Allocations.jl library~\cite{Hetland_Allocations_jl_2022} provide several handy types and functions for representing and working with allocations. Armed with tools from these libraries, building the exchange graph is a breeze. After initializing the empty directed graph $D = (E, \emptyset)$ with a node per good and no edges, \jlinl{exchange_graph} iterates over all pairs of goods $g_i, g_j$, and adds an edge $(g_i, g_j)$ if the owner of $g_i$ would be just as happy with the bundle where $g_i$ is replaced with $g_j$.
+
+If we know that all bundles $A_i$ are independent in $\mathfrak{M}_i$, then we do not need to actually compute the rank of the bundle before and after some $g_i, g_j$ replacement---instead, we can simply check if the new bundle $A_i - g_i + g_j$ is also independent, replacing a couple of calls to \pr{rank} with one call to the cheaper \pr{indep}. For the use cases outlined in Section~\ref{sec:three-algos}, this is always the case, and so this behavior is default.
+
+With this implementation, Matroids.jl constructs the exchange graph for an allocation in $\mathcal{O}(m^2)$ calls to the independence oracle (or rank function).
+
+\begin{figure}
+\begin{jllisting}
+  
+function exchange_graph(Ms, A; all_indep=true) where T <: Matroid
+  m = ni(A)
+  D = SimpleDiGraph(m)
+  
+  # Checking for each i,j whether element ei can be replaced with ej.
+  for gi in 1:m, gj in setdiff(1:m, gi)
+    if !owned(A, gi) continue end
+    i = owner(A, gi)
+
+    if all_indep
+      # Check if A_i - ei + ej is independent in Mi.
+      if is_indep(Ms[i], setdiff(bundle(A, i), gi) ∪ gj)
+        add_edge!(D, gi, gj)
+      end
+    else
+      if rank(Ms[i], bundle(A, i)) == rank(Ms[i], setdiff(bundle(A,i), gi) ∪ gj)
+        add_edge!(D, gi, gj)
+      end
+    end
+  end
+
+  return D
+end
+
+\end{jllisting}
+\caption{\jlinl{exchange_graph(Ms, A)} finds the exchange graph of the allocation \jlinl{A}, given the array of matroids \jlinl{Ms}}
+\label{code:exchange_graph}
+\end{figure}
+
+\paragraph{Finding a transfer path.} The purpose of the exchange graph $D(A)$ is to find a transfer path $P$ on it, and produce the augmented allocation $A\Lambda P$. A transfer path is by definition a shortest path from some set of nodes (in the case of \pr{Yankee-Swap}, $F_i$) to some other set of nodes ($A_0$) in $D(A)$. Matroids.jl achieves this using Dijkstra's algorithm~\cite{Dijkstra1959} for finding the shortest paths between a set of nodes and all other nodes. TODO: Diskutere kjøretid? Andre shortest path algos? \skelline
+
+\begin{figure}
+\begin{jllisting}
+
+function find_shortest_path(D, from, to)
+  X = intersect(from, to)
+  if length(X) > 0
+    return [X[1]]
+  end
+
+  ds = dijkstra_shortest_paths(D, from)
+  paths = []
+
+  for g in to
+    path = [ds.parents[g], g]
+    
+    while path[1] ∉ from
+      if path[1] == 0 @goto skip end
+      pushfirst!(path, ds.parents[path[1]])
+    end
+
+    push!(paths, path)
+    @label skip
+  end
+
+  if length(paths) == 0 return nothing end
+  return argmin(length, paths)
+end
+
+\end{jllisting}
+\caption{\jlinl{find_shortest_path} finds a shortest path between \jlinl{from} and \jlinl{to} using Dijkstra's algorithm}
+\label{code:find_shortest_path}
+\end{figure}
+
+\paragraph{Transfer path augmentation.} With a transfer path in hand, all that is left is to implement a function to create a new allocation by passing the goods along the path. Figure~\ref{code:transfer} shows the source code for \jlinl{transfer!}. For each good $g$ in the path, there is a winning agent $x$ (initialized to $i$) who receives $g$, and a losing agent $y$, who loses $g$. At the end of each iteration, $y \leftarrow x$, so that only the owner of the last good in the path actually experiences a reduction in bundle value. After each transfer, the set of edges out of $g$ in the exchange graph is updated.
+
+\begin{figure}
+\begin{jllisting}
+
+  function transfer!(Ms, D, A, i, path; all_indep=true)
+  # At every iteration, x receives the next good in the path.
+  x = i
+  for g in path
+    # y is the current owner, who loses g.
+    y = owner(A, g)
+    deny!(A, y, g)
+    give!(A, x, g)
+
+    # Recalculate neighbors of g in D.
+    for g_ in vertices(D)
+      # Check if A_x - g + g_ is independent in Mi.
+      if all_indep
+        if is_indep(Ms[x], setdiff(bundle(A, x), g) ∪ g_)
+          add_edge!(D, g, g_)
+        else
+          rem_edge!(D, g, g_)
+        end
+        
+      else
+        if rank(Ms[x], bundle(A, x)) == rank(Ms[x], setdiff(bundle(A, x), g) ∪ g_)
+          add_edge!(D, g, g_)
+        else
+          rem_edge!(D, g, g_)
+        end
+      end
+    end
+
+    x = y
+  end
+end
+
+\end{jllisting}
+\caption{\jlinl{transfer!} augments \jlinl{A} along \jlinl{path}, updating \jlinl{D} as it goes along}
+\label{code:transfer}
+\end{figure}

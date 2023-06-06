@@ -1,8 +1,6 @@
-% The \textit{essential closed sets} (often referred to as essential flats) of a matroid are the closed sets whose existence cannot be inferred from the closed sets of lower rank. The size-4, rank-3 dependent set of $\mathfrak{U}$ is an essential closed set. The essential closed sets of a matroid, together with their ranks, fully determine the matroid~\cite{kelly-1978}. A rank-$r$ matroid can also be described inductively as a sequence of erections $(X_0, X_1, \dots, X_{r-1})$, where $X_k$ is a set of $(k+1)$-subsets of $E$ that roughly encode the closed sets of rank $k$~\cite{pendavingh2016enumerating}. This insight is the basis for Knuth's matroid construction algorithm.
-
 \section{Knuth's matroid construction}
 \label{sec:kmc}
-In the preparatory project delivered fall of 2022, I implemented Knuth's 1974 algorithm for the random generation of arbitrary matroids via the erection of closed sets \cite{knuth-1975}. With this, I was able to randomly generate matroids of universe sizes $n \leq 12$, but for larger values of $n$ my implementation was unbearably slow. In this section, Knuth's method for random matroid construction will be described, along with the steps I have taken to speed up my initial, naïve implementation.
+In the preparatory project to this thesis, delivered to my advisor in the fall of 2022, I implemented Knuth's 1974 algorithm for the random generation of arbitrary matroids via the erection of closed sets \cite{knuth-1975}. With this, I was able to randomly generate matroids of universe sizes $n \leq 12$, but for larger values of $n$ my implementation was unbearably slow. In this section, Knuth's method for random matroid construction will be described, along with the steps I have taken to speed up my initial, naïve implementation.
 
 \pr{Knuth-Matroid} (given in Algorithm~\ref{alg:knuth}) accepts the ground set $E$ and a list $\mathrm{X}$ such that $\mathrm{X}[i] \subseteq 2^E$, and produces the rank-$r$ matroid $\mathfrak{M}$ such that $\mbox{rank}(X) = k$ for each $X \in \mathrm{X}[k]$. This is done in a bottom-up manner through $r$ sequential erections starting from the empty rank-0 matroid, $\mathfrak{M}^{(0)}$, each iteration $i$ producing the erection $\mathfrak{M}^{(i+1)}$ from $\mathfrak{M}^{(i)}$ and $\mathrm{X}[i]$. The algorithm outputs the tuple $(E, \mathrm{F})$, where $\mathrm{F} = [F_0, \ldots, F_r]$, $r$ being the final rank of $\mathfrak{M}$ and $F_i$ the family of closed sets of rank $i$. In the paper, Knuth shows that $\bigcup_{i=0}^r \mathrm{F}[r] = \mathcal{F}$, where $\mathcal{F}$ is the set of closed sets of a matroid, and so the algorithm produces a valid matroid represented by its closed sets.
 
@@ -61,7 +59,7 @@ Given no enlargements ($\mathrm{X}[i] = \emptyset$), the resulting matroid $\mat
 \subsection{Randomized KMC}
 In the randomized version of \pr{Knuth-Matroid}, we generate matroids by applying a supplied number of random coarsening steps, instead of enlarging with supplied sets. This is done by applying \pr{Superpose!} immediately after adding the covers, then choosing a random member $A$ of $\mathrm{F}[r+1]$ and a random element $a \in E \setminus A$, replacing $A$ with $A \cup \{a\}$ and finally reapplying \pr{Superpose!}. The parameter $p = (p_1, p_2, \ldots)$ gives the number of such coarsening steps to be applied at each iteration of the algorithm.
 
-The pseudocode given up to this point corresponds closely to the initial Julia implementation, which can be found in Appendix~\ref{apx:randkmcv1}. It should already be clear that this brute force implementation leads to poor performance -- for instance, the \pr{Superpose!} method uses a triply nested for loop, which should is a candidate for significant improvement. Section~\ref{sec:improving-performance} describes the engineering work done to create a more performant implementation.
+The pseudocode descriptions of Knuth's matroid construction hews closely to the initial Julia implementation. It should already be clear that this brute force approach leads to poor performance---for instance, the \pr{Superpose!} method uses a triply nested for loop, which seems like a candidate for significant improvement. Section~\ref{sec:improving-performance} describes the engineering work done to create a more performant implementation.
 
 \begin{algorithm}[float*=ht!]{\pr{Randomized-Knuth-Matroid}(E, p)}{rkmc}
 
@@ -98,12 +96,10 @@ The pseudocode given up to this point corresponds closely to the initial Julia i
 
 \subsection{Improving performance}
 \label{sec:improving-performance}
-When recreating Knuth's table of observed mean values for the randomly generated matroids, some of the latter configurations of $n$ and $(p_1, p_2, \ldots)$ was unworkably slow, presumably due to my naïve implementation of the algorithm. Table~\ref{tab:perf_v1} shows the performance of this first implementation.
+In the preparatory project to this thesis, I was able to recreate Knuth's table of observed mean values for the randomly generated matroids, but I was dismayed to find that my implementation was unable to handle matroids whose ground sets were even just a few elements larger. Considering that Knuth was able to run his experiments on the hardware available to him in the 1970s, I concluded that my implementation had room for improvement. Table~\ref{tab:perf_v1} shows the performance of my first implementation.
 
 \begin{table*}[ht!]
   \centering
-  \caption{Performance of $\texttt{random\_kmc\_v1}$.}
-  \label{tab:perf_v1}
   \begin{threeparttable}
     \begin{tabular}{llllllllll}
       \toprule
@@ -123,14 +119,14 @@ When recreating Knuth's table of observed mean values for the randomly generated
       \bottomrule
     \end{tabular}
   \end{threeparttable}
+  \caption{Performance of $\texttt{random\_kmc\_v1}$.}
+  \label{tab:perf_v1}
 \end{table*}
 
-The performance was measured using Julia's \jlinl{@timed}\footnote{\href{https://docs.julialang.org/en/v1/base/base/\#Base.@timed}{https://docs.julialang.org/en/v1/base/base/\#Base.@timed}} macro, which returns the time it takes to execute a function call, how much of that time was spent in garbage collection and the number of bytes allocated. As is evident from the data, larger matroids are computationally quite demanding to compute with the current approach, and the time and space requirements scales exponentially with $n$. Can we do better? As it turns out, we can; after the improvements outlined in this section, we will be able to generate matroids over universes as large as $n=128$ in a manner of seconds and megabytes.
+The performance was measured using Julia's \jlinl{@timed}\footnote{\href{https://docs.julialang.org/en/v1/base/base/\#Base.@timed}{https://docs.julialang.org/en/v1/base/base/\#Base.@timed}} macro, which returns the time it takes to execute a function call, how much of that time was spent in garbage collection and the number of bytes allocated. The experiments was run on a 2021 MacBook Pro with the Apple M1 chip and 16GB RAM. As is evident from the data, larger matroids are computationally quite demanding to compute with this current approach, and the time and space requirements scales exponentially with $n$.
 
 \subsubsection{Representing sets as binary numbers}
 The first improvement we will attempt is to represent our closed sets using one of Julia's \jlinl{Integer} types of bit width at least $n$, instead of as a \jlinl{Set}\footnote{\href{https://docs.julialang.org/en/v1/base/collections/\#Base.Set}{https://docs.julialang.org/en/v1/base/collections/\#Base.Set}} of elements of $E$. Appendix~\ref{apx:code} contains all the code referenced in this chapter; the Julia implementation at this point can be found in \ref{apx:randkmcv2}. 
-
-\skelpar{Skrive mer om hvordan Set\{Set\{Integer\}\} lagres i minnet og fordelene med å gå over til Set\{Integer\}.}
 
 The idea is to define a family of closed sets of the same rank as \jlinl{Set\{UInt16\}}. Using \jlinl{UInt16} we can support ground sets of size up to 16. Each 16-bit number represents a set in the family. For example, the set $\{ 2,5,7 \}$ is represented by $$164 = 0\rm{x}00\rm{a}4 = 0\rm{b}0000000010100100 = 2^7+2^5+2^2.$$ At either end we have $\emptyset \equiv 0\rm{x}0000$ and $E \equiv 0\rm{xffff}$ (if $n = 16$). The elementary set operations we will need have simple implementations using bitwise operations.
 
@@ -151,8 +147,6 @@ We can now describe the bitwise versions of the required methods. The bitwise im
 
 \begin{table*}[ht!]
   \centering
-  \caption{Performance of $\texttt{random\_kmc\_v2}$.}
-  \label{tab:perf_v2}
   \begin{threeparttable}
     \begin{tabular}{llllllllll}
       \toprule
@@ -172,9 +166,11 @@ We can now describe the bitwise versions of the required methods. The bitwise im
       \bottomrule
     \end{tabular}
   \end{threeparttable}
+  \caption{Performance of $\texttt{random\_kmc\_v2}$.}
+  \label{tab:perf_v2}
 \end{table*}
 
-The performance of \mono{random\_kmc\_v2} is shown in Table~\ref{tab:perf_v2}. It is clear that representing closed sets using binary numbers represents a substantial improvement -- we are looking at performance increases of 100x-1000x across the board. Great stuff!
+The performance of \mono{random\_kmc\_v2} is shown in Table~\ref{tab:perf_v2}. It is clear that representing closed sets using binary numbers represents a substantial improvement -- we are looking at performance increases of 100x-1000x across the board.
 
 
 \subsubsection{Sorted superpose}
@@ -208,8 +204,6 @@ Unfortunately, as Table~\ref{tab:perf_v3} shows, this implementation is a few ti
 
 \begin{table*}[ht!]
   \centering
-  \caption{Performance of $\texttt{random\_kmc\_v3}$.}
-  \label{tab:perf_v3}
   \begin{threeparttable}
     \begin{tabular}{llllllllll}
       \toprule
@@ -229,6 +223,8 @@ Unfortunately, as Table~\ref{tab:perf_v3} shows, this implementation is a few ti
       \bottomrule
     \end{tabular}
   \end{threeparttable}
+  \caption{Performance of $\texttt{random\_kmc\_v3}$.}
+  \label{tab:perf_v3}
 \end{table*}
 
 
@@ -259,8 +255,6 @@ Table~\ref{tab:perf_v4} shows that the iterative superpose was a meaningful impr
 
 \begin{table*}[ht!]
   \centering
-  \caption{Performance of $\texttt{random\_kmc\_v4}$.}
-  \label{tab:perf_v4}
   \begin{threeparttable}
     \begin{tabular}{llllllllll}
       \toprule
@@ -282,6 +276,8 @@ Table~\ref{tab:perf_v4} shows that the iterative superpose was a meaningful impr
       \bottomrule
     \end{tabular}
   \end{threeparttable}
+  \caption{Performance of $\texttt{random\_kmc\_v4}$.}
+  \label{tab:perf_v4}
 \end{table*}
 
 \subsubsection{Rank table}
@@ -440,21 +436,11 @@ The full code for \jlinl{random_kmc_v6} can be found in Appendix~\ref{apx:randkm
 \end{table*}
 \skelpar
 
-\subsection{What do the generated matroids look like?}
-\subsubsection{Observations}
-\begin{enumerate}
-  \item The average cardinality of the closed sets of a given rank is usually not very much higher than the rank. If the average cardinality were to stray much, all the sets merge instead and the sole closed set of that rank would become $E$. This might be a useful heuristic when finding the rank of a set.
-\end{enumerate}
-
-\skelpar{@Benchmarking. Histogrammer. Beskrive variansen i matroide-størrelse ifht input.}
-
-\subsection{Finding the properties of arbitrary matroids}
-To build a general matroid library, we want to be able to access all properties of a generated matroid $\mathfrak{M}$, viz. its bases $\mathcal{B}$, independent sets $\mathcal{I}$, circuits $\mathcal{C}$, and rank function $\fn{rank} : 2^E \to \mathbb{Z}^*$.
-
-In this section, I will first describe an extension of \pr{Knuth-Matroid} that is also fully enumerates $\mathcal{I}$ and $\mathcal{C}$ for $\mathfrak{M}$ when $n$ is small enough. However, this approach does not scale well for larger values of $n$. For values of $n$ up to 128, we will therefore restrict our attention to independent sets and the rank function, as these are the matroid properties that are relevant to our usecase of fair allocation.
+\subsection{Finding the properties of erected matroids}
+The fact that \pr{Knuth-Matroid} fully enumerates all closed sets of the matroid as it erects it rank by rank begs the question: can we build the other families of sets for the matroids alongside the closed sets? In this section, I will first describe an extension of \pr{Knuth-Matroid} that also fully enumerates $\mathcal{I}$ and $\mathcal{C}$ for $\mathfrak{M}$ when $n$ is small enough. Sadly, this approach does not scale well for larger values of $n$, as the size of these sets undergoes a combinatorial explosion as $n$ increases. 
 
 \subsubsection{Up-front enumeration of circuits and independent sets for smaller matroids}
-In his 1974 paper~\cite{knuth-1975}, Knuth includes an ALGOL W~\cite{wirth-1966} implementation that also enumerates all circuits and independent sets for the generated matroid. A later implementation in C called ERECTION.W can be found at Knuth's home page~\cite{knuth-2003}. \jlinl{random_erect} is an extension of \jlinl{random_kmc_v6} that finds $\mathcal{I}$ and $\mathcal{C}$ by pre-populating the rank table with all subsets of $E$. The full source code for \jlinl{random_erect} can be found in Appendix~XXX.
+In his 1974 paper~\cite{knuth-1975}, Knuth includes an ALGOL W~\cite{wirth-1966} implementation that also enumerates all circuits and independent sets for the generated matroid. A later implementation in C called ERECTION.W can be found at his home page~\cite{knuth-2003}. \jlinl{random_erect} is an extension of \jlinl{random_kmc_v6} that finds $\mathcal{I}$ and $\mathcal{C}$ by pre-populating the rank table with all subsets of $E$. The full source code for \jlinl{random_erect} can be found in Appendix~XXX.
 
 \begin{jllisting}
   # Populate rank table with 100+cardinality for all subsets of E.
@@ -469,11 +455,24 @@ Covers are generated and sets inserted in the same manner as in\linebreak\jlinl{
 
 \skelpar
 
-\subsubsection{Determining matroid properties after erection}
-In his 1989 paper, Greene introduces the concept of \textit{descriptive sufficiency}. A subcollection of closed sets of a matroid is descriptively sufficient if it can be used to identify the fundamental properties of the matroid using certain easily applied conditions. The collection of all closed sets of a matroid is one descriptively sufficient such collection~\cite{greene-1991}. 
+\subsubsection{Determining matroid properties post-erection}
+In a 1989 paper, Greene introduces the concept of \textit{descriptive sufficiency}. A subcollection of closed sets of a matroid is descriptively sufficient if it can be used to identify the fundamental properties of the matroid using certain easily applied conditions. The collection of all closed sets of a matroid is one descriptively sufficient such collection~\cite{greene-1991}. 
+
+\paragraph{Rank function.} With every closed set of a matroid in hand, finding the rank of a set $S$ is simply a matter of finding the closed set $F$ of least rank such that $S\subseteq F$.
+
+\begin{figure}[ht!]
+\begin{jllisting}
+function rank(M::ClosedSetsMatroid, S::Integer)
+  for (r, Fr) in enumerate(M.F), B ∈ Fr
+      if S&B == S return r-1 end
+  end
+end
+\end{jllisting}
+\end{figure}
 
 \paragraph{Indepence oracle.} To check if a set $S$ is independent, we compare it with the closed sets of rank $|S|-1$. If $S$ is indeed independent, it cannot be a subset of a closed set of lower rank, so if we find one such set we return false. Otherwise, $S$ is independent.
 
+\begin{figure}[ht!]
 \begin{jllisting}
 function is_indep(M::ClosedSetsMatroid, S::Integer)
   t = Base.count_ones(S)
@@ -487,9 +486,22 @@ function is_indep(M::ClosedSetsMatroid, S::Integer)
   return true
 end
 \end{jllisting}
+\end{figure}
 
+\paragraph{Closure function.} Determining the closure of a set $S$ in this case is the exact same procedure as finding the rank: the closed set $F$ of least rank such that $S\subseteq F$ is the closure of $S$.
+\begin{figure}[ht!]
+\begin{jllisting}
+function closure(M::ClosedSetsMatroid, S::Integer)
+  for Fr in M.F, B ∈ Fr
+      if S&B == S return B end
+  end
+end
+\end{jllisting}
+\end{figure}
 
-\textbf{Circuit oracle.} This method uses (C.1) and (C.2) from Greene's paper~\cite{greene-1991}.
+\paragraph{Circuit oracle.} Greene also gives a procedure for determining whether a set is a circuit in a matroid described by its family of closed sets~\cite{greene-1991}.
+
+\begin{figure}[ht!]
 \begin{jllisting}
 function is_circuit(M::ClosedSetsMatroid, S::Integer)
   t = Base.count_ones(S)
@@ -507,33 +519,34 @@ function is_circuit(M::ClosedSetsMatroid, S::Integer)
   return true
 end
 \end{jllisting}
+\end{figure}
 
-\begin{jllisting}
-"""
-    function minimal_spanning_subsets(M::ClosedSetsMatroid, A::Integer)
+% \begin{jllisting}
+% """
+%     function minimal_spanning_subsets(M::ClosedSetsMatroid, A::Integer)
 
-A modification of Algorithm 3.1 from Greene (1989) that finds all minimal spanning subsets of A ⊆ E, given a matroid M = (E, F). If A = E, this finds the bases of M.
-"""
-minimal_spanning_subsets(M::ClosedSetsMatroid, A::Integer) = _mss_all(M, 0, A)
+% A modification of Algorithm 3.1 from Greene (1989) that finds all minimal spanning subsets of A ⊆ E, given a matroid M = (E, F). If A = E, this finds the bases of M.
+% """
+% minimal_spanning_subsets(M::ClosedSetsMatroid, A::Integer) = _mss_all(M, 0, A)
 
-function _mss_all(M::ClosedSetsMatroid, j::Integer, Ā::Integer)
-  B = [Ā&F for F in M.F[j+1] if Base.count_ones(Ā&F) > j]
+% function _mss_all(M::ClosedSetsMatroid, j::Integer, Ā::Integer)
+%   B = [Ā&F for F in M.F[j+1] if Base.count_ones(Ā&F) > j]
 
-  while length(B) == 0
-    if j >= Base.count_ones(Ā)-1 return Ā end
+%   while length(B) == 0
+%     if j >= Base.count_ones(Ā)-1 return Ā end
     
-    j += 1
-    B = [Ā&F for F in M.F[j+1] if Base.count_ones(Ā&F) > j]
-  end
+%     j += 1
+%     B = [Ā&F for F in M.F[j+1] if Base.count_ones(Ā&F) > j]
+%   end
 
-  bases = Set()
-  t = reduce(|, B)
-  while t > 0
-    x = t&-t
-    bases = bases ∪ _mss_all(M, j, Ā&~x)
-    t &= ~x
-  end
-  return bases
-end
-\end{jllisting}
-\textbf{Minimal spanning subsets and bases.} \skelpar
+%   bases = Set()
+%   t = reduce(|, B)
+%   while t > 0
+%     x = t&-t
+%     bases = bases ∪ _mss_all(M, j, Ā&~x)
+%     t &= ~x
+%   end
+%   return bases
+% end
+% \end{jllisting}
+% \textbf{Minimal spanning subsets and bases.} \skelpar

@@ -877,6 +877,81 @@
       \verb https://www.sciencedirect.com/science/article/pii/0012365X91900443
       \endverb
     \endentry
+    \entry{kelly-1978}{article}{}
+      \name{author}{2}{}{%
+        {{hash=0dc67533c591eae70cf1d62d4c05a091}{%
+           family={Kelly},
+           familyi={K\bibinitperiod},
+           given={Douglas\bibnamedelima G.},
+           giveni={D\bibinitperiod\bibinitdelim G\bibinitperiod}}}%
+        {{hash=8d165e2906faaa4a9fae6d9194af4b27}{%
+           family={Kennedy},
+           familyi={K\bibinitperiod},
+           given={Daniel},
+           giveni={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{17ce33bc583c5356242482c271474066}
+      \strng{fullhash}{17ce33bc583c5356242482c271474066}
+      \strng{bibnamehash}{17ce33bc583c5356242482c271474066}
+      \strng{authorbibnamehash}{17ce33bc583c5356242482c271474066}
+      \strng{authornamehash}{17ce33bc583c5356242482c271474066}
+      \strng{authorfullhash}{17ce33bc583c5356242482c271474066}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{The Higgs factorization of a strong map between matroids on a fixed set is that factorization into elementary maps in which each matroid is the Higgs lift of its successor. This factorization is characterized by properties of the modular filters which induce the elementary maps of the factorizations in two different ways. It is also shown to be minimal in a natural order on factorizations arising from the weak-map partial order on matroids. The notion of essential nullity of flats of a matroid is introduced; this quantity is nonzero precisely for the cyclic flats, and is shown to be related to the minimal flats of the modular filters inducing the maps of the Higgs factorization.}
+      \field{issn}{0012-365X}
+      \field{journaltitle}{Discrete Mathematics}
+      \field{number}{2}
+      \field{title}{The Higgs factorization of a geometric strong map}
+      \field{volume}{22}
+      \field{year}{1978}
+      \field{pages}{139\bibrangedash 146}
+      \range{pages}{8}
+      \verb{doi}
+      \verb https://doi.org/10.1016/0012-365X(78)90121-8
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/0012365X78901218
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/0012365X78901218
+      \endverb
+    \endentry
+    \entry{pendavingh2016enumerating}{misc}{}
+      \name{author}{2}{}{%
+        {{hash=5545e77b8e2b7eef81784c818e43c966}{%
+           family={Pendavingh},
+           familyi={P\bibinitperiod},
+           given={Rudi},
+           giveni={R\bibinitperiod}}}%
+        {{hash=aa48fbfc1414b622fdec575d43505f33}{%
+           family={Pol},
+           familyi={P\bibinitperiod},
+           given={Jorn},
+           giveni={J\bibinitperiod},
+           prefix={van\bibnamedelima der},
+           prefixi={v\bibinitperiod\bibinitdelim d\bibinitperiod}}}%
+      }
+      \strng{namehash}{107e3e3d4f0acda37dcf49c23056c37e}
+      \strng{fullhash}{107e3e3d4f0acda37dcf49c23056c37e}
+      \strng{bibnamehash}{107e3e3d4f0acda37dcf49c23056c37e}
+      \strng{authorbibnamehash}{107e3e3d4f0acda37dcf49c23056c37e}
+      \strng{authornamehash}{107e3e3d4f0acda37dcf49c23056c37e}
+      \strng{authorfullhash}{107e3e3d4f0acda37dcf49c23056c37e}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{math.CO}
+      \field{eprinttype}{arXiv}
+      \field{title}{Enumerating matroids of fixed rank}
+      \field{year}{2016}
+      \verb{eprint}
+      \verb 1512.06655
+      \endverb
+    \endentry
     \entry{suksumpong-constraints}{article}{}
       \name{author}{1}{}{%
         {{hash=394c573f5ce4558eaffe3a6e4eaa967f}{%
@@ -1030,8 +1105,8 @@
       \strng{authorbibnamehash}{05db46edd38d5670035ac0b33e85c58f}
       \strng{authornamehash}{05db46edd38d5670035ac0b33e85c58f}
       \strng{authorfullhash}{05db46edd38d5670035ac0b33e85c58f}
-      \field{sortinit}{5}
-      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Journal of Computational and Graphical Statistics}
@@ -1076,8 +1151,8 @@
       \strng{authorbibnamehash}{d89a6052835ef5b877e93f78f0832cfc}
       \strng{authornamehash}{d89a6052835ef5b877e93f78f0832cfc}
       \strng{authorfullhash}{d89a6052835ef5b877e93f78f0832cfc}
-      \field{sortinit}{5}
-      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Publicationes Mathematicae Debrecen}
@@ -1115,8 +1190,8 @@
       \strng{authorbibnamehash}{75e064428eb19a4e37600fca4b6dcdc6}
       \strng{authornamehash}{75e064428eb19a4e37600fca4b6dcdc6}
       \strng{authorfullhash}{75e064428eb19a4e37600fca4b6dcdc6}
-      \field{sortinit}{5}
-      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{The Annals of Mathematical Statistics}
@@ -1336,8 +1411,8 @@
       \strng{authorbibnamehash}{2d1e788896d138d62ca3630de2bf4649}
       \strng{authornamehash}{2d1e788896d138d62ca3630de2bf4649}
       \strng{authorfullhash}{2d1e788896d138d62ca3630de2bf4649}
-      \field{sortinit}{6}
-      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{issn}{0001-0782}

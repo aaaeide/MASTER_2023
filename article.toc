@@ -12,49 +12,52 @@
 \contentsline {paragraph}{Characterization via closed sets.}{18}{section*.13}%
 \contentsline {subsection}{\numberline {2.2.3}Matroid union}{18}{subsection.2.2.3}%
 \contentsline {subsection}{\numberline {2.2.4}Matroid erection}{21}{subsection.2.2.4}%
-\contentsline {section}{\numberline {2.3}Matroids in fair allocation}{22}{section.2.3}%
+\contentsline {section}{\numberline {2.3}Matroids in fair allocation}{23}{section.2.3}%
 \contentsline {subsection}{\numberline {2.3.1}Matroid-rank valuations}{23}{subsection.2.3.1}%
 \contentsline {subsection}{\numberline {2.3.2}Matroid constraints}{23}{subsection.2.3.2}%
 \contentsline {chapter}{\numberline {3}The Matroids.jl API}{24}{chapter.3}%
 \contentsline {section}{\numberline {3.1}Fairness under matroid-rank valuations}{25}{section.3.1}%
 \contentsline {section}{\numberline {3.2}Three selected algorithms}{29}{section.3.2}%
-\contentsline {paragraph}{The Envy-Induced Transfers algorithm.}{30}{section*.26}%
-\contentsline {paragraph}{AlgMMS.}{31}{section*.27}%
-\contentsline {paragraph}{Yankee Swap.}{34}{section*.31}%
-\contentsline {section}{\numberline {3.3}Matroid partitioning}{36}{section.3.3}%
-\contentsline {section}{\numberline {3.4}Exchange graphs and transfer paths}{39}{section.3.4}%
-\contentsline {paragraph}{Building the exchange graph.}{40}{section*.35}%
+\contentsline {paragraph}{The Envy-Induced Transfers algorithm.}{29}{section*.26}%
+\contentsline {paragraph}{AlgMMS.}{30}{section*.27}%
+\contentsline {paragraph}{Yankee Swap.}{33}{section*.31}%
+\contentsline {section}{\numberline {3.3}Matroid partitioning}{35}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Exchange graphs and transfer paths}{37}{section.3.4}%
+\contentsline {paragraph}{Building the exchange graph.}{39}{section*.35}%
 \contentsline {paragraph}{Finding a transfer path.}{40}{section*.37}%
-\contentsline {paragraph}{Transfer path augmentation.}{40}{section*.39}%
-\contentsline {chapter}{\numberline {4}Generating matroids}{44}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Uniform matroids and partition matroids}{44}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Linear matroids}{45}{section.4.2}%
+\contentsline {paragraph}{Transfer path augmentation.}{41}{section*.39}%
+\contentsline {chapter}{\numberline {4}Generating matroids}{43}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Uniform matroids}{44}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Partition matroids}{45}{section.4.2}%
 \contentsline {section}{\numberline {4.3}Graphic matroids}{45}{section.4.3}%
 \contentsline {subsection}{\numberline {4.3.1}Random graphs}{45}{subsection.4.3.1}%
 \contentsline {subsection}{\numberline {4.3.2}Properties of random graphic matroids}{46}{subsection.4.3.2}%
-\contentsline {section}{\numberline {4.4}Knuth's matroid construction}{48}{section.4.4}%
-\contentsline {subsection}{\numberline {4.4.1}Randomized KMC}{50}{subsection.4.4.1}%
+\contentsline {paragraph}{The rank function.}{48}{section*.43}%
+\contentsline {paragraph}{The indepence oracle.}{48}{section*.45}%
+\contentsline {paragraph}{The closure function.}{48}{section*.47}%
+\contentsline {section}{\numberline {4.4}Knuth's matroid construction}{49}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Randomized KMC}{51}{subsection.4.4.1}%
 \contentsline {subsection}{\numberline {4.4.2}Improving performance}{51}{subsection.4.4.2}%
-\contentsline {subsubsection}{Representing sets as binary numbers}{52}{section*.46}%
-\contentsline {subsubsection}{Sorted superpose}{54}{section*.50}%
-\contentsline {subsubsection}{Iterative superpose}{55}{section*.53}%
-\contentsline {subsubsection}{Rank table}{57}{section*.56}%
-\contentsline {subsubsection}{Non-redundant cover generation}{58}{section*.59}%
-\contentsline {subsection}{\numberline {4.4.3}What do the generated matroids look like?}{62}{subsection.4.4.3}%
-\contentsline {subsubsection}{Observations}{62}{section*.62}%
-\contentsline {subsection}{\numberline {4.4.4}Finding the properties of arbitrary matroids}{63}{subsection.4.4.4}%
-\contentsline {subsubsection}{Up-front enumeration of circuits and independent sets for smaller matroids}{63}{section*.63}%
-\contentsline {subsubsection}{Determining matroid properties after erection}{64}{section*.64}%
-\contentsline {paragraph}{Indepence oracle.}{64}{section*.65}%
-\contentsline {chapter}{\numberline {5}Implementing some algorithms}{67}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Envy-induced transfers}{67}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Yankee Swap}{67}{section.5.2}%
-\contentsline {section}{\numberline {5.3}AlgMMS (using Yankee Swap)}{67}{section.5.3}%
-\contentsline {subsection}{\numberline {5.3.1}AlgPMMS}{67}{subsection.5.3.1}%
-\contentsline {section}{\numberline {5.4}Results}{67}{section.5.4}%
-\contentsline {chapter}{\numberline {6}Conclusions}{68}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Limitations}{68}{section.6.1}%
-\contentsline {section}{\numberline {6.2}Future work}{68}{section.6.2}%
-\contentsline {chapter}{Appendices}{75}{section*.68}%
-\contentsline {chapter}{Appendix \numberline {A}Sets as numbers -- some useful tricks}{76}{appendix.1.A}%
-\contentsline {chapter}{Appendix \numberline {B}Code snippets}{79}{appendix.1.B}%
+\contentsline {subsubsection}{Representing sets as binary numbers}{53}{section*.54}%
+\contentsline {subsubsection}{Sorted superpose}{54}{section*.58}%
+\contentsline {subsubsection}{Iterative superpose}{56}{section*.61}%
+\contentsline {subsubsection}{Rank table}{57}{section*.64}%
+\contentsline {subsubsection}{Non-redundant cover generation}{59}{section*.67}%
+\contentsline {subsection}{\numberline {4.4.3}Finding the properties of erected matroids}{62}{subsection.4.4.3}%
+\contentsline {subsubsection}{Up-front enumeration of circuits and independent sets for smaller matroids}{63}{section*.70}%
+\contentsline {subsubsection}{Determining matroid properties post-erection}{64}{section*.71}%
+\contentsline {paragraph}{Rank function.}{64}{section*.72}%
+\contentsline {paragraph}{Indepence oracle.}{64}{section*.74}%
+\contentsline {paragraph}{Closure function.}{65}{section*.76}%
+\contentsline {paragraph}{Circuit oracle.}{65}{section*.78}%
+\contentsline {chapter}{\numberline {5}Implementing some algorithms}{66}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Envy-induced transfers}{66}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Yankee Swap}{66}{section.5.2}%
+\contentsline {section}{\numberline {5.3}AlgMMS (using Yankee Swap)}{66}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}AlgPMMS}{66}{subsection.5.3.1}%
+\contentsline {section}{\numberline {5.4}Results}{66}{section.5.4}%
+\contentsline {chapter}{\numberline {6}Conclusions}{67}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Limitations}{67}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Future work}{67}{section.6.2}%
+\contentsline {chapter}{Appendices}{73}{section*.81}%
+\contentsline {chapter}{Appendix \numberline {A}Sets as numbers -- some useful tricks}{74}{appendix.1.A}%

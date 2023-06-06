@@ -52,7 +52,7 @@ To check whether an allocation $A$ is PROP or some relaxation thereof, we compar
 prop(V::MatroidRank, i, _) = rank(V.Ms[i])/na(V)
 prop_1(V::MatroidRank, i, A) = prop(V, i, A) - 1
 prop_x(V::MatroidRank, i, A) = prop_1(V, i, A)
-prop_x(V::MatroidRank, i, A) = 
+prop_x0(V::MatroidRank, i, A) = 
     is_closed(V.Ms[i], A) ? prop_1(V, i, A) : prop(V, i, A)
 \end{jllisting}
 \caption{Methods for computing PROP, PROP1, PROPX$_+$ and PROPX$_0$.}
@@ -84,6 +84,14 @@ With $A$ in hand, Barman and Verma's procedure iteratively update the sets of $A
 \label{sec:three-algos}
 The purpose of Matroids.jl being to enable the empirical study of matroidal fair allocation, we should investigate what requirements algorithms in this space pose of a library that purports to enable their implementation. In order to maintain a manageable scope for this thesis, I restrict my attention to three recent algorithms for fair allocation with matroid-rank valuations, that, while relatively short and sweet, make use of some deep results from matroid theory to deliver well on a range of fairness criteria.
 
+
+\paragraph{The Envy-Induced Transfers algorithm.} This algorithm is due to Benabbou, Chakraborty, Igarashi and Zick~\cite{benabbou-2021}. Named Algorithm 1 in the paper, it relies on a subroutine the authors name \textit{Envy-Induced Transfers} (EIT)---hence the name. Benabbou et al show that, for matroid-rank valuations, a Pareto Optimal, MAX-USW and EF1 allocation always exist and can be computed efficiently, using the simple greedy algorithm given in Algorithm~\ref{alg:eit}.
+
+The algorithm should look familiar; it is very similar to Barman and Verma's procedure for computing an agent's maximin share detailed in the previous section. The crux of both approaches is the concept of the matroid union: a maximum-size independent set in the union of the matroids in play is a clean MAX-USW allocation. We find such a clean allocation using the \pr{Matroid-Partition} subroutine, which accepts the matroids and the set of elements.
+
+
+With that in hand, we can use the exchange property of independent sets to greedily choose goods to transfer until the allocation has the desired properties. In this case, the algorithm continues transfering as long some agent envies another agent for more than one good; when it terminates, the allocation is thus EF1.
+
 \begin{algorithm}{\pr{Envy-Induced-Transfers}~\cite{benabbou-2021}}{eit}
 
 \textbf{Input:}  \tab A matroid-rank-valued fair allocation instance $(N, E, \{\mathfrak{M}_i\}_{i\in N})$.\\
@@ -101,11 +109,9 @@ The purpose of Matroids.jl being to enable the empirical study of matroidal fair
   
 \end{algorithm}
 
-\paragraph{The Envy-Induced Transfers algorithm.} This algorithm is due to Benabbou, Chakraborty, Igarashi and Zick~\cite{benabbou-2021}. Named Algorithm 1 in the paper, it relies on a subroutine the authors name \textit{Envy-Induced Transfers} (EIT)---hence the name. Benabbou et al show that, for matroid-rank valuations, a Pareto Optimal, MAX-USW and EF1 allocation always exist and can be computed efficiently, using the simple greedy algorithm given in Algorithm~\ref{alg:eit}.
+\paragraph{AlgMMS.} This algorithm is given in Algorithm~\ref{alg:mms}, and is due to Barman and Verma~\cite{barman2021existence}. It is similar to \pr{Envy-Induced-Transfers} in that it first generates an initial clean, MAX-USW allocation using \pr{Martoid-Partition}, before massaging this allocation until the desired properties are met. In this case, the desired property is that of MMS-fairness; each agent should receive at least their share $\mu_i$, computed using the \pr{mms} subroutine, an implementation of which is described in the previous section.
 
-The algorithm should look familiar; it is very similar to Barman and Verma's procedure for computing an agent's maximin share detailed in the previous section. The crux of both approaches is the concept of the matroid union: a maximum-size independent set in the union of the matroids in play is a clean MAX-USW allocation. We find such a clean allocation using the \pr{Matroid-Partition} subroutine, which accepts the matroids and the set of elements.
-
-With that in hand, we can use the exchange property of independent sets to greedily choose goods to transfer until the allocation has the desired properties. In this case, the algorithm continues transfering as long some agent envies another agent for more than one good; when it terminates, the allocation is thus EF1.
+\pr{AlgMMS} achieves this by keeping track of which agents have received more than their MMS (these make up the set $S_>$), and which have received less ($S_<$). While there are agents $i$ such that $v_i(A_i) < \mu_i$, the algorithm constructs an exchange graph $D$ with the \pr{Build-Exchange-Graph} subroutine. It then finds a shortest path $P$ in $D$ from a good for which $i$ has positive marginal value (the set of goods $F_i$), to a good currently located in $A_j$, for some $j\in S_>$. Finally it augments, with \pr{Transfer} subroutine, the allocation along a transfer path  Barman and Verma show that MMS-fair MAX-USW allocations always exist for instances with matroid-rank valuations, and that \pr{AlgMMS} finds them in polynomial time. To build an intuitive understanding of how the algorithm works, let us take a look at an instructive example.
 
 \begin{algorithm}{\pr{AlgMMS}~\cite{barman2021existence}}{mms}
 
@@ -134,15 +140,11 @@ Let $junk = E \setminus \bigcup_{i=1}^n A_i$ be the set of unallocated goods \\
   
 \end{algorithm}
 
-\paragraph{AlgMMS.} This algorithm is given in Algorithm~\ref{alg:mms}, and is due to Barman and Verma~\cite{barman2021existence}. It is similar to \pr{Envy-Induced-Transfers} in that it first generates an initial clean, MAX-USW allocation using \pr{Martoid-Partition}, before massaging this allocation until the desired properties are met. In this case, the desired property is that of MMS-fairness; each agent should receive at least their share $\mu_i$, computed using the \pr{mms} subroutine, an implementation of which is described in the previous section.
-
-\pr{AlgMMS} achieves this by keeping track of which agents have received more than their MMS (these make up the set $S_>$), and which have received less ($S_<$). While there are agents $i$ such that $v_i(A_i) < \mu_i$, the algorithm constructs an exchange graph $D$ with the \pr{Build-Exchange-Graph} subroutine. It then finds a shortest path $P$ in $D$ from a good for which $i$ has positive marginal value (the set of goods $F_i$), to a good currently located in $A_j$, for some $j\in S_>$. Finally it augments, with \pr{Transfer} subroutine, the allocation along a transfer path  Barman and Verma show that MMS-fair MAX-USW allocations always exist for instances with matroid-rank valuations, and that \pr{AlgMMS} finds them in polynomial time. To build an intuitive understanding of how the algorithm works, let us take a look at an instructive example.
-
-\include{src/matroids.jl/fig.algmms}
-
 Figure~\ref{fig:not_mms} illustrates a situation in which we have three agents $a_1, a_2$ and $a_3$, whose valuation functions are the rank functions over three different graphic matroids, and six goods $E=\{1,\dots,6\}$. The allocation $A$ is highlighted in yellow: $A_{a_1} = \{1\}$, $A_{a_2} = \{2,3\}$ and $A_{a_3} = \{4,5,6\}$. This might be the initial allocation output from \pr{Matroid-Partition}, as it is MAX-USW (SW$(A) = 6 = |E|$). It should be clear that the maximin share of each agent is 2; in the situation depicted, $a_3$ has received a bundle of value 3, at the expense of $a_1$, who only received a bundle of value 1. Yet, $a_1$ is not envious of $a_3$'s bundle, since the goods in $A_{a_3}$ are all worthless to $a_1$. So $A$ is EF1, but not MMS-fair. 
 
 We begin to see that \pr{Envy-Induced-Transfers} has it easy; it can eliminate the envy one good at a time by moving a good directly from the envied to the envious agent, stopping when no agent directly envies another. This is equivalent to augmenting along a length-1 transfer path on the exchange graph. \pr{AlgMMS}, on the other hand, might encounter a situation such as this one, in which some agent has more than their MMS, whilst another has less, yet no good in the fortunate agent's bundle will improve the situation of the unfortunate one---in that case, there must be a transfer path of length > 1 between the two agents.
+
+\include{src/matroids.jl/fig.algmms}
 
 Figure~\ref{fig:exchange-graph} shows the exchange graph $D(A)$ (ie. the directed graph with a node per good, and an edge $(u,v)$ iff good $u$ can be exchanged with good $v$ for no loss in value for the current holder of $u$). Highlighted in yellow are the goods in $F_{a_1}$, the set of goods $g$ such that $\Delta_{a_1}(A_{a_1}, g) = 1$. The blue nodes are the goods belonging to an agent in $S_>$, the set of agents who have received more than their MMS. The green edges show the paths between these two sets of goods. As we can see, the available transfer paths are $(2,4)$ and $(3,4)$, representing a transfer of good 4 from $A_{a_3}$ to $A_{a_2}$, and good 2 or 3 from $A_{a_2}$ to $A_{a_1}$, respectively.
 
@@ -155,6 +157,10 @@ We augment along the transfer path $(2,4)$ and end up with the allocation shown 
 In the paper, the algorithm requires that a priority order $\pi$ of the agents is passed along with the fair allocation instance, where $\pi$ represents some permutation of the agents in $N$, denoting the prioritization of the agents. By choosing $\pi$ uniformly at random, the algorithm produces allocations that are also, in expectation, EF and PROP (known as \textit{ex ante envy-freeness} and \textit{ex ante proportionality}). When discussing Yankee Swap in this thesis, I will without loss of generality assume that the ordering of the agents in $N$ is selected in such a manner elsewhere beforehand; that is, it has been randomly chosen which agent is to be agent 1 before the algorithm is run.
 
 The pseudocode is given in Algorithm~\ref{alg:yankee-swap}. Similarly to \pr{Envy-Induced-Transfers} and \pr{AlgMMS}, it starts out with an initial allocation; in this case, however, this initial allocation is the one in which every good is allocated to the new agent $0$, whose bundle $A_0$ represents the unallocated goods. After this, the procedure is reminiscent of the other algorithms described in this section. At each iteration, $i$ is the highest priority (ie. first) agent with the least value whose bundle can still improve. We find $F_i$ as above, and build the exchange graph $D$ for the allocation $A$. If there exists a transfer path $P$ from $F_i$ to the set of unallocated good $A_0$, we augment $A$ along $P$. The transfer operation can be understood as a sequence of thefts, wherein agent $i$ improves her lot by stealing a good from another agent's bundle, whereupon the robbed agent compensate for this by stealing from another agent, and so on. The last agent in the path will lose a good, and so we are only interested in transfer paths ending at $A_0$, as these are the paths representing the allocation of one additional good, thereby increasing the social welfare of the allocation by one. If no such path exists, we know that $A_i$ cannot improve and we disregard $i$ in future iterations. The algorithm terminates when no bundles can be further improved, and the resulting allocation has the properties above.
+
+Having understood the three algorithms we will try to implement, we can now enumerate the functional requirements they pose to Matroids.jl. Common logic has been extracted into separate subroutines, viz. \pr{Matroid-Partition}, \pr{Build-Exchange-Graph}, \pr{Shortest-Path} and \pr{Transger}. The marginal value function $\Delta_i$ is also required---depending on the circumstance, this can be implemented using either a rank function \pr{rank} or an independence oracle \pr{indep}. \pr{AlgMMS} also requires the ability to compute an agent's maximin share with the \pr{mms} subroutine. With all of this in place, we should be able to implement these algorithms. The requirements are listed in Table~\ref{tab:algo_reqs}.
+
+The implementation of \pr{rank} and \pr{indep} will depend on the specific type of matroid in question, and is discussed in the next chapter. We have already seen how Matroids.jl implements \pr{mms}. To finish off this chapter, then, let us examine how Matroids.jl supports the matroid partitioning procedure, and related operations on the exchange graph.
 
 \begin{algorithm}{\pr{Yankee-Swap}~\cite{viswanathan2023yankee}}{yankee-swap}
 
@@ -182,7 +188,7 @@ The pseudocode is given in Algorithm~\ref{alg:yankee-swap}. Similarly to \pr{Env
     
 \end{algorithm}
 
-\begin{table}[ht!]
+\begin{table}
     \centering
     \begin{tabular}{|l|m{6cm}|} % Adjust the width of the right column (2nd argument) as per your needs
         \hline
@@ -216,9 +222,6 @@ The pseudocode is given in Algorithm~\ref{alg:yankee-swap}. Similarly to \pr{Env
     \label{tab:algo_reqs}
 \end{table}
 
-Having understood the three algorithms we will try to implement, we can now enumerate the functional requirements they pose to Matroids.jl. Common logic has been extracted into separate subroutines, viz. \pr{Matroid-Partition}, \pr{Build-Exchange-Graph}, \pr{Shortest-Path} and \pr{Transger}. The marginal value function $\Delta_i$ is also required---depending on the circumstance, this can be implemented using either a rank function \pr{rank} or an independence oracle \pr{indep}. \pr{AlgMMS} also requires the ability to compute an agent's maximin share with the \pr{mms} subroutine. With all of this in place, we should be able to implement these algorithms. The requirements are listed in Table~\ref{tab:algo_reqs}.
-
-The implementation of \pr{rank} and \pr{indep} will depend on the specific type of matroid in question, and is discussed in the next chapter. We have already seen how Matroids.jl implements \pr{mms}. To finish off this chapter, then, let us examine how Matroids.jl supports the matroid partitioning procedure, and related operations on the exchange graph.
 
 \section{Matroid partitioning}
 \label{sec:matroid-union-impl}

@@ -1213,8 +1213,8 @@
       \strng{authorbibnamehash}{74bfb5a9ecbf126c98ede4232cccb178}
       \strng{authornamehash}{385ecca80dc1205dd8d9627c781d7b1f}
       \strng{authorfullhash}{74bfb5a9ecbf126c98ede4232cccb178}
-      \field{sortinit}{5}
-      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{{JuliaGraphs/Graphs.jl}: an optimized graphs package for the Julia programming language}
@@ -1261,8 +1261,8 @@
       \strng{authorbibnamehash}{10f004e08c7c03d98be0da1231a869ce}
       \strng{authornamehash}{c251cdfd036d9474565c517e73c19c5d}
       \strng{authorfullhash}{10f004e08c7c03d98be0da1231a869ce}
-      \field{sortinit}{5}
-      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{edition}{3}

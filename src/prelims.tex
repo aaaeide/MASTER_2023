@@ -261,9 +261,12 @@ Figure~\ref{fig:ex-graph-closure} shows an independent (acyclic) set $S$ of edge
 The matroid union is an operation that allows us to produce a new matroid by combining the independent sets of a collection of existing matroids. This is a powerful tool, as it allows us to reason about independence across multiple matroids, and has found several practical applications within fair allocation.
 
 Given $n$ matroids $\mathfrak{M}_i = (E, \mathcal{I}_i)$, their union is given, somewhat obtusely, by $$\widehat{\mathfrak{M}} = (E, \widehat{\mathcal{I}}) = (E, \{ I_1\cup\ldots\cup I_n : I_i\in\mathcal{I}_i,\ \forall i\in N \}).$$ 
-$\widehat{\mathfrak{M}}$ is in fact a matroid~\cite[Ch. 42]{schrijver-2003}, whose independent sets are the the subsets $S\subseteq E$ that allow an $n$-partition $S_1,\ldots,S_n$ such that $S_i\in\mathcal{I}_i$, for all $i\in N$. The following holds for all $n$-partitions of the elements of $E$:
-$$S=(S_1,\dots,S_n)\in\mathcal{I}_i\times\dots\times\mathcal{I}_n 
-\iff \bigcup_{i=1}^n S_i \in \widehat{\mathcal{I}}.$$
+$\widehat{\mathfrak{M}}$ is in fact a matroid~\cite[Ch. 42]{schrijver-2003}, whose independent sets are the the subsets $S\subseteq E$ that allow an $n$-partition $S_1,\ldots,S_n$ such that $S_i\in\mathcal{I}_i$, for all $i\in N$. The following statements are equivalent for all $n$-partitions of the elements of $E$:
+\begin{enumerate}
+  \item Each $S_i\in S$ is independent in $\mathfrak{M}_i$
+  \item $S=(S_1,\dots,S_n)\in\mathcal{I}_i\times\dots\times\mathcal{I}_n$
+  \item $\bigcup_{i=1}^n S_i \in \widehat{\mathcal{I}}$ is independent in $\widehat{\mathfrak{M}}$
+\end{enumerate}
 
 In fair allocation jargon, if each $\mathfrak{M}_i$ is the matroid described by agent $i$'s valuation function $v_i$, a set of goods $S$ is independent in $\widehat{\mathfrak{M}}$ if and only if we can allocate it among the agents and produce utilitarian social welfare (ie. total value) equal to $|S|$. This follows from the fact that if $\mathcal{S}$ is an $n$-partition of $S$ such that $\mathcal{S} = (S_1,\dots,S_n)\in\mathcal{I}_1\times\dots\times\mathcal{I}_n$, then $S_i\in\mathcal{I}_i$ for each $i$. When this is the case, we have $v_i(S_i) = |S_i|$, and so SW$(S) = \sum_{i\in N}v_i(S_i) = \sum_{i\in N}|S_i| = |S|$.
 

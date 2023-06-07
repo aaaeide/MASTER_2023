@@ -31,7 +31,31 @@ value(V::MatroidRank, i, g::Int) = value(V, i, Set(g))
 \subsection*{Envy-freeness}
 Checking if an allocation is EF is the same for matroid-rank valuations as for additive valuations -- simply compare each agent's own bundle value with that agent's subjective valuation of each other agent's bundle. This is already implemented in Allocations.jl. In this section, I give the functions \jlinl{value_1}, \jlinl{value_x} and \jlinl{value_x0}, which are used for computing EF1, EFX$_+$ and EFX$_0$, respectively. These functions take in a valuation profile, an agent $i$ and a bundle $S$, and return the agent $i$'s value for $S$, up to some item. 
 
-To check efficiently if an allocation is EF1, we make use of the fact that a matroid rank function has binary marginals; in other words, the highest valued good in a bundle will always have value 1, unless the bundle value is 0. This gives us a simple way of checking for EF1. Similarly, since the least positively-valued good also has value 1, EFX$_+$ is the same as EF1.
+When an allocation is clean (i.e., each bundle $A_i$ is independent in $\mathfrak{M}_i$), we know that removing any good from a bundle will decrease the bundle value by 1. However, consider the bundle $B$ such that $|B| = k+1$ and the unform matroid $U_n^k$. The rank of $B$ in $U_n^k$ is $k$, and no matter which good we remove from $B$, the value remains $k$. Finally, consider the graph and bundle $B=\{1,2,3,5\}$ given in Figure~\ref{fig:redundant-bundle}. If the graph gives the rank function for agent $i$, then $v_i(B) = 3$, as there is a circuit in $B$. \skelpar
+
+\begin{figure}[ht!]
+  \centering
+  \begin{tikzpicture}
+    \node[circle, draw] (1) at (0,0) {};
+    \node[circle, draw] (2) at (0,2) {};
+    \node[circle, draw] (3) at (1.73,1) {};
+    \node[circle, draw] (5) at (-1.73,1) {};
+    
+    \draw[preaction={draw=darktan, line width=2mm}]
+          (1) -- node[left]  {5} (2);
+    \draw[preaction={draw=darktan, line width=2mm}]
+          (2) -- node[above] {2} (3);
+    \draw[preaction={draw=darktan, line width=2mm}] 
+          (3) -- node[below] {3} (1);
+    \draw[preaction={draw=darktan, line width=2mm}]
+          (2) -- node[above] {1} (5);
+    \draw (1) -- node[below] {4} (5);
+\end{tikzpicture}
+\caption{A graph, with a rank-3, size-4 bundle of edges highlighted in yellow}
+\label{fig:redundant-bundle}
+\end{figure}
+
+To check efficiently if an allocation is EF1, we make use of the fact that a matroid rank function has binary marginals; in other words, a highest-valued good in a bundle will always have value 1, unless the bundle value is 0. This gives us a simple way of checking for EF1: if $S$ is independent, the value of $S$ after the removal of a highest-valued good will be $|S|-1$. Similarly, since the least positively-valued good also has value 1, EFX$_+$ is the same as EF1.
 \begin{figure}[ht!]
 \begin{jllisting}
 value_1(V::MatroidRank, i, S) = max(value(V, i, S) - 1, 0)
@@ -73,7 +97,7 @@ which can be produced in polynomial time using the matroid union algorithm~\cite
 
 \include{src/matroids.jl/mms_i.jl}
 
-Matroids.jl implements Knuth's 1973 matroid union algorithm~\cite{knuth1973matroidpartitioning}. This is detailed in Section~\ref{sec:matroid-union}, for now let it suffice to say that we have a function called\linebreak\jlinl{matroid_partition_knuth73}, which, when given $k$ matroids $(\mathfrak{M}_1,\dots,\mathfrak{M}_k)$ over the same ground set $E$, returns a partition of $E$ into $k$ sets $S = (S_1, \dots, S_k)$ such that each set $S_t$ is independent in $\mathfrak{M}_t$. By passing $n$ copies of $\mathfrak{M}_i$, we get the $n$-partition $A$ as above.
+Matroids.jl implements Knuth's 1973 matroid union algorithm~\cite{knuth1973matroidpartitioning}. This is detailed in Section~\ref{sec:matroid-union-impl}, for now let it suffice to say that we have a function called \jlinl{matroid_partition_knuth73}, which, when given $k$ matroids $(\mathfrak{M}_1,\dots,\mathfrak{M}_k)$ over the same ground set $E$, returns a partition of $E$ into $k$ sets $S = (S_1, \dots, S_k)$ such that each set $S_t$ is independent in $\mathfrak{M}_t$. By passing $n$ copies of $\mathfrak{M}_i$, we get the $n$-partition $A$ as above.
 
 With $A$ in hand, Barman and Verma's procedure iteratively update the sets of $A$ as long as there exist $j, k \in N$ such that $v_i(A_j) - v_i(A_k) \geq 2$. This is equivalent to $|A_j| - |A_k| \geq 2$, since the sets are all independent in $\mathfrak{M}_i$. When this is the case, there exists (due to the exchange property) a good $g'\in A_j$ such that $A_k + g' \in \mathcal{I}_i$. The sets are updated $A_j \leftarrow A_j - g'$ and $A_k \leftarrow A_k + g'$ until no two sets differ in cardinality by more than one. Now, we have a partition of $E$ into $n$ evenly sized subsets that are independent in $\mathfrak{M}_i$. The value of worst of these is agent $i$'s maximin share. Matroids.jl's implementation of this procedure is given in Figure~\ref{code:mms_i}.
 
@@ -82,10 +106,10 @@ With $A$ in hand, Barman and Verma's procedure iteratively update the sets of $A
 
 \section{Three selected algorithms}
 \label{sec:three-algos}
-The purpose of Matroids.jl being to enable the empirical study of matroidal fair allocation, we should investigate what requirements algorithms in this space pose of a library that purports to enable their implementation. In order to maintain a manageable scope for this thesis, I restrict my attention to three recent algorithms for fair allocation with matroid-rank valuations, that, while relatively short and sweet, make use of some deep results from matroid theory to deliver well on a range of fairness criteria.
+The purpose of Matroids.jl being to enable the empirical study of matroidal fair allocation, we should investigate what requirements algorithms in this space pose of a library that aims to enable their implementation. In order to maintain a manageable scope, I restrict my attention to three recent algorithms for fair allocation with matroid-rank valuations, that, while relatively short and sweet, make use of some deep results from matroid theory to deliver well on a range of fairness criteria.
 
 
-\paragraph{The Envy-Induced Transfers algorithm.} This algorithm is due to Benabbou, Chakraborty, Igarashi and Zick~\cite{benabbou-2021}. Named Algorithm 1 in the paper, it relies on a subroutine the authors name \textit{Envy-Induced Transfers} (EIT)---hence the name. Benabbou et al show that, for matroid-rank valuations, a Pareto Optimal, MAX-USW and EF1 allocation always exist and can be computed efficiently, using the simple greedy algorithm given in Algorithm~\ref{alg:eit}.
+\paragraph{The Envy-Induced Transfers algorithm.} This algorithm is due to Benabbou, Chakraborty, Igarashi and Zick~\cite{benabbou-2021}. Named Algorithm 1 in the paper, it relies on a subroutine the authors name \textit{Envy-Induced Transfers} (EIT)---hence the name. Benabbou et al. show that, for matroid-rank valuations, a Pareto Optimal, MAX-USW and EF1 allocation always exist and can be computed efficiently, using the simple greedy algorithm given in Algorithm~\ref{alg:eit}.
 
 The algorithm should look familiar; it is very similar to Barman and Verma's procedure for computing an agent's maximin share detailed in the previous section. The crux of both approaches is the concept of the matroid union: a maximum-size independent set in the union of the matroids in play is a clean MAX-USW allocation. We find such a clean allocation using the \pr{Matroid-Partition} subroutine, which accepts the matroids and the set of elements.
 
@@ -158,7 +182,7 @@ In the paper, the algorithm requires that a priority order $\pi$ of the agents i
 
 The pseudocode is given in Algorithm~\ref{alg:yankee-swap}. Similarly to \pr{Envy-Induced-Transfers} and \pr{AlgMMS}, it starts out with an initial allocation; in this case, however, this initial allocation is the one in which every good is allocated to the new agent $0$, whose bundle $A_0$ represents the unallocated goods. After this, the procedure is reminiscent of the other algorithms described in this section. At each iteration, $i$ is the highest priority (ie. first) agent with the least value whose bundle can still improve. We find $F_i$ as above, and build the exchange graph $D$ for the allocation $A$. If there exists a transfer path $P$ from $F_i$ to the set of unallocated good $A_0$, we augment $A$ along $P$. The transfer operation can be understood as a sequence of thefts, wherein agent $i$ improves her lot by stealing a good from another agent's bundle, whereupon the robbed agent compensate for this by stealing from another agent, and so on. The last agent in the path will lose a good, and so we are only interested in transfer paths ending at $A_0$, as these are the paths representing the allocation of one additional good, thereby increasing the social welfare of the allocation by one. If no such path exists, we know that $A_i$ cannot improve and we disregard $i$ in future iterations. The algorithm terminates when no bundles can be further improved, and the resulting allocation has the properties above.
 
-Having understood the three algorithms we will try to implement, we can now enumerate the functional requirements they pose to Matroids.jl. Common logic has been extracted into separate subroutines, viz. \pr{Matroid-Partition}, \pr{Build-Exchange-Graph}, \pr{Shortest-Path} and \pr{Transger}. The marginal value function $\Delta_i$ is also required---depending on the circumstance, this can be implemented using either a rank function \pr{rank} or an independence oracle \pr{indep}. \pr{AlgMMS} also requires the ability to compute an agent's maximin share with the \pr{mms} subroutine. With all of this in place, we should be able to implement these algorithms. The requirements are listed in Table~\ref{tab:algo_reqs}.
+Having understood the three algorithms we will try to implement, we can now enumerate the functional requirements they pose to Matroids.jl. Common logic has been extracted into separate subroutines, viz. \pr{Matroid-Partition}, \pr{Build-Exchange-Graph}, \pr{Shortest-Path} and \pr{Transfer}. The marginal value function $\Delta_i$ is also required---depending on the circumstance, this can be implemented using either a rank function \pr{rank} or an independence oracle \pr{indep}. \pr{AlgMMS} also requires the ability to compute an agent's maximin share with the \pr{mms} subroutine. With all of this in place, we should be able to implement these algorithms. The requirements are listed in Table~\ref{tab:algo_reqs}.
 
 The implementation of \pr{rank} and \pr{indep} will depend on the specific type of matroid in question, and is discussed in the next chapter. We have already seen how Matroids.jl implements \pr{mms}. To finish off this chapter, then, let us examine how Matroids.jl supports the matroid partitioning procedure, and related operations on the exchange graph.
 

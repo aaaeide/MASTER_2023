@@ -9,6 +9,7 @@ In this chapter, I describe how the Matroids.jl API is designed to enable experi
 Implementing support for matroidal constraints is out of scope for this thesis. A discussion on how one might go about doing this in the future is included in Chapter~\ref{chap:conclusions}.
 
 \section{Fairness under matroid-rank valuations}
+\label{sec:fairness-impl}
 If Matroids.jl is to be of use in the empirical study of matroidal fair allocation algorithms, we need to be able to evaluate the fairness of an allocation. In this chapter, I show how Matroids.jl implements the fairness criteria given in Chapter~\ref{chap:prelims}. The valuation profile of matroid-rank-valued allocation problem instance gives the valuation function of each agent. This is represented as a struct containing the matroid $\mathfrak{M}_i$ for each agent $i$. Agent $i$'s value for the set of goods $S$, $v_i(S)$, is the rank of $S$ in $\mathfrak{M}_i$.
 \begin{figure}[ht!]
 \begin{jllisting}
@@ -133,14 +134,14 @@ With that in hand, we can use the exchange property of independent sets to greed
   
 \end{algorithm}
 
-\paragraph{AlgMMS.} This algorithm is given in Algorithm~\ref{alg:mms}, and is due to Barman and Verma~\cite{barman2021existence}. It is similar to \pr{Envy-Induced-Transfers} in that it first generates an initial clean, MAX-USW allocation using \pr{Martoid-Partition}, before massaging this allocation until the desired properties are met. In this case, the desired property is that of MMS-fairness; each agent should receive at least their share $\mu_i$, computed using the \pr{mms} subroutine, an implementation of which is described in the previous section.
+\paragraph{AlgMMS.} This algorithm is given in Algorithm~\ref{alg:mms}, and is due to Barman and Verma~\cite{barman2021existence}. It is similar to \pr{Envy-Induced-Transfers} in that it first generates an initial clean, MAX-USW allocation using \pr{Martoid-Partition}, before massaging this allocation until the desired properties are met. In this case, the desired property is that of MMS-fairness; each agent should receive at least their share $\mu_i$, computed using the \pr{MMS} subroutine, an implementation of which is described in the previous section.
 
 \pr{AlgMMS} achieves this by keeping track of which agents have received more than their MMS (these make up the set $S_>$), and which have received less ($S_<$). While there are agents $i$ such that $v_i(A_i) < \mu_i$, the algorithm constructs an exchange graph $D$ with the \pr{Build-Exchange-Graph} subroutine. It then finds a shortest path $P$ in $D$ from a good for which $i$ has positive marginal value (the set of goods $F_i$), to a good currently located in $A_j$, for some $j\in S_>$. Finally it augments, with \pr{Transfer} subroutine, the allocation along a transfer path  Barman and Verma show that MMS-fair MAX-USW allocations always exist for instances with matroid-rank valuations, and that \pr{AlgMMS} finds them in polynomial time. To build an intuitive understanding of how the algorithm works, let us take a look at an instructive example.
 
 \begin{algorithm}{\pr{AlgMMS}~\cite{barman2021existence}}{mms}
 
 \textbf{Input:}  \tab A matroid-rank-valued fair allocation instance $(N, E, \{\mathfrak{M}_i\}_{i\in N})$, \\
-\mbox{}\tab and $\mu_i =$ \pr{mms}$(N, E, \mathfrak{M}_i)$ for every $i\in N$.\\
+\mbox{}\tab and $\mu_i =$ \pr{MMS}$(N, E, \mathfrak{M}_i)$ for every $i\in N$.\\
 \textbf{Output:} \tab A clean, MAX-USW, MMS-fair allocation $A = (A_1,\dots,A_n)$.
 
 \begin{pseudo}[label=\small\arabic*, indent-mark]
@@ -182,9 +183,9 @@ In the paper, the algorithm requires that a priority order $\pi$ of the agents i
 
 The pseudocode is given in Algorithm~\ref{alg:yankee-swap}. Similarly to \pr{Envy-Induced-Transfers} and \pr{AlgMMS}, it starts out with an initial allocation; in this case, however, this initial allocation is the one in which every good is allocated to the new agent $0$, whose bundle $A_0$ represents the unallocated goods. After this, the procedure is reminiscent of the other algorithms described in this section. At each iteration, $i$ is the highest priority (ie. first) agent with the least value whose bundle can still improve. We find $F_i$ as above, and build the exchange graph $D$ for the allocation $A$. If there exists a transfer path $P$ from $F_i$ to the set of unallocated good $A_0$, we augment $A$ along $P$. The transfer operation can be understood as a sequence of thefts, wherein agent $i$ improves her lot by stealing a good from another agent's bundle, whereupon the robbed agent compensate for this by stealing from another agent, and so on. The last agent in the path will lose a good, and so we are only interested in transfer paths ending at $A_0$, as these are the paths representing the allocation of one additional good, thereby increasing the social welfare of the allocation by one. If no such path exists, we know that $A_i$ cannot improve and we disregard $i$ in future iterations. The algorithm terminates when no bundles can be further improved, and the resulting allocation has the properties above.
 
-Having understood the three algorithms we will try to implement, we can now enumerate the functional requirements they pose to Matroids.jl. Common logic has been extracted into separate subroutines, viz. \pr{Matroid-Partition}, \pr{Build-Exchange-Graph}, \pr{Shortest-Path} and \pr{Transfer}. The marginal value function $\Delta_i$ is also required---depending on the circumstance, this can be implemented using either a rank function \pr{rank} or an independence oracle \pr{indep}. \pr{AlgMMS} also requires the ability to compute an agent's maximin share with the \pr{mms} subroutine. With all of this in place, we should be able to implement these algorithms. The requirements are listed in Table~\ref{tab:algo_reqs}.
+Having understood the three algorithms we will try to implement, we can now enumerate the functional requirements they pose to Matroids.jl. Common logic has been extracted into separate subroutines, viz. \pr{Matroid-Partition}, \pr{Build-Exchange-Graph}, \pr{Shortest-Path} and \pr{Transfer}. The marginal value function $\Delta_i$ is also required---depending on the circumstance, this can be implemented using either a rank function \pr{Rank} or an independence oracle \pr{Indep}. \pr{AlgMMS} also requires the ability to compute an agent's maximin share with the \pr{MMS} subroutine. With all of this in place, we should be able to implement these algorithms. The requirements are listed in Table~\ref{tab:algo_reqs}.
 
-The implementation of \pr{rank} and \pr{indep} will depend on the specific type of matroid in question, and is discussed in the next chapter. We have already seen how Matroids.jl implements \pr{mms}. To finish off this chapter, then, let us examine how Matroids.jl supports the matroid partitioning procedure, and related operations on the exchange graph.
+The implementation of \pr{Rank} and \pr{Indep} will depend on the specific type of matroid in question, and is discussed in the next chapter. We have already seen how Matroids.jl implements \pr{MMS}. To finish off this chapter, then, let us examine how Matroids.jl supports the matroid partitioning procedure, and related operations on the exchange graph.
 
 \begin{algorithm}{\pr{Yankee-Swap}~\cite{viswanathan2023yankee}}{yankee-swap}
 
@@ -214,33 +215,33 @@ The implementation of \pr{rank} and \pr{indep} will depend on the specific type 
 
 \begin{table}
     \centering
-    \begin{tabular}{|l|m{6cm}|} % Adjust the width of the right column (2nd argument) as per your needs
-        \hline
+    \begin{tabular}{lm{6cm}} % Adjust the width of the right column (2nd argument) as per your needs
+        \toprule
         \textbf{Algorithm} & \textbf{Requirements} \\
-        \hline
+        \midrule
         \pr{Envy-Induced Transfers} & \begin{itemize}
                     \item \pr{Matroid-Partition}
-                    \item \pr{rank}
+                    \item \pr{Rank}
                 \end{itemize} \\
-                \hline
+        \midrule
                 \pr{AlgMMS} & \begin{itemize}
                     \item \pr{Matroid-Partition}
-                    \item \pr{mms}
-                    \item \pr{rank}
-                    \item \pr{indep}
+                    \item \pr{MMS}
+                    \item \pr{Rank}
+                    \item \pr{Indep}
                     \item \pr{Build-Exchange-Graph}
                     \item \pr{Shortest-Path}
                     \item \pr{Transfer}
                   \end{itemize} \\
-        \hline
+        \midrule
         \pr{Yankee-Swap} & \begin{itemize}
                     \item \pr{Build-Exchange-Graph}
                     \item \pr{Shortest-Path}
                     \item \pr{Transfer}
-                    \item \pr{rank}
-                    \item \pr{indep}
+                    \item \pr{Rank}
+                    \item \pr{Indep}
                   \end{itemize} \\
-        \hline
+        \bottomrule
     \end{tabular}
     \caption{Functional requirements for Matroids.jl posed by three recent fair allocation algorithms}
     \label{tab:algo_reqs}
@@ -348,7 +349,7 @@ As shown in Section~\ref{sec:three-algos}, exchange graphs and transfer paths on
 
 \paragraph{Building the exchange graph.} The implementation of \pr{Build-Exchange-Graph} is given in Figure~\ref{code:exchange_graph}. Matroids.jl uses the Graphs.jl library~\cite{Graphs2021} to handle graphs, and the Allocations.jl library~\cite{Hetland_Allocations_jl_2022} provide several handy types and functions for representing and working with allocations. Armed with tools from these libraries, building the exchange graph is a breeze. After initializing the empty directed graph $D = (E, \emptyset)$ with a node per good and no edges, \jlinl{exchange_graph} iterates over all pairs of goods $g_i, g_j$, and adds an edge $(g_i, g_j)$ if the owner of $g_i$ would be just as happy with the bundle where $g_i$ is replaced with $g_j$.
 
-If we know that all bundles $A_i$ are independent in $\mathfrak{M}_i$, then we do not need to actually compute the rank of the bundle before and after some $g_i, g_j$ replacement---instead, we can simply check if the new bundle $A_i - g_i + g_j$ is also independent, replacing a couple of calls to \pr{rank} with one call to the cheaper \pr{indep}. For the use cases outlined in Section~\ref{sec:three-algos}, this is always the case, and so this behavior is default.
+If we know that all bundles $A_i$ are independent in $\mathfrak{M}_i$, then we do not need to actually compute the rank of the bundle before and after some $g_i, g_j$ replacement---instead, we can simply check if the new bundle $A_i - g_i + g_j$ is also independent, replacing a couple of calls to \pr{Rank} with one call to the cheaper \pr{Indep}. For the use cases outlined in Section~\ref{sec:three-algos}, this is always the case, and so this behavior is default.
 
 With this implementation, Matroids.jl constructs the exchange graph for an allocation in $\mathcal{O}(m^2)$ calls to the independence oracle (or rank function).
 

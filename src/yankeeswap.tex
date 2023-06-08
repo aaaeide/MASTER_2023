@@ -1,9 +1,181 @@
-\chapter{Implementing some algorithms}
+\chapter{Using the library}
 \label{chap:yankee-swap}
+At this point in the report, I have described how Matroids.jl implements the functionality required for the empirical study of matroidal fair allocation algorithms. The previous chapters detailed three such algorithms---\pr{Envy-Induced-Transfers}, \pr{AlgMMS} and \pr{Yankee-Swap}---and described how Matroids.jl exposes the functions needed to implement these. Subsequently, I showed how Matroids.jl represents and randomly generates matroids. With random matroids and the functional requirements listed in Table~\ref{tab:algo_reqs} in hand, it is time to put the library to the test, and investigate whether it in fact des enable the implementation and empirical study of matroidal fair allocation algorithms.
+
+This chapter serves a proof of concept for Matroids.jl, demonstrating the library's ability to facilitate the implementation and evaluation of matroidal fair allocation algorithms. As such, I will, in addition to describing the implementation of the algorithms, provide some experimental results regarding the fairness of the allocations produced. These algorithms are well-understood, so while the experimental results in this chapter may not represent novel findings, they serve as verification of the library's intended functionality, from random matroid generation, through fair allocation, to fairness evaluation. They should be considered proof that Matroids.jl is a tool that enables a new workflow for working programmatically with matroids in fair allocation, successfully extending Allocations.jl with capabilities to run previously inaccessible algorithms. The successful development of this tool is the main contribution of this thesis.
+
 \section{Envy-induced transfers}
+The pseudocode and high-level description of \pr{Envy-Induced Transfers} can be found in Section~\ref{sec:three-algos}. In this section, I will give a step-by-step explanation of my implementation of the algorithm.
+
+The function accepts an instance of a fair allocation problem with matroid-rank valuations, represented with the \jlinl{MatroidRank} struct defined in Section~\ref{sec:fairness-impl}. Initially, a clean, MAX-USW allocation $A$ is found using the matroid partitioning algorithm whose implementation, \jlinl{matroid_partition_knuth73}, is described in Section~\ref{sec:matroid-union-impl}. This function returns a tuple $(A, junk)$, where $junk$ is the set items that did not fit into any independent bundle and is disregarded (\pr{Envy-Induced-Transfers} preferring cleanness over completeness). The partition is converted into an instance of \jlinl{Allocation}, which is provided by Allocations.jl. \pr{Envy-Induced-Transfers} continues until no agent envies another for more than one good; the envy between each pair of agents $i,j$ is represented with an $i\times j$-matrix \jlinl{envy} such that \jlinl{envy}$[i,j] = v_i(A_j) - v_i(A_i)$ holds agent $i$'s envy towards agent $j$. During each iteration a pair of agents $i,j$ is found such that \jlinl{envy}$[i,j] > 1$. Then, a good $g\in A_j$ with $\Delta_i(A_i, g)$ is transferred from $A_j$ to $A_i$. This is the envy-induced transfer from which the algorithm derives its name. After the transfer, the envy table is updated to reflect the new allocation.
+
+The full implementation of \pr{Envy-Induced-Transfers} is given in Figure~\ref{code:Envy-Induced-Transfers}. This implementation highlights an important optimization when working programmatically with matroids, which is to not use the rank function on a set that is known to be independent. As seen in the implementations given in Chapter~\ref{chap:generating_matroids}, the rank function is expensive; \jlinl{rank(m::GraphicMatroid, S)}, for instance, runs Kruskal's algorithm as a subroutine, giving a time complexity of $O(|S|\lg{|S|})$ for finding the rank of $S$. When $S$ is independent, the rank is $|S|$---the size of a set can be found in constant time using \jlinl{length(S)}\footnote{From the Julia source code (base/set.jl): \jlinl{length(s::Set) = length(s.dict)}~\cite{bezanson2017julia}. A set, though itself unindexable, is represented behind the scenes in Julia as a dictionary, which is indexable and hence has a lastindex field, thus allowing the constant time length computation.}.
+
+The concept of a \textit{loop invariant} is useful for reasoning about the correctness of an algorithm, and can in this case be used to rigorously show that each bundle $A_i$ is independent in $\mathfrak{M}_i$ throughout the procedure. A loop invariant is a property that is true before the loop starts (initialization), remains true at the start of each iteration (maintenance) and is true upon termination~\cite{Cormen2009-zm}. \pr{Envy-Induced-Transfers} has a loop invariant stating that the allocation $A$ is clean, or, equivalently, that each $A_i$ is independent in $\mathfrak{M}_i$. This is true on initialization: \pr{Matroid-Partition} produces a clean, MAX-USW allocation. Each iteration, the algorithm a good $g$ such that $\Delta_i(A_i, g)$ is transferred from $A_j$ to $A_i$ for some agents $i,j$. Since $A_j$ is independent, $A_j-g$ is independent due to the hereditary property. Similarly, due to the exchange property, $A_i+g$ is also independent, and the loop invariant is maintained. The algorithm terminates when it has reached EF1, and $A$ is returned as-is, a clean allocation. This proves that it is a valid optimization to use \jlinl{length} instead of \jlinl{rank} when finding $v_i(A_i)$ in the implementation of this algorithm. Notice that \jlinl{value} (which in turn uses \jlinl{rank}---refer to Section~\ref{sec:fairness-impl} for details) is still used when checking $v_i(A_j)$ for $i\neq j$. 
+
+A bundle will not necessarily be independent in another agent's matroid, hence \jlinl{rank} calls are still required when checking $v_i(A_j)$. To understand the effect of replacing half the \jlinl{rank} calls (the ones on sets known to be independent) with calls to \jlinl{length}, I ran the following simple experiment:
+\begin{enumerate}
+  \item Generate six random graphic matroids with 256 goods: \\\jlinl{m1 = GraphicMatroid(erdos_renyi(rand(128:512), 256))}
+  \item Precompute the initial partition: \\\jlinl{(p, _) = matroid_partition_knuth73([m1,m2,m3,m4,m5,m6])}
+  \item Run \jlinl{@btime alloc_eit_bciz21(V; partition=p)} with calls to \jlinl{length} where applicable
+  \item Run \jlinl{@btime alloc_eit_bciz21(V; partition=p)} with only calls to \jlinl{value}
+\end{enumerate}
+On average, the version that always called \jlinl{value} took 181.5ms to compute, whereas the optimized version needed only 97.625ms. It is clear that the calls to \jlinl{value} takes up a significant portion of the runtime of the function, and replacing half of them with a constant-time call to \jlinl{length} is a substantial improvement.
+
+\begin{figure}[ht!]
+\begin{jllisting}
+function alloc_eit_bciz21(V::MatroidRank; partition=nothing)
+  n = na(V); m = ni(V)
+
+  if partition === nothing
+    # Compute a clean, MAX-USW allocation.
+    (partition, _junk) = matroid_partition_knuth73(V.Ms)
+  end
+  
+  A = Allocation(n, m)
+  for (i, bundle) in enumerate(partition)
+    give!(A, i, bundle)
+  end
+
+  # Envy table envy[i,j] holds i's envy towards j, v_i(A_j) - v_i(A_i).
+  envy = zeros(Int, n, n)
+  for i in 1:n, j in 1:n
+    # We use length when we know the bundles are independent.
+    envy[i,j] = value(V, i, bundle(A, j)) - length(bundle(A, i))
+  end
+
+  # While there are agents i, j st i envies j more than 1...
+  i,j = argmax(envy) |> Tuple
+  while envy[i,j] > 1
+    # Find item in A_j with marginal gain for i.
+    for g in bundle(A,j)
+      if Δ(V, A, i, g) == 1
+        # Envy-induced transfer:
+        deny!(A, j, g)
+        give!(A, i, g)
+    
+        # Update D.
+        for k in 1:n
+          envy[i, k] = value(V, i, bundle(A, k)) - length(bundle(A, i))
+          envy[k, i] = value(V, k, bundle(A, i)) - length(bundle(A, k))
+          envy[j, k] = value(V, j, bundle(A, k)) - length(bundle(A, j))
+          envy[k, j] = value(V, k, bundle(A, j)) - length(bundle(A, k))
+        end
+
+        break
+      end
+    end
+
+    i,j = argmax(envy) |> Tuple
+  end
+
+  return A
+end
+\end{jllisting}
+\caption{The Matroids.jl implementation of \pr{Envy-Induced-Transfers}}
+\label{code:Envy-Induced-Transfers}
+\end{figure}
+
+\section{AlgMMS}
+\begin{figure}[ht!]
+\begin{jllisting}
+function alloc_algmms_bv21(V::MatroidRank)
+  n = na(V); m = ni(V)
+
+  # Compute a clean, (partial) MAX-USW allocation.
+  (partition, junk) = matroid_partition_knuth73(V.Ms)
+  A = Allocation(n, m)
+  for (i, bundle) in enumerate(partition)
+    give!(A, i, bundle)
+  end
+
+  # Compute MMS of each agent.
+  mmss = [mms_i(V, i) for i in 1:n]
+
+  S_less = Set([i for i in 1:n if value(V, i, A) < mmss[i]])
+  S_more = Set([i for i in 1:n if value(V, i, A) > mmss[i]])
+
+  D = exchange_graph(V.Ms, A)
+
+  while length(S_less) > 0
+    # i is an agent with less than their maximin share.
+    i = popfirst!(collect(S_less))
+
+    # The goods for which i has positive marginal value.
+    F_i = [g for g in 1:m if is_indep(V.Ms[i], bundle(A, i) ∪ g)]
+    A_more = reduce(∪, [bundle(A, j) for j in S_more])
+
+    transfer_path = find_shortest_path(D, F_i, A_more)
+    @assert transfer_path !== nothing
+
+    j = owner(A, transfer_path[end]) # The losing agent.
+    
+    transfer!(V.Ms, D, A, i, transfer_path)
+
+    # Only i and j have received a new value.
+    for k in [i,j]
+      if value(V,k,A) < mmss[k] push!(S_less, k) else setdiff!(S_less, k) end
+      if value(V,k,A) > mmss[k] push!(S_more, k) else setdiff!(S_more, k) end
+    end
+  end
+
+  # Give agent 1 any unallocated items (these are 0-valued by everyone).
+  give!(A, 1, junk)
+  return A
+end
+\end{jllisting}
+\caption{The Matroids.jl implementation of \pr{AlgMMS}}
+\label{code:AlgMMS}
+\end{figure}
+
 \section{Yankee Swap}
-\section{AlgMMS (using Yankee Swap)}
-\subsection{AlgPMMS}
+
+\begin{figure}[ht!]
+\begin{jllisting}
+function alloc_yankee_swap_vz22(V::MatroidRank)
+  n = na(V); m = ni(V)
+  # Agent "0" (n+1) has a corresponding zero matroid.
+  Ms_ = [V.Ms..., ZeroMatroid(m)]
+
+  A = Allocation(n+1, m)
+  give!(A, n+1, 1:m) # The bundle of unallocated items.
+  flag = falses(n)
+
+  D = exchange_graph(Ms_, A)
+
+  while false in flag
+    # The agents whose bundle can still improve.
+    T = [i for i in 1:n if flag[i] == false]
+    
+    # Find the agents in T with minimim value.
+    T_vals = [(i, value(V, i, bundle(A, i))) for i in T]
+    min_val = minimum(last, T_vals)
+    T_ = [i for (i, v) in T_vals if v == min_val]
+
+    # The highest priority agent with minimum value.
+    i = T_[1] 
+
+    # The goods for which i has positive marginal value.
+    F_i = [g for g in 1:m if Δ(V, A, i, g) == 1]
+
+    #  a shortest path from F_i to an unallocated good.
+    A_0 = [g for g in 1:m if owner(A, g) == n+1]
+    transfer_path = find_shortest_path(D, F_i, A_0)
+
+    # Transfer if path exists.
+    if transfer_path !== nothing
+      transfer!(Ms_, D, A, i, transfer_path)
+    else
+      flag[i] = true
+    end
+  end
+  
+  return A
+end
+\end{jllisting}
+\caption{The Matroids.jl implementation of \pr{Yankee-Swap}}
+\label{code:Yankee-Swap}
+\end{figure}
 
 \section{Results}
 \label{chap:results}

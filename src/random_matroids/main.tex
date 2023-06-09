@@ -55,10 +55,61 @@ Variations of the ER model have been developed by physicists and network scienti
 
 Another approach is the Watts-Strogatz model, which starts with a ring lattice, a regular graph with $n$ nodes, each with degree $k$, and then rewires each edge with some probability $p$. By changing $p$, one is able to `tune' the graph between regularity (p=0) and disorder (p=1). For intermediate values of $p$, Watts-Strogatz produces so-called ``small-world'' graphs, which exhibit both a high degree of clustering (how likely two nodes with a common neighbor are to be adjacent), and short average distance between nodes. This phenomenon is found in many real-world networks, such as social systems or power grids~\cite{Watts-1998}.
 
-\subsection{Properties of random graphic matroids}
-We will use the Graphs.jl library~\cite{Graphs2021} for handling graphs in Matroids.jl. This library has built-in methods for the random graph models described in the previous chapter\footnote{\href{https://docs.juliahub.com/Graphs/VJ6vx/1.4.1/generators/}{https://docs.juliahub.com/Graphs/VJ6vx/1.4.1/generators/}}. 
+\subsection{Generating random graphic matroids}
+We will use the Graphs.jl library~\cite{Graphs2021} for handling graphs in Matroids.jl. This library has built-in functions for the random graph models described in the previous chapter\footnote{\href{https://docs.juliahub.com/Graphs/VJ6vx/1.4.1/generators/}{https://docs.juliahub.com/Graphs/VJ6vx/1.4.1/generators/}}. 
+\begin{figure}[ht!]
+  \begin{jllisting}
+    
+function random_ba_graph(m)
+  k = rand([x for x in 1:ceil(Integer, sqrt(m)) if m\%x == 0])
+  n = m ÷ k + k
 
-When constructing matroids, we want to be able to specify the size of the ground set, and perhaps also the rank of the matroid. Let us see how we can achieve this with the random graph models we have discussed. The method \jlinl{barabasi_albert(n,k)} generates a Barabási-Albert model random graph with $n$ nodes. It starts with an initial graph of $k$ nodes, and adds the remaining $n-k$ nodes one at a time, each new node receiving $k$ edges via preferential attachment. Thus, the final graph has $|E| = (n-k)k$ edges. To specify a matroid with $m$ edges, we pick some $k|m$ and solve for $n$. Remember that the rank of a graphic matroid is the size of a spanning tree over the graph, which is $n-1$ when the graph is connected. If we select a smaller $k$ from among the factors of $|E|$, we get a larger final rank, and vice versa. We can generate a Watts-Strogatz model random graph with the method \jlinl{watts_strogatz(n, k, β)}, where $n$ is the number of nodes, $k$ the node degree and $\beta$ the probability of rewiring. The number of edges of a regular graph with $n$ nodes and degree $k$ (and thus the size of the ground set of the induced graphic matroid) is given by $\frac{nk}{2}$, so $nk$ must be even. Erdős-Rényi is the simplest model for our purposes, as the method \jlinl{erdos_renyi(nv, ne)} simply takes in the desired number of nodes and edges. However, since the resulting graph has a large number of components for $|E| < \frac{n}{2}$, we have less fine-grained control over the final rank of the induced graphic matroid.
+  return barabasi_albert(n, k)
+end
+
+  \end{jllisting}
+  \caption{Compute a Barabási-Albert model random graph with $m$ edges from random parameters}
+  \label{code:random_ba_graph}
+\end{figure}
+
+When generating random matroids, we want to be able to specify the size of the ground set, and perhaps also have some say in the rank of the matroid. Let us see how we can achieve this with the random graph models we have discussed. The function \jlinl{barabasi_albert(n,k)} generates a Barabási-Albert model random graph with $n$ nodes. It starts with an initial graph of $k$ nodes, and adds the remaining $n-k$ nodes one at a time, each new node receiving $k$ edges via preferential attachment. Thus, the final graph has $|E| = (n-k)k$ edges. To specify a matroid with $m$ edges, we pick some $k$ that divides $m$ and solve for $n$. Figure~\ref{code:random_ba_graph} shows a snippet of Julia code that generates a Barabási-Albert model random graph with random parameters such that the number of edges is $m$.
+
+\begin{figure}[ht!]
+  \begin{jllisting}
+    
+function random_ws_graph(m)
+  n = rand([x for x in 2:ceil(Integer, sqrt(2m)) if 2m\%x == 0 && iseven(x)])
+  k = 2m ÷ n
+  (k, n) = sort([n,k])
+
+  return watts_strogatz(n, k, rand())
+end
+
+  \end{jllisting}
+  \caption{Compute a Watts-Strogatz model random graph with $m$ edges from random parameters}
+  \label{code:random_ws_graph}
+\end{figure}
+
+Remember that the rank of a graphic matroid is the size of a spanning tree over the graph, which is $n-1$ when the graph is connected. If we select a smaller $k$ from among the factors of $|E|$, we get a larger final rank, and vice versa. We can generate a Watts-Strogatz model random graph with the function \jlinl{watts_strogatz(n, k, β)}, where $n$ is the number of nodes, $k$ the node degree and $\beta$ the probability of rewiring. The number of edges of a regular graph with $n$ nodes and degree $k$ (and thus the size of the ground set of the induced graphic matroid) is given by $\frac{nk}{2}$, so $nk$ must be even. Figure~\ref{code:random_ws_graph} shows a snippet of Julia code that randomly generates a Watts-Strogatz model random graph with $m$ edges.
+
+\begin{figure}[ht!]
+  \begin{jllisting}
+    
+function random_er_graph(m)
+  n = rand(trunc(Integer, m/2):3m)
+  return erdos_renyi(n, m)
+end
+
+  \end{jllisting}
+  \caption{Compute a Erdős-Rényi model random graph with $m$ edges and a randomly chosen number of edges}
+  \label{code:random_er_graph}
+\end{figure}
+
+Figure~\ref{code:random_er_graph} shows a snippet of Julia code that generates a random Erdős-Rényi model random graph with $m$ edges. ER is the simplest model for our purposes, as the function \jlinl{erdos_renyi(nv, ne)} simply takes in the desired number of nodes and edges. The resulting graph consists of mostly small trees and single-cycle components for $m < \frac{n}{2}$~\cite{janson1993birth}. The code in Figure~\ref{code:random_er_graph} somewhat arbitrarily picks the number of vertices randomly in the range from $\frac{m}{2}$ to $3m$.
+
+
+\subsection{Properties of random graphic matroids}
+
 
 In Matroids.jl, we ``generate'' a graphic matroid by simply accepting some graph, and figure out the rank of the matroid using Kruskal's algorithm for maximal spanning forests, which runs in $\mathcal{O}(|E| \lg |E|)$ time~\cite{Cormen2009-zm}. This is shown in Figure~\ref{code:struct_graphicmatroid}. Implementing the methods for finding the properties of our graphic matroids is simple, as they reduce to well-known algorithms (implemented by Graphs.jl) for finding the properties of the graphs they are derived from. 
 

@@ -4,23 +4,12 @@ At this point in the report, I have described how Matroids.jl implements the fun
 
 This chapter serves a proof of concept for Matroids.jl, demonstrating the library's ability to facilitate the implementation and evaluation of matroidal fair allocation algorithms. As such, I will, in addition to describing the implementation of the algorithms, provide some experimental results regarding the fairness of the allocations produced. These algorithms are well-understood, so while the experimental results in this chapter may not represent novel findings, they serve as verification of the library's intended functionality, from random matroid generation, through fair allocation, to fairness evaluation. They should be considered proof that Matroids.jl is a tool that enables a new workflow for working programmatically with matroids in fair allocation, successfully extending Allocations.jl with capabilities to run previously inaccessible algorithms. The successful development of this tool is the main contribution of this thesis.
 
-\section{Envy-induced transfers}
+\section{Implementing Envy-induced transfers}
 The pseudocode and high-level description of \pr{Envy-Induced Transfers} can be found in Section~\ref{sec:three-algos}. In this section, I will give a step-by-step explanation of my implementation of the algorithm.
 
-The function accepts an instance of a fair allocation problem with matroid-rank valuations, represented with the \jlinl{MatroidRank} struct defined in Section~\ref{sec:fairness-impl}. Initially, a clean, MAX-USW allocation $A$ is found using the matroid partitioning algorithm whose implementation, \jlinl{matroid_partition_knuth73}, is described in Section~\ref{sec:matroid-union-impl}. This function returns a tuple $(A, junk)$, where $junk$ is the set items that did not fit into any independent bundle and is disregarded (\pr{Envy-Induced-Transfers} preferring cleanness over completeness). The partition is converted into an instance of \jlinl{Allocation}, which is provided by Allocations.jl. \pr{Envy-Induced-Transfers} continues until no agent envies another for more than one good; the envy between each pair of agents $i,j$ is represented with an $i\times j$-matrix \jlinl{envy} such that \jlinl{envy}$[i,j] = v_i(A_j) - v_i(A_i)$ holds agent $i$'s envy towards agent $j$. During each iteration a pair of agents $i,j$ is found such that \jlinl{envy}$[i,j] > 1$. Then, a good $g\in A_j$ with $\Delta_i(A_i, g)$ is transferred from $A_j$ to $A_i$. This is the envy-induced transfer from which the algorithm derives its name. After the transfer, the envy table is updated to reflect the new allocation.
+The function accepts an instance of a fair allocation problem with matroid-rank valuations, represented with the \jlinl{MatroidRank} struct defined in Section~\ref{sec:fairness-impl}. Initially, a clean, MAX-USW allocation $A$ is found using the matroid partitioning algorithm whose implementation, \jlinl{matroid_partition_knuth73}, is described in Section~\ref{sec:matroid-union-impl}. This function returns a tuple $(A, junk)$, where $junk$ is the set of goods that did not fit into any independent bundle and is disregarded (\pr{Envy-Induced-Transfers} preferring cleanness over completeness). The partition is converted into an instance of \jlinl{Allocation}, which is provided by Allocations.jl. \pr{Envy-Induced-Transfers} continues until no agent envies another for more than one good; the envy between each pair of agents $i,j$ is represented with an $i\times j$-matrix \jlinl{envy} such that \jlinl{envy}$[i,j] = v_i(A_j) - v_i(A_i)$ holds agent $i$'s envy towards agent $j$. During each iteration a pair of agents $i,j$ is found such that \jlinl{envy}$[i,j] > 1$. Then, a good $g\in A_j$ with $\Delta_i(A_i, g)$ is transferred from $A_j$ to $A_i$. This is the envy-induced transfer from which the algorithm derives its name. After the transfer, the envy table is updated to reflect the new allocation.
 
 The full implementation of \pr{Envy-Induced-Transfers} is given in Figure~\ref{code:Envy-Induced-Transfers}. This implementation highlights an important optimization when working programmatically with matroids, which is to not use the rank function on a set that is known to be independent. As seen in the implementations given in Chapter~\ref{chap:generating_matroids}, the rank function is expensive; \jlinl{rank(m::GraphicMatroid, S)}, for instance, runs Kruskal's algorithm as a subroutine, giving a time complexity of $O(|S|\lg{|S|})$ for finding the rank of $S$. When $S$ is independent, the rank is $|S|$---the size of a set can be found in constant time using \jlinl{length(S)}\footnote{From the Julia source code (base/set.jl): \jlinl{length(s::Set) = length(s.dict)}~\cite{bezanson2017julia}. A set, though itself unindexable, is represented behind the scenes in Julia as a dictionary, which is indexable and hence has a lastindex field, thus allowing the constant time length computation.}.
-
-The concept of a \textit{loop invariant} is useful for reasoning about the correctness of an algorithm, and can in this case be used to rigorously show that each bundle $A_i$ is independent in $\mathfrak{M}_i$ throughout the procedure. A loop invariant is a property that is true before the loop starts (initialization), remains true at the start of each iteration (maintenance) and is true upon termination~\cite{Cormen2009-zm}. \pr{Envy-Induced-Transfers} has a loop invariant stating that the allocation $A$ is clean, or, equivalently, that each $A_i$ is independent in $\mathfrak{M}_i$. This is true on initialization: \pr{Matroid-Partition} produces a clean, MAX-USW allocation. Each iteration, the algorithm a good $g$ such that $\Delta_i(A_i, g)$ is transferred from $A_j$ to $A_i$ for some agents $i,j$. Since $A_j$ is independent, $A_j-g$ is independent due to the hereditary property. Similarly, due to the exchange property, $A_i+g$ is also independent, and the loop invariant is maintained. The algorithm terminates when it has reached EF1, and $A$ is returned as-is, a clean allocation. This proves that it is a valid optimization to use \jlinl{length} instead of \jlinl{rank} when finding $v_i(A_i)$ in the implementation of this algorithm. Notice that \jlinl{value} (which in turn uses \jlinl{rank}---refer to Section~\ref{sec:fairness-impl} for details) is still used when checking $v_i(A_j)$ for $i\neq j$. 
-
-A bundle will not necessarily be independent in another agent's matroid, hence \jlinl{rank} calls are still required when checking $v_i(A_j)$. To understand the effect of replacing half the \jlinl{rank} calls (the ones on sets known to be independent) with calls to \jlinl{length}, I ran the following simple experiment:
-\begin{enumerate}
-  \item Generate six random graphic matroids with 256 goods: \\\jlinl{m1 = GraphicMatroid(erdos_renyi(rand(128:512), 256))}
-  \item Precompute the initial partition: \\\jlinl{(p, _) = matroid_partition_knuth73([m1,m2,m3,m4,m5,m6])}
-  \item Run \jlinl{@btime alloc_eit_bciz21(V; partition=p)} with calls to \jlinl{length} where applicable
-  \item Run \jlinl{@btime alloc_eit_bciz21(V; partition=p)} with only calls to \jlinl{value}
-\end{enumerate}
-On average, the version that always called \jlinl{value} took 181.5ms to compute, whereas the optimized version needed only 97.625ms. It is clear that the calls to \jlinl{value} takes up a significant portion of the runtime of the function, and replacing half of them with a constant-time call to \jlinl{length} is a substantial improvement.
 
 \begin{figure}[ht!]
 \begin{jllisting}
@@ -76,7 +65,23 @@ end
 \label{code:Envy-Induced-Transfers}
 \end{figure}
 
-\section{AlgMMS}
+The concept of a \textit{loop invariant} is useful for reasoning about the correctness of an algorithm, and can in this case be used to rigorously show that each bundle $A_i$ is independent in $\mathfrak{M}_i$ throughout the procedure. A loop invariant is a property that is true before the loop starts (initialization), remains true at the start of each iteration (maintenance) and is true upon termination~\cite{Cormen2009-zm}. \pr{Envy-Induced-Transfers} has a loop invariant stating that the allocation $A$ is clean, or, equivalently, that each $A_i$ is independent in $\mathfrak{M}_i$. This is true on initialization: \pr{Matroid-Partition} produces a clean, MAX-USW allocation. Each iteration, the algorithm a good $g$ such that $\Delta_i(A_i, g)$ is transferred from $A_j$ to $A_i$ for some agents $i,j$. Since $A_j$ is independent, $A_j-g$ is independent due to the hereditary property. Similarly, due to the exchange property, $A_i+g$ is also independent, and the loop invariant is maintained. The algorithm terminates when it has reached EF1, and $A$ is returned as-is, a clean allocation. This proves that it is a valid optimization to use \jlinl{length} instead of \jlinl{rank} when finding $v_i(A_i)$ in the implementation of this algorithm. Notice that \jlinl{value} (which in turn uses \jlinl{rank}---refer to Section~\ref{sec:fairness-impl} for details) is still used when checking $v_i(A_j)$ for $i\neq j$. 
+
+
+
+A bundle will not necessarily be independent in another agent's matroid, hence \jlinl{rank} calls are still required when checking $v_i(A_j)$. To understand the effect of replacing half the \jlinl{rank} calls (the ones on sets known to be independent) with calls to \jlinl{length}, I ran the following simple experiment:
+\begin{enumerate}
+  \item Generate six random graphic matroids with 256 goods: \\\jlinl{m1 = GraphicMatroid(erdos_renyi(rand(128:512), 256))}
+  \item Precompute the initial partition: \\\jlinl{(p, _) = matroid_partition_knuth73([m1,m2,m3,m4,m5,m6])}
+  \item Run \jlinl{@btime alloc_eit_bciz21(V; partition=p)} with calls to \jlinl{length} where applicable
+  \item Run \jlinl{@btime alloc_eit_bciz21(V; partition=p)} with only calls to \jlinl{value}
+\end{enumerate}
+On average, the version that always called \jlinl{value} took 181.5ms to compute, whereas the optimized version needed only 97.625ms. It is clear that the calls to \jlinl{value} takes up a significant portion of the runtime of the function, and replacing half of them with a constant-time call to \jlinl{length} is therefore a substantial improvement, shaving off roughly half the runtime.
+
+
+\section{Implementing AlgMMS}
+The next algorithm I implement in order to demonstrate the capabilities of Matroids.jl is \pr{AlgMMS}. Refer to Section~\ref{sec:three-algos} for the pseudocode and high-level description of the algorithm. The full source code of my implementation is given in Figure~\ref{code:AlgMMS}.
+
 \begin{figure}[ht!]
 \begin{jllisting}
 function alloc_algmms_bv21(V::MatroidRank)
@@ -128,12 +133,25 @@ end
 \label{code:AlgMMS}
 \end{figure}
 
-\section{Yankee Swap}
+The function accepts an instance of a fair allocation problem with matroid-rank valuations, and outputs a clean, MAX-USW, MMS-fair allocation. If not passed in the optional parameter \jlinl{partition}, an initial clean and MAX-USW allocation $A$ is computed with \jlinl{matroid_partition_knuth73}, identically to how \jlinl{alloc_eit_bciz21} starts off. The maximin share $\mu_i$ is computed for each agent $i$, using the function \jlinl{mms_i}, whose implementation is given in Figure~\ref{code:mms_i}. Next, the setup phase, the algorithm finds \jlinl{S_less}, the set of agents whose bundle value in $A$ is less than their maximin share, and \jlinl{S_more}, the set of agents whose bundle value is higher. Finishing off the setup phase, the exchange graph of the allocation is produced with the function \jlinl{exchange_graph} from Figure~\ref{code:exchange_graph}.
+
+Each iteration, an agent $i$ such that $A_i<\mu_i$ is popped from \jlinl{S_less}. The set of goods $g$ such that $\Delta_i(A_i, g) = 1$ is computed, this is the set \jlinl{F_i}. A shortest path is found from the goods in \jlinl{F_i} to the goods belonging to agents in \jlinl{S_more} using \jlinl{find_shortest_path}, which either returns a transfer path or \jlinl{nothing} if none could be found. In the paper describing AlgMMS, Barman and Verma show that such a path always exist as long as someone has less than their maximin share. A new allocation is acquired by calling \jlinl{transfer!}, passing it the list of matroids, the exchange graph, the allocation, the agent whose bundle value is about to improve and the transfer path. \jlinl{transfer!} updates the exchange graph and allocation in place (hence the exclamation mark---a Julia convention). \jlinl{S_less} and \jlinl{S_more} are updated for the agents whose bundle value has changed. When \jlinl{S_less} is empty, the while loop terminates, the first agent is granted the goods that were not allocated by \jlinl{matroid_partition_knuth73} and the resulting allocation is returned.
+
+\jlinl{alloc_algmms_bv21} is another example showing that it is often unnecessary to compute the actual value (entailing an expensive call to \jlinl{rank}) of a bundle. Notice that, when finding the list of positively marginal-valued good $F_i$ for agent $i$, the $\Delta_i$ function is not chosen for the task. The algorithm has the same loop invariant as \pr{Envy-Induced-Transfers} regarding the cleanness of $A$ at every step of the algorithm; thus, $F_i$ is simply the list of goods such that $A_i + g$ is independent. 
+
+\section{Implementing Yankee Swap}
+\pr{Yankee-Swap} is the third and final algorithm whose implementation will serve as a proof of the capabilities of Matroids.jl. \pr{Yankee-Swap} differs from the previous two algorithms in that it does not start out with a clean, MAX-USW allocation procured with \pr{Matroid-Partition}, instead adding a new ``agent zero'', whose bundle is the pot of unallocated items. Agent zero is represented with a \jlinl{ZeroMatroid}, the special case of the uniform matroid in which only the empty set is independent. This ensures that the goods allocated to agent zero are sinks on the graph, with no out-edges.
+
+The source code for my implementation of \pr{Yankee-Swap} is given in Figure~\ref{code:Yankee-Swap}. The function proceeds similarly to \pr{AlgMMS}. Each iteration, a least-fortunate, highest-priority agent $i$ is chosen from among the agents whose bundle value can still improve (denoted with the \jlinl{flag} array). The set $F_i$ of goods for which $i$ has positive marginal value is found, and a transfer path is produced between $F_i$ and the set of goods currently belonging to agent zero (the unallocated goods). The next allocation is produced by augmenting along the transfer path and the next iteration starts if some agent can still improve their bundle; otherwise it terminates.
 
 \begin{figure}[ht!]
 \begin{jllisting}
 function alloc_yankee_swap_vz22(V::MatroidRank)
   n = na(V); m = ni(V)
+
+  # Randomly prioritize the agents.
+  agents = shuffle(1:n)
+
   # Agent "0" (n+1) has a corresponding zero matroid.
   Ms_ = [V.Ms..., ZeroMatroid(m)]
 
@@ -145,10 +163,10 @@ function alloc_yankee_swap_vz22(V::MatroidRank)
 
   while false in flag
     # The agents whose bundle can still improve.
-    T = [i for i in 1:n if flag[i] == false]
+    T = [i for i in agents if flag[i] == false]
     
     # Find the agents in T with minimim value.
-    T_vals = [(i, value(V, i, bundle(A, i))) for i in T]
+    T_vals = [(i, length(bundle(A, i))) for i in T]
     min_val = minimum(last, T_vals)
     T_ = [i for (i, v) in T_vals if v == min_val]
 
@@ -156,7 +174,7 @@ function alloc_yankee_swap_vz22(V::MatroidRank)
     i = T_[1] 
 
     # The goods for which i has positive marginal value.
-    F_i = [g for g in 1:m if Δ(V, A, i, g) == 1]
+    F_i = [g for g in 1:m if is_indep(V.Ms[i], bundle(A, i) ∪ g)]
 
     #  a shortest path from F_i to an unallocated good.
     A_0 = [g for g in 1:m if owner(A, g) == n+1]
@@ -177,5 +195,36 @@ end
 \label{code:Yankee-Swap}
 \end{figure}
 
-\section{Results}
+\section{Running some experiments}
 \label{chap:results}
+At this point, it seems like Matroids.jl has achieved its goal of making it easy to implement matroidal fair allocation algorithms. The arcane matroid logic is safely hidden away behind semantically named functions in the library's, allowing the developer to focus on the business logic of the algorithm at hand. Of course, the real purpose of Matroids.jl is to enable the empirical study of matroidal fair allocation algorithms. Let us now turn our attention to how an experimental setup might be implemented. In this section, we will use the functionality available to us in the current, proof-of-concept version of Matroids.jl to investigate how the three algorithms we have implemented perform on a range of fairness criteria. These results, though probably not terribly interesting in and of themselves, should serve to illustrate that Matroids.jl does in fact live up to its purpose in life; namely, to be a practical, empirical tool to be used alongside the abundant kit of theoretical tools afforded by matroid theory.
+
+The experimental plan is as follows:
+\begin{enumerate}
+  \item Generate a matroid-rank-valued fair allocation instance with $n$ matroids over $m$ elements.
+  \item Find an allocation using some allocation algorithm.
+  \item Check the resulting allocations against some set of approximate fairness notions.
+  \item Repeat steps 1-3 $k$ times and present the average results.
+\end{enumerate}
+
+\begin{figure}
+  \begin{jllisting}
+function gen_matroidrank_profile(n, gen_matroid, T)
+  function gen()
+    ms = Array{T}(undef, n)
+
+    Threads.@threads for i in 1:n
+      ms[i] = gen_matroid()
+    end
+
+    return MatroidRank(ms, m)
+  end
+
+  return gen
+end
+  \end{jllisting}
+  \caption{Function to initialize a random matroid-rank valuation profile, given a random matroid generator}
+  \label{code:gen_matroidrank_profile}
+\end{figure}
+
+Figure~\ref{code:gen_matroidrank_profile} shows a Julia function that accepts a function that generates a matroid, and returns a function that constructs a matroid-rank valuation profile with $n$ thusly generated matroids. Matroid generation is rather slow, so the matroids are generated in parallel\footnote{Depending on how many threads are available. Julia starts single-threaded by default, but supports multi-threading~\cite{bezanson2017julia}.}. By plugging in a function for generating random graphs with $m$ edges, as given in Figures~\ref{code:random_ba_graph}, \ref{code:random_ws_graph} and \ref{code:random_er_graph}, we can generate a valuation profile consisting of graphic matroids. Alternatively, we can pass in \jlinl{random_knuth_matroid} to generate a profile of matroids given via their closed sets representations. 

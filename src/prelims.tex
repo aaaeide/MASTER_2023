@@ -2,12 +2,13 @@
 \label{chap:prelims}
 \epigraph{For simplicity, we also assume that every point in a geometry is a closed set. Without this additional assumption, the resulting structure is often described by the ineffably cacaphonic term "matroid", which we prefer to avoid in favor of the term "pregeometry".}{Gian-Carlo Rota \cite{crapo_rota_1970}}
 
-Matroids were first introduced by Hassler Whitney in 1935~\cite{whitney-1935}, in a seminal paper where he described two axioms for independence in the columns of a matrix, and defined any system obeying these axioms to be a ``matroid'' (which unfortunately for Rota is the term that has stuck). Whitney's key insight was that this abstraction of~~``independence'' is applicable to both matrices and graphs. Matroids have also received attention from researchers in fair allocation, as their properties make them useful for modeling user preferences. We have already seen this with the course allocation problem described in the previous chapter; other use cases include the assignment of kindergarten slots or public housing estates among people of different ethnicities~\cite{benabbou-2021}.
+Matroids were first introduced by Hassler Whitney in 1935~\cite{whitney-1935}, in a seminal paper where he described two axioms for independence in the columns of a matrix, and defined any system obeying these axioms to be a ``matroid'' (which unfortunately for Rota is the term that has stuck). Whitney's key insight was that this abstraction of ``independence'' is applicable to both matrices and graphs. Matroids have also received attention from researchers in fair allocation, as their properties make them useful for modeling user preferences. We have already seen this with the course allocation problem described in the previous chapter; other use cases include the assignment of kindergarten slots or public housing estates among people of different ethnicities~\cite{benabbou-2021}.
 
 \section{Fair allocation}
-To ease readability, I abuse notation a bit and use $S+e$ and $S-e$ to refer to $S \cup \{e\}$ and $S \setminus \{e\}$, respectively.
+\label{sec:fa}
+To ease readability, I abuse notation a bit and use $S+g$ and $S-g$ to refer to $S \cup \{g\}$ and $S \setminus \{g\}$, respectively.
 
-An instance of a fair allocation problem consists of a set of agents $N = \{1,2,\ldots, n\}$ and a set of $m$ goods $E = \{e_1, e_2, \dots, e_m\}$. Each agent has a valuation function $v_i: 2^E \to \mathbb{R}^+$; $v_i(S)$ is the value agent $i$ ascribes to the bundle of goods $S$. The marginal value of agent $i$ for the good $g$, given that she already owns the bundle $S$, is given by $\Delta_i(S, g) := v_i(S + g) - v_i(S)$. Throughout most of this thesis, we assume that $v_i$ is a matroid rank function, or, equivalently, a binary submodular function. To formalize the description given in Chapter~1, this means that
+An instance of a fair allocation problem consists of a set of agents $N = \{1,2,\ldots, n\}$ and a set of $m$ goods $E = \{g_1, g_2, \dots, g_m\}$. Each agent has a valuation function $v_i: 2^E \to \mathbb{R}^+$; $v_i(S)$ is the value agent $i$ ascribes to the bundle of goods $S$. The marginal value of agent $i$ for the good $g$, given that she already owns the bundle $S$, is given by $\Delta_i(S, g) := v_i(S + g) - v_i(S)$. Throughout most of this thesis, we assume that $v_i$ is a matroid rank function, or, equivalently, a binary submodular function. To formalize the description given in Chapter~1, this means that
 \begin{enumerate}
   \item[(a)] $v_i(\emptyset) = 0$,
   \item[(b)] $v_i$ has binary marginals: $\Delta_i(A, g)\in \{0,1\}$ for every $A \subset E$ and $g\in E$,
@@ -15,49 +16,49 @@ An instance of a fair allocation problem consists of a set of agents $N = \{1,2,
 \end{enumerate}
 Any function $v_i$ adhering to these properties is a valid characterization of exactly one matroid in terms of its rank function~\cite{schrijver-2003}. There are many other ways to characterize matroids, some of which are given in Section~\ref{sec:matroid-theory}.
 
-Throughout this thesis, I will use the terms \textit{allocation} and \textit{partition} somewhat interchangeably. In set theory, an $n$-partition of a set is a grouping of its elements into $n$ subsets, such that each element occurs in exactly one subset. It is often required that the subsets be non-empty---when working with matroids this requirement is usually omitted since the empty set is independent (see Section~\ref{sec:matroid-theory}). In a fair allocation instance with $n$ agents, an allocation is an $n$-partition of $E$. 
+Throughout this thesis, I will use the terms \textit{allocation} and \textit{partition} somewhat interchangeably. In set theory, an $n$-partition of a set is a grouping of its elements into $n$ subsets, such that each element occurs in exactly one subset. It is often required that the subsets be non-gmpty---when working with matroids this requirement is usually omitted since the empty set is independent (see Section~\ref{sec:matroid-theory}). In a fair allocation instance with $n$ agents, an allocation is an $n$-partition of $E$. 
 
 The output of an algorithm for fair allocation is an allocation of the goods to the agents. An allocation $A$ is an $n$-partition of $E$, $A = (A_1, A_2, \dots, A_n)$, where each $A_i$ is the bundle of goods allocated to agent $i$. Sharing is not allowed, so we require that $A_i\cap A_j = \emptyset$ for all $i\neq j$. We say that an allocation is \textit{clean} (also known as \textit{non-redundant} in the literature) if no agent has received any good they value at 0. An allocation is \textit{complete} if all goods are allocated, if not it is \textit{partially}. It might not be possible to guarantee both cleanness and completeness; for instance in a case where a good is 0-valued by all agents.
 
 \subsection{Envy-freeness}
-We are interested in producing \textit{fair} allocations. One of the most popular notions of fairness in the literature is envy-freeness (EF), which states that no agent should prefer another agent's bundle over her own (in fair allocation, an agent is \textit{envious} of another agent if she prefers that agent's bundle). An allocation $A$ is EF iff, for all agents $i,j\in N$,
+We are interested in producing \textit{fair} allocations. One of the most popular notions of fairness in the literature is envy-freeness (EF), which states that no agent should prefer another agent's bundle over her own (in fair allocation, an agent is \textit{envious} of another agent if she prefers that agent's bundle). An allocation $A$ is EF if for all agents $i,j\in N$,
 \begin{equation} \tag{EF}
   v_i(A_i) \geq v_i(A_j).
 \end{equation}
 
-Because, as mentioned in the introduction, EF is not always achievable when the goods are indivisible, the literature has focused on relaxations thereof. The most prominent such relaxation, which can be guaranteed, is \textit{envy-freeness up to one good} (EF1)~\cite{lipton-2004}, which allows for the envy of up to the value of one (highest-valued) good. This is equivalent to saying that any envy can be eliminated by dropping one good from the envied bundle. $A$ is an EF1 allocation iff, for all agents $i,j \in N$ where $|A_j| > 0$, there exists a $e \in A_j$ such that
+Because, as mentioned in the introduction, EF is not always achievable when the goods are indivisible, the literature has focused on relaxations thereof. The most prominent such relaxation, which can be guaranteed, is \textit{envy-freeness up to one good} (EF1)~\cite{lipton-2004}, which allows for the envy of up to the value of one (highest-valued) good. This is equivalent to saying that any envy can be eliminated by dropping one good from the envied bundle. $A$ is an EF1 allocation if for all agents $i,j \in N$ where $|A_j| > 0$, there exists a $g \in A_j$ such that
 \begin{equation} \tag{EF1}
-  v_i(A_i) \geq v_i(A_j - e).
+  v_i(A_i) \geq v_i(A_j - g).
 \end{equation}
 
-\textit{Envy-freeness up to any good} (EFX) is an even stronger version of EF. While EF1 allows that agent $i$ envies agent $j$ up to their highest valued good, EFX requires that the envy can be removed by dropping agent $j$'s least valued good. There are two slightly different definitions of EFX in use in the literature. I follow the naming scheme used by Benabbou et al.~\cite{benabbou-2021} and refer to these as EFX$_+$ and EFX$_0$. Caragiannis et al.~\cite{caragiannis-Unreasonable} requires that this least valued good be positively valued. We call this fairness objective EFX$_+$. $A$ is an EFX$_+$ allocation iff, for all agents $i,j \in N$,
+\textit{Envy-freeness up to any good} (EFX) is an even stronger version of EF. While EF1 allows that agent $i$ envies agent $j$ up to their highest valued good, EFX requires that the envy can be removed by dropping agent $j$'s least valued good. There are two slightly different definitions of EFX in use in the literature. I follow the naming scheme used by Benabbou et al.~\cite{benabbou-2021} and refer to these as EFX$_+$ and EFX$_0$. Caragiannis et al.~\cite{caragiannis-Unreasonable} requires that this least valued good be positively valued. We call this fairness objective EFX$_+$. $A$ is an EFX$_+$ allocation if for all agents $i,j \in N$,
 \begin{equation} \tag{EFX$_+$}
-  v_i(A_i) \geq v_i(A_j - e),\ \forall e \in A_j \text{ st. } v_i(A_j-e) < v_i(A_j).
+  v_i(A_i) \geq v_i(A_j - g),\ \forall g \in A_j \text{ st. } v_i(A_j-g) < v_i(A_j).
 \end{equation}
-Plaut and Roughgarden~\cite{plaut2017envyfreeness}, on the other hand, allow for 0-valued goods in the envy check -- we call this version EFX$_0$. It is stronger requirement than EFX$_+$. $A$ is an EFX$_0$ allocation iff, for all agents $i,j \in N$,
+Plaut and Roughgarden~\cite{plaut2017envyfreeness}, on the other hand, allow for 0-valued goods in the envy check -- we call this version EFX$_0$. It is stronger requirement than EFX$_+$. $A$ is an EFX$_0$ allocation if for all agents $i,j \in N$,
 \begin{equation} \tag{EFX$_0$}
-  v_i(A_i) \geq v_i(A_j - e),\ \forall e \in A_j.
+  v_i(A_i) \geq v_i(A_j - g),\ \forall g \in A_j.
 \end{equation}
 In the general, additive case, the existence of EFX$_0$ allocations is an open question for instances with $n\geq4$~\cite{amanatidis2022fair}.
 
 \subsection{Proportionality}
-\textit{Proportionality} is a fairness objective that is fundamentally different from envy-freeness, in that it checks each bundle value against some threshold, instead of comparing bundle values against each other. An allocation $A$ is proportional (PROP) iff each agent $i\in N$ receives at least her proportional share PROP$_i$, which is the $\frac{1}{n}$ fraction of the value she puts on the whole set of goods, ie.
+\textit{Proportionality} is a fairness objective that is fundamentally different from envy-freeness, in that it checks each bundle value against some threshold, instead of comparing bundle values against each other. An allocation $A$ is proportional (PROP) if each agent $i\in N$ receives at least her proportional share PROP$_i$, which is the $\frac{1}{n}$ fraction of the value she puts on the whole set of goods, ie.
 \begin{equation}\tag{PROP}
   v_i(A_i)\geq \text{PROP}_i := \frac{v_i(E)}{n}.
 \end{equation}
 
-Proportionality might not be achievable in the indivisible case (again, consider two agents and one positively valued good), and so relaxations in the same vein as EF1 and EFX have been introduced -- these are called PROP1 and PROPX~\cite{amanatidis2022fair}. An allocation is PROP1 iff there for each agent $i \in N$ exists some good $g\in E\setminus A_i$ that, if given to $i$, would ensure that agent $i$ received her proportional share; that is, 
+Proportionality might not be achievable in the indivisible case (again, consider two agents and one positively valued good), and so relaxations in the same vein as EF1 and EFX have been introduced -- these are called PROP1 and PROPX~\cite{amanatidis2022fair}. An allocation is PROP1 if there for each agent $i \in N$ exists some good $g\in E\setminus A_i$ that, if given to $i$, would ensure that agent $i$ received her proportional share; that is, 
 \begin{equation}\tag{PROP1}
-  \exists e\in E\setminus A_i\text{ st. }v_i(A_i+e)\geq\text{PROP}_i
+  \exists g\in E\setminus A_i\text{ st. }v_i(A_i+g)\geq\text{PROP}_i
 \end{equation}
 
-PROPX is a stronger fairness objective than PROP1, and has, as in the case of EFX, two slightly different definitions in the literature. I follow the naming scheme established for EFX above, and refer to these as PROPX$_+$ and PROPX$_0$. The logic is similar to that of EFX. An allocation is PROPX$_0$ iff each agent can achieve her proportional share by receiving one additional, least-valued good from the goods not allocated to her. This good might be zero-valued.
+PROPX is a stronger fairness objective than PROP1, and has, as in the case of EFX, two slightly different definitions in the literature. I follow the naming scheme established for EFX above, and refer to these as PROPX$_+$ and PROPX$_0$. The logic is similar to that of EFX. An allocation is PROPX$_0$ if each agent can achieve her proportional share by receiving one additional, least-valued good from the goods not allocated to her. This good might be zero-valued.
 \begin{equation}\tag{PROPX$_0$}
-  \min_{e\in E\setminus A_i}v_i(A_i + e)\geq\text{PROP}_i
+  \min_{g\in E\setminus A_i}v_i(A_i + g)\geq\text{PROP}_i
 \end{equation}
 If we disallow zero-valued items, we arrive at the slightly weaker criteria PROPX$_+$, given by:
 \begin{equation}\tag{PROPX$_+$}
-  \min_{e\in E\setminus A_i, \Delta_i(A_i, e)>0}v_i(A_i + e)\geq\text{PROP}_i
+  \min_{g\in E\setminus A_i, \Delta_i(A_i, g)>0}v_i(A_i + g)\geq\text{PROP}_i
 \end{equation}
 
 \subsubsection*{Maximin share fairness}
@@ -88,32 +89,30 @@ An obvious drawback of the egalitarian approach is that, in the situation where 
 Both of these allocations are MAX-ESW. A stricter version of the egalitarian rule is \textit{leximin}: an allocation is leximin if it maximizes the smallest value; subject to that, it maximizes the second-smallest value; subject to that, it maximizes the next-smallest value, and so on. The leximin rule prefers Allocation 2 over Allocation 1.
 
 \subsubsection*{Pareto Optimality}
-\skelpar
+Another widespread notion of allocation efficiency is that of \textit{Pareto optimality}. An allocation $A$ is said to \textit{Pareto dominate} another allocation $B$ if (1) $\forall i\in N,\ v_i(A_i) \geq v_i(B_i)$ (every agent is at least as happy with $A$ as with $B$), and (2) $\exists j\in N,\ v_i(A_j) > v_j(B_j)$ (some agent $j$ is strictly happier with $A$ than with $B$). An allocation is Pareto optimal (PO) if it is not Pareto dominated by any other allocation.
+
+Pareto optimality is a weaker efficiency criterion than MAX-USW. To see why, assume $A$ is a MAX-USW allocation that is not PO. Since it is not PO, there exists another allocation $A'$ with $v_i(A'_i)\geq v_(A_i)$ for all agents $i$, and $v_j(A'_j) > v_j(A_j)$ for some agent $j$. Then, USW$(A') = \sum_{i\in N} v_i(A'_i) > \sum_{i\in N} v_i(A_i) =$ USW$(A)$, which contradicts that $A$ is MAX-USW. In Section~\ref{sec:matroid-union}, I show how the matroid union operation allows us to efficiently find MAX-USW, and therefore PO, allocations when the valuations are matroid rank functions. 
 
 
 \section{Matroid theory}
 \label{sec:matroid-theory}
 If a mathematical structure can be defined or axiomatized in multiple different, but not obviously equivalent, ways, the different definitions or axiomatizations of that structure make up a cryptomorphism. The many obtusely equivalent definitions of a matroid are a classic example of cryptomorphism, and belie the fact that the matroid is a generalization of concepts in many, seemingly disparate areas of mathematics. As a result, the terms used in matroid theory are borrowed from analogous concepts in both graph theory and linear algebra. 
 
-The most common way to characterize a matroid is as an \textit{independence system}. An independence system is a pair $(E, \mathcal{I})$, where $E$ is the ground set of elements, $E \not= \emptyset$, and $\mathcal{I}$ is the set of independent sets, $\mathcal{I} \subseteq 2^E$. The \textit{dependent sets} of a matroid are $2^E \setminus \mathcal{I}$. 
-
-In practice, the ground set $E$ represents the universe of elements in play, and the independent sets of typically represent the legal combinations of these items. In the context of fair allocation, the independent sets represent the legal (in the case of matroid constraints) or desired (in the case of matroid valuations) bundles of items.
-
-A matroid is an independence system with the following properties~\cite{whitney-1935}:
+The most common way to characterize a matroid is as an \textit{independence system}. An independence system is a pair $(E, \mathcal{I})$, where $E$ is the ground set of elements, $E \not= \emptyset$, and $\mathcal{I}$ is the set of independent sets, $\mathcal{I} \subseteq 2^E$. The \textit{dependent sets} of a matroid are $2^E \setminus \mathcal{I}$. A matroid is an independence system with the following properties~\cite{whitney-1935}:
 \begin{enumerate}
   \item[(1)] If $S \subseteq T$ and $T \in \mathcal{I}$, then $S \in \mathcal{I}$.
-  \item[(2)] If $S, T \in \mathcal{I}$ and $|S| > |T|,$ then there exists $e \in S \setminus T$ such that $S + e \in S$.
+  \item[(2)] If $S, T \in \mathcal{I}$ and $|S| > |T|,$ then there exists $g \in S \setminus T$ such that $S + g \in \mathcal{I}$.
   \item[(2')] If $S \subseteq E$, then the maximal independent subsets of $S$ are equal in size.
 \end{enumerate}
 Property (1) is called the \textit{hereditary property} and (2) the \textit{exchange property}. Properties (2) and (2') are equivalent. To see that $(2) \implies$~(2'), consider two maximal subsets of $S$. If they differ in size, (2) tells us that there are elements we can add from one to the other until they have equal cardinality. We get (2')~$\implies (2)$ by considering $S = A \cup B$. Since $|A|>|B|$, they cannot both be maximal, and some $e \in A \setminus B$ can be added to $B$ to obtain another independent set. 
 
-When $S=E$, (2') gives us that the maximal independent sets of a matroid are all of the same size. A maximal independent subset of $E$ is known as a \textit{basis}. The size of the bases is the \textit{rank} of the matroid as a whole.  A matroid can be exactly determined by $\mathcal{B}$, its collection of bases, since a set is independent if and only if it is contained in a basis (this follows from (1)). A theorem by Whitney~\cite{whitney-1935} gives the axiom system characterizing a collection of bases of a matroid: 
+When $S=E$ (i.e., the entire ground set), (2') gives us that the maximal independent sets of a matroid are all of the same size. A maximal independent subset of $E$ is known as a \textit{basis}. The size of the bases is the \textit{rank} of the matroid as a whole.  A matroid can be exactly determined by $\mathcal{B}$, its collection of bases, since a set is independent if and only if it is contained in a basis (this follows from (1)). A theorem by Whitney~\cite{whitney-1935} gives the axiom system characterizing a collection of bases of a matroid: 
 \begin{enumerate}
   \item No proper subset of a basis is a basis.
-  \item If $B, B'\in \mathcal{B}$ and $e \in B$, then for some $e'\in B'$, $B-e+e'\in\mathcal{B}$.
+  \item If $B, B'\in \mathcal{B}$ and $g \in B$, then for some $g'\in B'$, $B-g+g'\in\mathcal{B}$.
 \end{enumerate} 
 
-The rank function of a matroid is a function $v:2^E \to \mathbb{Z}^+$ which, given a subset $B\subseteq E$, returns the size of the largest independent set contained in $B$. That is, $$v(B) = \max_{A \subseteq B, A\in \mathcal{I}}|A|.$$
+The rank function of a matroid is a function $v:2^E \to \mathbb{Z}^+$ which, given a subset $B\subseteq E$, returns the size of the largest independent set contained in $B$. That is, $$v(B) = \max_{A \subseteq B, A\in \mathcal{I}}|A|.$$ The properties of the matroid rank function are given in Section~\ref{sec:fa}. Any function adhering to these properties specify exactly one matroid.
 
 \subsection{A graphic example}
 Different types of matroids exist, arising from different sources of ``independence''; one well-known subclass of matroids, arising from notions of independence in graphs, is the class of \textit{graphic matroids}.
@@ -175,9 +174,7 @@ To see that (2') holds, consider the set of bases of the matroid, $\mathcal{B} \
 \subsection{Other characterizations of a matroid} 
 \label{sec:characterizations}
 
-We have already seen the independent sets characterization of a matroid, but the other properties of a matroid have their own axiom systems that can equivalently be used to characterize a matroid.
-
-\paragraph{Characterization via rank function.} \skelpar
+We have already seen how to characterize a matroid using its rank function or its independent sets, but the other properties of a matroid have their own axiom systems that can equivalently be used to characterize a matroid.
 
 \paragraph{Characterization via circuits.} A \textit{circuit} is a minimal dependent set of a matroid -- it is an independent set plus one redundant element. Equivalently, the collection of circuits of a matroid is given by
 $$\mathcal{C} = \bigl\{ C : |C| = v(C) + 1, C\subseteq E \bigr\}.$$
@@ -210,7 +207,7 @@ A set is independent if and only if it contains no circuit~\cite{schrijver-2003}
   \label{fig:ex-graph-circuits}
 \end{figure}
 
-These properties are easily grokked by studying an example. In Figure~\ref{fig:ex-graph-circuits}, we see two circuits of a graph, highlighted in yellow and blue, overlapping at the edge highlighted in green. Obviously, no circuit in this figure contains a circuit. We can also verify that the union of the yellow edge set and the blue edge set, minus the green edge, is in fact a third, bigger circuit, as promised by property (2).
+These properties are easily grasped by studying an example. In Figure~\ref{fig:ex-graph-circuits}, we see two circuits of a graph, highlighted in yellow and blue, overlapping at the edge highlighted in green. Obviously, no circuit in this figure contains a circuit. We can also verify that the union of the yellow edge set and the blue edge set, minus the green edge, is in fact a third, bigger circuit, as promised by property (2).
 
 \paragraph{Characterization via closed sets.} We also need to establish the concept of the \textit{closed sets} (sometimes referred to as \textit{flats}~\cite{schrijver-2003}) of a matroid. A closed set is a set whose cardinality is maximal for its rank. Equivalently to the definition given above, we can define a matroid as $\mathfrak{M} = (E, \mathcal{F})$, where $\mathcal{F}$ is the set of closed sets of $\mathfrak{M}$, satisfying the following properties~\cite{knuth-1975}:
 
@@ -222,7 +219,7 @@ These properties are easily grokked by studying an example. In Figure~\ref{fig:e
 
 The \textit{closure function} is the function $\fn{cl} : 2^E \to 2^E$, such that $$\fn{cl}(S) = \bigl\{ x \in E : \fn{v}(S) = \fn{v}(S \cup \{x\}) \bigr\}.$$ That is to say, the closure function, when given a set $S \subseteq E$, returns the set of elements in $x \in E$ such that $x$ can be added to $S$ with no increase in rank. It returns the closed set of the same rank as $S$, that contains $S$. The \textit{nullity} of a subset $S$ is the difference $|S| - v(S)$, ie. the number of elements that must be removed from $S$ to obtain an independent set.
 
-Figure~\ref{fig:ex-graph-closure} shows an independent (acyclic) set $S$ of edges in highlighted yellow, along with its closure $\fn{cl}(S)$ in blue. The closure is the set of edges $e$ such that $v(S+e) = v(S)$, or, equivalently, such that the spanning tree of $S+e$ has the same size as that of $S$.
+Figure~\ref{fig:ex-graph-closure} shows an independent (acyclic) set $S$ of edges in highlighted yellow, along with its closure $\fn{cl}(S)$ in blue. The closure is the set of edges $e$ such that $v(S+g) = v(S)$, or, equivalently, such that the spanning tree of $S+g$ has the same size as that of $S$.
 
 \begin{figure}
   \centering
@@ -258,7 +255,7 @@ Figure~\ref{fig:ex-graph-closure} shows an independent (acyclic) set $S$ of edge
 
 \subsection{Matroid union}
 \label{sec:matroid-union}
-The matroid union is an operation that allows us to produce a new matroid by combining the independent sets of a collection of existing matroids. This is a powerful tool, as it allows us to reason about independence across multiple matroids, and has found several practical applications within fair allocation.
+The matroid union is an operation that allows us to produce a new matroid by combining the independent sets of a collection of existing matroids. This is a powerful tool, as it allows us to reason about independence across multiple matroids, and has found several practical applications within fair allocation~\cite{barman2021existence,benabbou-2021,viswanathan2023yankee}.
 
 Given $n$ matroids $\mathfrak{M}_i = (E, \mathcal{I}_i)$, their union is given, somewhat obtusely, by $$\widehat{\mathfrak{M}} = (E, \widehat{\mathcal{I}}) = (E, \{ I_1\cup\ldots\cup I_n : I_i\in\mathcal{I}_i,\ \forall i\in N \}).$$ 
 $\widehat{\mathfrak{M}}$ is in fact a matroid~\cite[Ch. 42]{schrijver-2003}, whose independent sets are the the subsets $S\subseteq E$ that allow an $n$-partition $S_1,\ldots,S_n$ such that $S_i\in\mathcal{I}_i$, for all $i\in N$. The following statements are equivalent for all $n$-partitions of the elements of $E$:
@@ -277,14 +274,14 @@ Given $n$ matroids $\mathfrak{M}_1 = (E, \mathcal{I}_1),\ldots,\mathfrak{M}_n = 
 
 We follow the example of Schrijver~\cite{schrijver-2003} and define the exchange graph of $A$ as the directed graph $D(A)=(E, x(A))$, where each node corresponds to a good in $E$, and the edges are given by
 $$x(A) = \{ (p,q) : p \in A_i, q \in E\setminus A_i, v_i(A_i - p + q) = v_i(A_i) \},$$
-where $v_i$ is the rank function of the matroid $\mathfrak{M}_i$. In other words, an edge exists between goods $p\in A_i$ and $q\in E\setminus A_i$ iff we can replace $p$ with $q$ for no decrease in the rank of the set containing $p$. Intuitively, we can understand $D$ as representing for each good $p$, which other good $q$ the current owner of $p$ can replace $p$ with and be just as happy. This intuitive explanation lets us begin to see why the matroid union algorithm and the concept of the exchange graph has found widespread use in fair allocation with matroid-rank valuations; they allow us to model equitable transfers of goods between agents.
+where $v_i$ is the rank function of the matroid $\mathfrak{M}_i$. In other words, an edge exists between goods $p\in A_i$ and $q\in E\setminus A_i$ if we can replace $p$ with $q$ for no decrease in the rank of the set containing $p$. Intuitively, we can understand $D$ as representing for each good $p$, which other good $q$ the current owner of $p$ can replace $p$ with and be just as happy. This intuitive explanation lets us begin to see why the matroid union algorithm and the concept of the exchange graph has found widespread use in fair allocation with matroid-rank valuations; they allow us to model equitable transfers of goods between agents.
 
 \subsubsection*{Transfer paths and path augmentation}
-Let $P = (e_1, \dots, e_t)$ be a path in the exchange graph $D(A)$. The \textit{transfer} of goods along $P$ is the operation in which $e_t$ is given to the agent who owns $e_{t-1}$, $e_{t-1}$ is given to the agent who owns $e_{t-2}$, and so on until $e_1$ is discarded. This transfer is called \textit{path augmentation}; we use the notation established by Viswanathan and Zick~\cite{viswanathan2023yankee} and denote the bundle $A_i$ after augmentation with the path $P$ by $A_i \Lambda P$. 
+Let $P = (g_1, \dots, g_t)$ be a path in the exchange graph $D(A)$. The \textit{transfer} of goods along $P$ is the operation in which $g_t$ is given to the agent who owns $g_{t-1}$, $g_{t-1}$ is given to the agent who owns $g_{t-2}$, and so on until $g_1$ is discarded. This transfer is called \textit{path augmentation}; we use the notation established by Viswanathan and Zick~\cite{viswanathan2023yankee} and denote the bundle $A_i$ after augmentation with the path $P$ by $A_i \Lambda P$. 
 
-For some $i\in N$, we define $F_i = \{ e\in E\setminus A_i : A_i + e \in \mathcal{I}_i \}$ as the set of elements whose addition to $A_i$ yields another, larger independent set (remember that $A$ is clean, so $A_i\in\mathcal{I}_i$ for each $i$). In a paper on the matroid union algorithm, Knuth~\cite{knuth1973matroidpartitioning} shows that, by augmenting along a shortest path $P = (e_1,\dots,e_t)$ from $F_i$ to $A_j$ for some $j \in N - i$, we get
+For some $i\in N$, we define $F_i = \{ e\in E\setminus A_i : A_i + e \in \mathcal{I}_i \}$ as the set of elements whose addition to $A_i$ yields another, larger independent set (remember that $A$ is clean, so $A_i\in\mathcal{I}_i$ for each $i$). In a paper on the matroid union algorithm, Knuth~\cite{knuth1973matroidpartitioning} shows that, by augmenting along a shortest path $P = (g_1,\dots,g_t)$ from $F_i$ to $A_j$ for some $j \in N - i$, we get
 \begin{enumerate}
-  \item[(a)] $v_i(A_i\Lambda P + e_1) = v_i(A_i) + 1$,
+  \item[(a)] $v_i(A_i\Lambda P + g_1) = v_i(A_i) + 1$,
   \item[(b)] $v_k(A_k\Lambda P) = v_k(A_k),\ \forall k\in N - i - j$, and
   \item[(c)] $v_j(A_j\Lambda P) = v_j(A_j) - 1$.
 \end{enumerate}
@@ -504,10 +501,10 @@ The \textit{truncation} of $\mathfrak{M}$ is given as $T(\mathfrak{M}) = \mathfr
         \end{tikzpicture}
   }
   \caption{An erection of $U_4^2$.}
-  \label{fig:hasse-erection}
+  \label{fig:hasse-grection}
 \end{figure}
 
-A matroid can have many erections. Figure~\ref{fig:hasse-uniform} shows the Hasse diagram for the matroid of 4 elements, where every subset of two or fewer elements is independent (denoted in yellow). Each subset is encoded as a binary string, where a 1 designates membership in the set (a syntax we will become very familiar with in Chapter~\ref{chap:generating_matroids}). This matroid is known as the uniform matroid $U_4^2$. The uniform matroid $U_4^3$ is the free erection of $U_4^2$, where we have simply designated all sets of rank 3 as independent. Figure~\ref{fig:hasse-erection} shows another erection of $U_4^2$, one in which only three of the subsets with three elements are designated as independent. The final set, 0111, remains a dependent set, and has therefore in fact been designated as a closed set of rank $2$. By starting from the rank-0 matroid $\mathfrak{M}^{(0)}$, one can iteratively erect any matroid $\mathfrak{M}$, at each iteration $i$ designating the sets to be closed sets of rank $i$ (all the while ensuring that the axioms for the closed sets of a matroid are obeyed). This is the approach taken by Knuth in his matroid erection algorithm, which is discussed in Chapter~\ref{sec:kmc}.
+A matroid can have many erections. Figure~\ref{fig:hasse-uniform} shows the Hasse diagram for the matroid of 4 elements, where every subset of two or fewer elements is independent (denoted in yellow). Each subset is encoded as a binary string, where a 1 designates membership in the set (a syntax we will become very familiar with in Chapter~\ref{chap:generating_matroids}). This matroid is known as the uniform matroid $U_4^2$---it is the matroid over a ground set of 4 elements, where every subset of size 2 or less is independent. The uniform matroid $U_4^3$ is the free erection of $U_4^2$, where we have simply designated all sets of rank 3 as independent. Figure~\ref{fig:hasse-grection} shows another erection of $U_4^2$, one in which only three of the subsets with three elements are designated as independent. The final set, 0111, remains a dependent set, and has therefore in fact been designated as a closed set of rank $2$. By starting from the rank-0 matroid $\mathfrak{M}^{(0)}$, one can iteratively erect any matroid $\mathfrak{M}$, at each iteration $i$ designating the sets to be closed sets of rank $i$ (all the while ensuring that the axioms for the closed sets of a matroid are obeyed). This is the approach taken by Knuth in his matroid erection algorithm, which is discussed in Chapter~\ref{sec:kmc}.
 
 The \textit{essential closed sets} (often referred to as essential flats) of a matroid are the closed sets whose existence cannot be inferred from the closed sets of lower rank. The rank-2 set 0111 in the example above is an essential closed set. The essential closed sets of a matroid, together with their ranks, fully determine the matroid~\cite{kelly-1978}. A rank-$r$ matroid can also be described inductively as a sequence of erections $(X_0, X_1, \dots, X_{r-1})$, where $X_k$ is a set of $(k+1)$-subsets of $E$ that roughly encode the closed sets of rank $k$~\cite{pendavingh2016enumerating}. This insight is the basis for Knuth's matroid construction algorithm.
 
@@ -516,15 +513,13 @@ The \textit{essential closed sets} (often referred to as essential flats) of a m
 It should be clear at this point that matroids are compelling structures to work with in the context of fair allocations. There are two main use cases for matroids in fair allocation: matroid-rank valuation functions (as in the example scenario from the introduction) and matroid constraints. Matroids.jl will be developed with the empirical study of algorithms for these two scenarios in mind.
 
 \subsection{Matroid-rank valuations}
-In a fair allocation instance with matroid-rank valuations, each agent $i$ has a corresponding matroid $\mathfrak{M}_i = (\mathcal{M}, \mathcal{I}_i)$, where $\mathcal{M}$ (the set of goods) is the ground set of elements common to all agents' matroids.
+In a fair allocation instance with matroid-rank valuations, each agent $i$ has a corresponding matroid $\mathfrak{M}_i = (E, \mathcal{I}_i)$, where $E$ (the set of goods) is the ground set of elements common to all agents' matroids. The example I give in Chapter~1 illustrates the fact that using matroids in this manner is a natural way of modeling many real-world behaviors of user preferences; matroid rank functions model diminishing returns, supplementary goods and fixed demand. This is one reason for the interest in matroid-rank valuations in fair allocation.
 
-Babaioff 2021 -- PE mechanism -- non-redundant Lorenz dominating allocation always exists and is MNW, MAX-USW, leximin, EFX (EF1) and .5-MMS. With a randomized prioritization it is ex ante EF and ex ante proportional as well. 3Yankee Swap computes prioritized non-redundant Lorenz dominating allocations.
+Another good reason for the interest in matroid-rank valuations is that the rich field of matroid theory offers many deep results that are useful for reasoning about what fairness guarantees can be made when agents have matroid-rank valuations. For instance, Babaioff gives an allocation mechanism called the \textit{randomized prioritized egalitarian} (RPE) mechanism, that produces allocations that are clean, MAX-USW, EFX, leximin and $\frac{1}{2}$-MMS in polynomial time~\cite{Babaioff2020FairAT}. This is an appealing set of fairness guarantees, most of which are computationally intractable in the general, additive case
 
-
-Limitation: MRFs cannot model complementary goods!
-
+Note that submodular valuations are not fully representative of all combinatorial preferences. One example of a situation that can not be modeled with matroid rank functions is \textit{complementary goods}. Consider, as an example, a fair allocation instance where two goods are the left and right shoe in a pair of shoes. An agent considers each individual shoe to be worthless on its own, but together they have value for the agent. This is a case of \textit{supermodularity} (the opposite of submodularity; i.e., ``increasing returns'')---the second shoe has marginal value of 1 for an agent if and only if the first shoe is present in the agent's bundle---and is not representable using submodular valuations.
 
 \subsection{Matroid constraints}
-Another usage found for matroids in fair allocation is that of \textit{matroid constraints}. The majority of work on fair division assumes that any allocation is feasible, and the sole concern is finding an allocation that aligns well with the agents' valuation profiles. In many practical applications, however, there will be allocations that are not legal or desirable. Suksompong~\cite{suksumpong-constraints} gives the example of a museum with multiple branches distributing exhibits of different categories (sculpture, paintings, et cetera) among the branches. For each category, it wants to create a balanced distribution among the branches, so that the difference in the number of exhibits of a given category differ by at most one between any branch. This is an example of a \textit{cardinality constraint}, which can be modeled with a partition matroid, and is a subset of the broader class of matroid constraints. 
+Another usage found for matroids in fair allocation is that of \textit{matroid constraints}. The majority of work on fair division assumes that any allocation is feasible, and the sole concern is finding an allocation that aligns well with the agents' valuation profiles. In many practical applications, however, there will be allocations that are not legal or desirable. Biswas and Barman~\cite{barman2020fair} give an example of a museum with multiple branches distributing exhibits of different categories (sculpture, paintings, et cetera) among the branches. For each category, it wants to create a balanced distribution among the branches, so that the difference in the number of exhibits of a given category differ by at most one between any branch. This is an example of a \textit{cardinality constraint}, which is a subset of the broader class of matroid constraints. 
 
 When matroid constraints are enforced on a fair allocation instance, we require that all bundles be independent sets on some supplied matroid, common to all agents. 

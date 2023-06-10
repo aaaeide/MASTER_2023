@@ -854,8 +854,8 @@
       \strng{authorbibnamehash}{80a1aacdb370cb12c9b0c7c4e82cb160}
       \strng{authornamehash}{80a1aacdb370cb12c9b0c7c4e82cb160}
       \strng{authorfullhash}{80a1aacdb370cb12c9b0c7c4e82cb160}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{A concept of descriptive sufficiency is introduced to characterize the subcollections of flats from which the key properties of a matroid can be determined by certain convenient conditions. The concept of descriptive sufficiency is related to the essential flats, and an algorithm is proposed which constructs the erections of an arbitrary matroid in terms of a particular descriptively sufficient subcollection of flats.}
@@ -952,49 +952,37 @@
       \verb 1512.06655
       \endverb
     \endentry
-    \entry{suksumpong-constraints}{article}{}
-      \name{author}{1}{}{%
-        {{hash=394c573f5ce4558eaffe3a6e4eaa967f}{%
-           family={Suksompong},
-           familyi={S\bibinitperiod},
-           given={Warut},
-           giveni={W\bibinitperiod}}}%
+    \entry{Babaioff2020FairAT}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{hash=b90d45a507ebe833ab81dccd3c0f3509}{%
+           family={Babaioff},
+           familyi={B\bibinitperiod},
+           given={Moshe},
+           giveni={M\bibinitperiod}}}%
+        {{hash=8184393b7b65a4d9594214ce090c5fc4}{%
+           family={Ezra},
+           familyi={E\bibinitperiod},
+           given={Tomer},
+           giveni={T\bibinitperiod}}}%
+        {{hash=b1684193b9de8503418fa549b5fe487c}{%
+           family={Feige},
+           familyi={F\bibinitperiod},
+           given={Uriel},
+           giveni={U\bibinitperiod}}}%
       }
-      \list{location}{1}{%
-        {New York, NY, USA}%
-      }
-      \list{publisher}{1}{%
-        {Association for Computing Machinery}%
-      }
-      \strng{namehash}{394c573f5ce4558eaffe3a6e4eaa967f}
-      \strng{fullhash}{394c573f5ce4558eaffe3a6e4eaa967f}
-      \strng{bibnamehash}{394c573f5ce4558eaffe3a6e4eaa967f}
-      \strng{authorbibnamehash}{394c573f5ce4558eaffe3a6e4eaa967f}
-      \strng{authornamehash}{394c573f5ce4558eaffe3a6e4eaa967f}
-      \strng{authorfullhash}{394c573f5ce4558eaffe3a6e4eaa967f}
+      \strng{namehash}{7f7f1c3fd69884bacc1ec659e976bb47}
+      \strng{fullhash}{3f98aac1858918fb53761e3f50c5a368}
+      \strng{bibnamehash}{3f98aac1858918fb53761e3f50c5a368}
+      \strng{authorbibnamehash}{3f98aac1858918fb53761e3f50c5a368}
+      \strng{authornamehash}{7f7f1c3fd69884bacc1ec659e976bb47}
+      \strng{authorfullhash}{3f98aac1858918fb53761e3f50c5a368}
       \field{sortinit}{4}
       \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{abstract}{The fair allocation of resources to interested agents is a fundamental problem in society. While the majority of the fair division literature assumes that all allocations are feasible, in practice there are often constraints on the allocation that can be chosen. In this survey, we discuss fairness guarantees for both divisible (cake cutting) and indivisible resources under several common types of constraints, including connectivity, cardinality, matroid, geometric, separation, budget, and conflict constraints. We also outline a number of open questions and directions.}
-      \field{journaltitle}{SIGecom Exch.}
-      \field{month}{12}
-      \field{number}{2}
-      \field{title}{Constraints in Fair Division}
-      \field{volume}{19}
-      \field{year}{2021}
-      \field{pages}{46\bibrangedash 61}
-      \range{pages}{16}
-      \verb{doi}
-      \verb 10.1145/3505156.3505162
-      \endverb
-      \verb{urlraw}
-      \verb https://doi.org/10.1145/3505156.3505162
-      \endverb
-      \verb{url}
-      \verb https://doi.org/10.1145/3505156.3505162
-      \endverb
-      \keyw{social choice,fair division,constraints}
+      \field{booktitle}{AAAI Conference on Artificial Intelligence}
+      \field{title}{Fair and Truthful Mechanisms for Dichotomous Valuations}
+      \field{year}{2020}
     \endentry
     \entry{Graphs2021}{misc}{}
       \name{author}{6}{}{%
@@ -1066,8 +1054,8 @@
       \strng{authorbibnamehash}{fa6182769b69c9f7b1559f8430d88929}
       \strng{authornamehash}{fa6182769b69c9f7b1559f8430d88929}
       \strng{authorfullhash}{fa6182769b69c9f7b1559f8430d88929}
-      \field{sortinit}{5}
-      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Numerische Mathematik}
@@ -1376,8 +1364,8 @@
       \strng{authorbibnamehash}{10f004e08c7c03d98be0da1231a869ce}
       \strng{authornamehash}{c251cdfd036d9474565c517e73c19c5d}
       \strng{authorfullhash}{10f004e08c7c03d98be0da1231a869ce}
-      \field{sortinit}{6}
-      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{edition}{3}
@@ -1479,8 +1467,8 @@
       \strng{authorbibnamehash}{c2f725420d858d857349241951121999}
       \strng{authornamehash}{c2f725420d858d857349241951121999}
       \strng{authorfullhash}{c2f725420d858d857349241951121999}
-      \field{sortinit}{7}
-      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{howpublished}{https://github.com/rfourquet/BitIntegers.jl}

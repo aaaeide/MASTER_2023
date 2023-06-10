@@ -1,6 +1,6 @@
 \chapter{Generating matroids}
 \label{chap:generating_matroids}
-The overarching goal for this project is to make Matroids.jl, a proof-of-concept library for working programmatically with matroids, specifically in the context of fair allocation. This chapter covers how Matroids.jl enables the creation of specific matroids and the generation of random ones, as well as how to access important properties such as independent sets, closed sets, circuits, bases, the rank function and the closure function. The first part of the chapter focuses on implementing these features for uniform, partition, and graphic matroids. The latter part of this chapter describes the implementation of Knuth's algorithm~\cite{knuth-1975} for the erection of arbitrary rank-$r$ matroids. Getting this algorithm to work represents a significant portion of the project as a whole, and its successful implementation is one of the main achievements of this thesis.
+The overarching goal for this project is to make Matroids.jl, a proof-of-concept library for working programmatically with matroids, specifically in the context of fair allocation. This chapter covers how Matroids.jl enables the creation of specific matroids and the generation of random ones, as well as how to access important properties such as independent sets, closed sets, circuits, bases, the rank function and the closure function. The first part of the chapter focuses on implementing these features for uniform and graphic matroids. The latter part of this chapter describes the implementation of Knuth's algorithm~\cite{knuth-1975} for the erection of arbitrary rank-$r$ matroids. Getting this algorithm to work represents a significant portion of the project as a whole, and its successful implementation is one of the main achievements of this thesis.
 
 This chapter consists of one section per matroid type this version of Matroids.jl supports. For each type, I describe how the matroid is represented, how to acquire the properties of the matroid, and how it might be randomly generated. Which matroid properties Matroids.jl will have dedicated functions for getting is based on the discussion in the previous chapter, wherein I described how the more high-level functions exposed in the Matroids.jl API are implemented. Naturally, access to a matroid's rank function and independence oracle is of paramount importance---one of these are required by all higher-level functionality. The threshold function for PROPX$_0$ gave a use case for the closure function. Hence, the properties for which Matroids.jl implements getter functions for every matroid: 
 \begin{enumerate}
@@ -15,7 +15,7 @@ is_circuit(M, S) = rank(M, S) == length(S) - 1
 
 
 \section{Uniform matroids}
-A uniform matroid $U_n^r$ is the matroid over $n$ elements where the independent sets are exactly the sets of cardinality at most $r$. The free matroid $U_n^n = (E, 2^E)$ is a special case of the uniform matroid and is the simplest, biggest and least interesting type of matroid, being the trivial case in which every subset of $E$ is an independent set. Two useful special cases of the uniform matroid on $n$ elements are the rank-$n$ free matroid, in which every subset of $E$ is independent, and the rank-$0$ zero matroid, in which only the empty set is independent.
+We start off lightly with the most basic type of matroid---the uniform matroid. Recall that the uniform matroid $U_n^r$ is the matroid over $n$ elements where the independent sets are exactly the sets of cardinality at most $r$. Two useful special cases of the uniform matroid on $n$ elements are the rank-$n$ free matroid, in which every subset of $E$ is independent, and the rank-$0$ zero matroid, in which only the empty set is independent.
 
 \begin{jllisting}
 struct UniformMatroid
@@ -35,11 +35,6 @@ is_indep(M::UniformMatroid, S) = length(S) <= M.r
 closure(M::UniformMatroid, S) = length(S) < M.r ? S : ground_set(M)
 \end{jllisting}
 \end{figure}
-
-\section{Partition matroids}
-TODO: Detail partition matroids.
-\skelpar
-
 
 \section{Graphic matroids}
 Graphic matroids were introduced back in Chapter~\ref{chap:prelims}, but in this chapter, I describe how Matroids.jl represents and randomly generates them.

@@ -1,0 +1,95 @@
+\chapter{Matroid partitioning}
+\label{sec:matroid-union-impl}
+A common pattern for matroid-rank-valued fair allocation algorithms is, as we have seen, to initialize an allocation that corresponds to a maximum-sized independent set in the union of the matroids in play. This allocation must needs be MAX-USW and clean, but any other fairness notions are not guaranteed. The algorithms then exploit the exchange property of independent sets to massage the allocation into one that has the desired properties, in polynomial time. This being such a widespread approach, Matroids.jl should include the functionality for initializing such an allocation. 
+
+This procedure is referred to as both the matroid union algorithm and the matroid partitioning algorithm in the literature, since the task of finding a maximum-size independent set in a union of $n$ matroids over $E$ is equivalent to finding an $n$-partition of $E$, such that each part $i$ is independent in the $i$th matroid $\mathfrak{M}_i$. In this thesis, I refer to the procedure as \pr{Matroid-Partition}, following the example of Knuth, who in a 1973 paper describe the algorithm that will be implemented in this section. In the paper, Knuth expresses the problem in the following manner: 
+\begin{quote}
+  If $\mathfrak{M}_1,\dots,\mathfrak{M}_k$ are matroids defined on a finite set $E$, [find] whether or not the elements-of-$E$ can be colored with $k$ colors such that (i) all elements of color $j$ are independent in $\mathfrak{M}_j$, and (ii) the number of elements of color $j$ lies between given limits, $n_j\leq |E_j| \leq n_j'$.~\cite{knuth1973matroidpartitioning}
+\end{quote}
+If such a coloring exists, the algorithm produces it, otherwise it finds a proof to the contrary. While the terminology differs, we can see that this is in fact a colorful way of asking a question about a fair allocation instance with matroid-rank valuations. The ground set of goods $E$ we are already familiar with. There are $k$ agents, each of whom has her own color. A good is ``colored'' $j$ if it is allocated to agent $j$---we can picture each agent equipped with a can of spray paint they use to denote their goods. The question we are asking then, is whether we can find a clean allocation of the goods, such that each bundle is between certain size limits. Knuth shows that we can find the answer to this question in $O(n^3 + n^2k)$ calls to the independence oracle.
+
+The Matroids.jl implementation of \pr{Matroid-Partition} is given in Figure~\ref{code:matroid_partition_knuth73}. The main action happens in the \jlinl{augment!} subroutine, whose implementation is given in Figure~\ref{code:augment}. 
+
+\begin{figure}
+\begin{jllisting}
+    
+function matroid_partition_knuth73(Ms, floors=nothing)
+  n = Ms[1].n; k = length(Ms)
+  S0 = Set(1:n) # The unallocated items.
+  S = [Set() for _ in 1:k] # The partition-to-be.
+  color = Dict(x=>0 for x in 1:n) # color[x] = j iff x ∈ S[j].
+  for y in 1:k color[-y] = y end # -y is the 'standard' element of color y.
+  succ = [0 for _ in 1:n]
+
+  floors = floors === nothing ? [0 for _ in 1:k] : floors
+
+  # Ensure every part gets at least its lower limit.
+  for j in 1:k, i in 1:floors[j]
+    augment!(j, n, k, Ms, S, S0, succ, color)
+  end
+
+  # Allocate the rest.
+  while S0 != Set()
+    X = augment!(0, n, k, Ms, S, S0, succ, color)
+    
+    if length(X) != 0
+      return (S, X)
+    end
+  end
+
+  return (S, Set())
+end
+    
+\end{jllisting}
+\caption{\jlinl{matroid_partition_knuth73}}
+\label{code:matroid_partition_knuth73}
+\end{figure}
+
+\begin{figure}[ht!]
+\begin{jllisting}
+
+function augment!(r, n, k, Ms, S, S0, succ, color)
+  for x in 1:n succ[x] = 0 end
+  
+  A = Set(1:n)
+  B = r > 0 ? Set(-r) : Set(-j for j in 1:k)
+  
+  while B != Set()
+    C = Set()
+    for y ∈ B, x ∈ A
+      j = color[y]
+
+      if x ∉ S[j] && is_indep(Ms[j], x ∪ setdiff(S[j], y))
+        succ[x] = y
+        A = setdiff(A, x)
+        C = C ∪ x
+        if color[x] == 0 
+
+          # x is uncolored - transfer:
+          while x ∈ 1:n
+            y = succ[x]
+            j = color[x]
+            
+            if j == 0 setdiff!(S0, x) else setdiff!(S[j], x) end
+        
+            j = color[y]
+            S[j] = S[j] ∪ x
+            color[x] = j
+            x = y
+          end
+
+          return Set() 
+        end
+      end
+    end
+    B = C
+  end
+
+  # We did not find a transfer path to 0.
+  return setdiff(A, reduce(∪, S))
+end
+
+\end{jllisting}
+\caption{The \jlinl{augment!} subroutine in \jlinl{matroid_partition_knuth73}}
+\label{code:augment}
+\end{figure}

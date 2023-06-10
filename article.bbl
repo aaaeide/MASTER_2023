@@ -1054,8 +1054,8 @@
       \strng{authorbibnamehash}{fa6182769b69c9f7b1559f8430d88929}
       \strng{authornamehash}{fa6182769b69c9f7b1559f8430d88929}
       \strng{authorfullhash}{fa6182769b69c9f7b1559f8430d88929}
-      \field{sortinit}{6}
-      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Numerische Mathematik}
@@ -1364,8 +1364,8 @@
       \strng{authorbibnamehash}{10f004e08c7c03d98be0da1231a869ce}
       \strng{authornamehash}{c251cdfd036d9474565c517e73c19c5d}
       \strng{authorfullhash}{10f004e08c7c03d98be0da1231a869ce}
-      \field{sortinit}{7}
-      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{edition}{3}
@@ -1373,6 +1373,28 @@
       \field{series}{The MIT Press}
       \field{title}{Introduction to Algorithms}
       \field{year}{2009}
+    \endentry
+    \entry{BitIntegers.jl}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=c2f725420d858d857349241951121999}{%
+           family={Fourquet},
+           familyi={F\bibinitperiod},
+           given={Rafael},
+           giveni={R\bibinitperiod}}}%
+      }
+      \strng{namehash}{c2f725420d858d857349241951121999}
+      \strng{fullhash}{c2f725420d858d857349241951121999}
+      \strng{bibnamehash}{c2f725420d858d857349241951121999}
+      \strng{authorbibnamehash}{c2f725420d858d857349241951121999}
+      \strng{authornamehash}{c2f725420d858d857349241951121999}
+      \strng{authorfullhash}{c2f725420d858d857349241951121999}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{https://github.com/rfourquet/BitIntegers.jl}
+      \field{note}{Accessed: 2023-05-20}
+      \field{title}{{BitIntegers.jl}}
     \endentry
     \entry{wirth-1966}{article}{}
       \name{author}{2}{}{%
@@ -1399,8 +1421,8 @@
       \strng{authorbibnamehash}{2d1e788896d138d62ca3630de2bf4649}
       \strng{authornamehash}{2d1e788896d138d62ca3630de2bf4649}
       \strng{authorfullhash}{2d1e788896d138d62ca3630de2bf4649}
-      \field{sortinit}{7}
-      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{issn}{0001-0782}
@@ -1421,59 +1443,6 @@
       \verb{url}
       \verb https://doi.org/10.1145/365696.365702
       \endverb
-    \endentry
-    \entry{knuth-2003}{misc}{}
-      \name{author}{1}{}{%
-        {{hash=ec08e6f01da5f3814f28a70c89c64656}{%
-           family={Knuth},
-           familyi={K\bibinitperiod},
-           given={Donald\bibnamedelima E.},
-           giveni={D\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
-      }
-      \strng{namehash}{ec08e6f01da5f3814f28a70c89c64656}
-      \strng{fullhash}{ec08e6f01da5f3814f28a70c89c64656}
-      \strng{bibnamehash}{ec08e6f01da5f3814f28a70c89c64656}
-      \strng{authorbibnamehash}{ec08e6f01da5f3814f28a70c89c64656}
-      \strng{authornamehash}{ec08e6f01da5f3814f28a70c89c64656}
-      \strng{authorfullhash}{ec08e6f01da5f3814f28a70c89c64656}
-      \field{extraname}{3}
-      \field{sortinit}{7}
-      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{howpublished}{\url{https://www-cs-faculty.stanford.edu/~knuth/programs/erection.w}}
-      \field{journaltitle}{Stanford Computer Science}
-      \field{month}{3}
-      \field{title}{{ERECTION.W}}
-      \field{year}{2003}
-      \verb{urlraw}
-      \verb https://www-cs-faculty.stanford.edu/~knuth/programs/erection.w
-      \endverb
-      \verb{url}
-      \verb https://www-cs-faculty.stanford.edu/~knuth/programs/erection.w
-      \endverb
-    \endentry
-    \entry{BitIntegers.jl}{misc}{}
-      \name{author}{1}{}{%
-        {{hash=c2f725420d858d857349241951121999}{%
-           family={Fourquet},
-           familyi={F\bibinitperiod},
-           given={Rafael},
-           giveni={R\bibinitperiod}}}%
-      }
-      \strng{namehash}{c2f725420d858d857349241951121999}
-      \strng{fullhash}{c2f725420d858d857349241951121999}
-      \strng{bibnamehash}{c2f725420d858d857349241951121999}
-      \strng{authorbibnamehash}{c2f725420d858d857349241951121999}
-      \strng{authornamehash}{c2f725420d858d857349241951121999}
-      \strng{authorfullhash}{c2f725420d858d857349241951121999}
-      \field{sortinit}{8}
-      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{howpublished}{https://github.com/rfourquet/BitIntegers.jl}
-      \field{note}{Accessed: 2023-05-20}
-      \field{title}{{BitIntegers.jl}}
     \endentry
   \enddatalist
 \endrefsection

@@ -426,21 +426,6 @@ The full code for \jlinl{random_kmc_v6} can be found in Appendix~\ref{apx:randkm
 \subsection{Finding the properties of erected matroids}
 The fact that \pr{Knuth-Matroid} fully enumerates all closed sets of the matroid as it erects it rank by rank begs the question: can we build the other families of sets for the matroids alongside the closed sets? In this section, I will first describe an extension of \pr{Knuth-Matroid} that also fully enumerates $\mathcal{I}$ and $\mathcal{C}$ for $\mathfrak{M}$ when $n$ is small enough. Sadly, this approach does not scale well for larger values of $n$, as the size of these sets undergoes a combinatorial explosion as $n$ increases. 
 
-\subsubsection{Up-front enumeration of circuits and independent sets for smaller matroids}
-In his 1974 paper~\cite{knuth-1975}, Knuth includes an ALGOL W~\cite{wirth-1966} implementation that also enumerates all circuits and independent sets for the generated matroid. A later implementation in C called ERECTION.W can be found at his home page~\cite{knuth-2003}. \jlinl{random_erect} is an extension of \jlinl{random_kmc_v6} that finds $\mathcal{I}$ and $\mathcal{C}$ by pre-populating the rank table with all subsets of $E$. The full source code for \jlinl{random_erect} can be found in Appendix~XXX.
-
-\begin{jllisting}
-  # Populate rank table with 100+cardinality for all subsets of E.
-  k=1; rank[0]=100;
-  while (k<=mask)
-    for i in 0:k-1 rank[k+i] = rank[i]+1 end
-    k=k+k;
-  end
-\end{jllisting}
-
-Covers are generated and sets inserted in the same manner as in\linebreak\jlinl{random_kmc_v6}. After all covers and enlargements have been inserted and superposed (meaning $\mathrm{F}[r+1]$ contains the closed sets of rank $r+1$), a new operation, \jlinl{mark_independent_subsets!} is called on each closed set.
-
-\skelpar
 
 \subsubsection{Determining matroid properties post-erection}
 In a 1989 paper, Greene introduces the concept of \textit{descriptive sufficiency}. A subcollection of closed sets of a matroid is descriptively sufficient if it can be used to identify the fundamental properties of the matroid using certain easily applied conditions. The collection of all closed sets of a matroid is one descriptively sufficient such collection~\cite{greene-1991}. 

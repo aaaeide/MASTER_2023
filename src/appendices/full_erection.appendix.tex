@@ -1,0 +1,127 @@
+\chapter{Enumerating circuits and independent sets during erection}
+In his 1974 paper~\cite{knuth-1975}, Knuth includes an ALGOL W~\cite{wirth-1966} implementation that also enumerates all circuits and independent sets for the generated matroid\footnote{A later implementation in C called ERECTION.W can be found at his home page: \href{https://www-cs-faculty.stanford.edu/\~knuth/programs/erection.w}{https://www-cs-faculty.stanford.edu/\~knuth/programs/erection.w}}. 
+
+Matroids.jl includes an implementation of this, called \jlinl{random_erect}---an extension of \jlinl{random_kmc_v6} that finds $\mathcal{I}$ and $\mathcal{C}$ by pre-populating the rank table with all subsets of $E$. The full source code for \jlinl{random_erect} is given in Figure~\ref{code:random_erect}. Covers are generated and sets inserted in the same manner as in \jlinl{random_kmc_v6}. After all covers and enlargements have been inserted and superposed (so $\mathrm{F}[r+1]$ contains the closed sets of rank $r+1$), a new function, \jlinl{mark!} is called on each closed set. This function recursively assigns the cardinality (i.e., the Hamming weight, the number of 1s in the binary digit representing that set) to the entry for each subset of the closed set in the rank table. When a subset whose cardinality equals the current rank is found, we have encountered an independent set, and it is added to the family of independent sets. A final loop through all subsets of E finds each circuit, using the new \jlinl{unmark!} function to ensure only the necessary functions are checked. The function returns the \jlinl{FullMatroid} struct, which is a \jlinl{ClosedSetsMatroid} that also holds $\mathcal{I}$ and $\mathcal{C}$.
+
+Fully enumerating matroids in this manner allows really efficient implementations of \jlinl{is_indep} and \jlinl{is_circuit}, as we know all the independent sets and circuits ahead of time. However, this approach sadly scales poorly for larger values of $n$, as it has to allocate bytes for every subset of $E$. The number of subsets it has to find the Hamming weight of undergoes a combinatorial explosion and quickly becomes intractably large, even on modern hardware.
+
+\begin{figure}
+  \begin{jllisting}
+function mark!(m, I, r, rank)
+  if haskey(rank, m) && rank[m] <= r
+    return
+  end
+  if rank[m] == 100+r push!(I[r+1], m) end
+  rank[m] = r
+  t = m
+  while t != 0
+    v = t&(t-1)
+    mark!(m-t+v, I, r, rank)
+    t = v
+  end
+end
+
+function unmark!(m, card, rank, mask)
+  if rank[m] < 100
+    rank[m] = card
+    t = mask-m
+    while t != 0
+      v = t&(t-1)
+      unmark!(m+t-v, card+1, rank, mask)
+      t=v
+    end
+  end
+end
+  \end{jllisting}
+  \caption{\jlinl{mark!} and \jlinl{unmark!}}
+\end{figure}
+
+\begin{figure}
+  \begin{jllisting}
+function random_erect(n, p, T=UInt16)
+  # Initialize.
+  r = 1
+  pr = 0
+  F::Vector{Set{T}} = [Set(T(0))]
+  E::T = big"2"^n-1
+  rank = Dict{T, UInt8}()
+  
+  # Populate rank table with 100+cardinality for all subsets of E.
+  k=1; rank[0]=100;
+  while (k<=E)
+    for i in 0:k-1 rank[k+i] = rank[i]+1 end
+    k=k+k;
+  end
+  
+  F = [Set(0)] # F[r] is the family of closed sets of rank r-1.
+  I = [Set(0)] # I[r] is the family of independent sets of rank r-1.
+  rank[0] = 0
+  
+  while E ∉ F[r]
+    push!(F, Set())
+    push!(I, Set())
+    
+    # Generate minimal closed sets for rank r+1.
+    for y in F[r] # y is a closed set of rank r.
+      t = E - y # The set of elements not in y.
+      # Find all sets in F[r+1] that already contain y and remove excess elements from t.
+      for x in F[r+1]
+        if (x & y == y) t &= ~x end
+      end
+      # Insert y ∪ a for all a ∈ t.
+      while t > 0
+        x = y|(t&-t)
+        insert_set!(x, F, r, rank)
+        t &= ~x
+      end
+    end
+  \end{jllisting}
+  \caption{\jlinl{random_erect} fully enumerates the independent sets and circuits for a random matroid during erection (continued on the next page).}
+  \label{code:random_erect}
+\end{figure}
+
+\begin{figure}
+  \begin{jllisting}
+    if r <= length(p)
+      # Apply coarsening.
+      pr = p[r]
+      while pr > 0 && E ∉ F[r+1]
+        A = rand(F[r+1])
+        t = E-A
+        one_element_added::Vector{T} = []
+        while t > 0
+          x = A|(t&-t)
+          push!(one_element_added, x)
+          t &= ~x
+        end
+        Acupa = rand(one_element_added)
+        setdiff!(F[r+1], A)
+        insert_set!(Acupa, F, r, rank)
+        pr -= 1
+      end
+    end
+    
+    # Assign rank to sets and add independent ones to I.
+    for m in F[r+1]
+      mark!(m, I, r, rank)
+    end
+    
+    # Next rank.
+    r += 1
+  end
+
+  C = Set()
+  k = 1
+  while k <= E
+    for i in 0:k-1 if rank[k+i] == rank[i]
+      push!(C, T(k+i))
+      unmark!(k+i, rank[i], rank, E)
+    end end
+    k += k
+  end
+
+  return FullMatroid{T}(n, r-1, F, I, C, rank, T)
+end
+  \end{jllisting}
+  \caption*{Figure~\ref{code:random_erect} continued.}
+\end{figure}

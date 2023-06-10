@@ -114,7 +114,10 @@ When $S=E$ (i.e., the entire ground set), (2') gives us that the maximal indepen
 
 The rank function of a matroid is a function $v:2^E \to \mathbb{Z}^+$ which, given a subset $B\subseteq E$, returns the size of the largest independent set contained in $B$. That is, $$v(B) = \max_{A \subseteq B, A\in \mathcal{I}}|A|.$$ The properties of the matroid rank function are given in Section~\ref{sec:fa}. Any function adhering to these properties specify exactly one matroid.
 
-\subsection{A graphic example}
+\subsection{The uniform matroid}
+The uniform matroid $U_n^r$ is the matroid over $n$ elements where the independent sets are exactly the sets of cardinality at most $r$. The free matroid $U_n^n = (E, 2^E)$ is a special case of the uniform matroid and is the simplest, biggest and least interesting type of matroid, being the trivial case in which every subset of $E$ is an independent set. While not very exciting matroids in and of themselves, they are the easiest matroid to reason about and will show up from time to time in the examples throughout this thesis.
+
+\subsection{The graphic matroid}
 Different types of matroids exist, arising from different sources of ``independence''; one well-known subclass of matroids, arising from notions of independence in graphs, is the class of \textit{graphic matroids}.
 
 A \textit{tree} is a connected acyclic graph, and a \textit{forest} is a disconnected graph consisting of some number of trees. A \textit{spanning tree} of $G$ is a subgraph with a unique simple path between all pairs of vertices of $G$. A \textit{spanning forest} of $G$ is a collection of spanning trees, one for each component. A graph will have some number of different spanning trees. Figure~\ref{fig:ex-graph-mst} shows two spanning trees of the same graphs (or alternatively, a spanning forest over one graph with two components).
@@ -174,7 +177,7 @@ To see that (2') holds, consider the set of bases of the matroid, $\mathcal{B} \
 \subsection{Other characterizations of a matroid} 
 \label{sec:characterizations}
 
-We have already seen how to characterize a matroid using its rank function or its independent sets, but the other properties of a matroid have their own axiom systems that can equivalently be used to characterize a matroid.
+We have already seen how to characterize a matroid using its rank function, its independent sets, or implicitly in terms of a graph, but the other properties of a matroid have their own axiom systems that can equivalently be used to characterize a matroid.
 
 \paragraph{Characterization via circuits.} A \textit{circuit} is a minimal dependent set of a matroid -- it is an independent set plus one redundant element. Equivalently, the collection of circuits of a matroid is given by
 $$\mathcal{C} = \bigl\{ C : |C| = v(C) + 1, C\subseteq E \bigr\}.$$

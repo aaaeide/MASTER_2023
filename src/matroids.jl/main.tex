@@ -30,9 +30,9 @@ value(V::MatroidRank, i, g::Int) = value(V, i, Set(g))
 \end{figure}
 
 \subsection*{Envy-freeness}
-Checking if an allocation is EF is the same for matroid-rank valuations as for additive valuations -- simply compare each agent's own bundle value with that agent's subjective valuation of each other agent's bundle. This is already implemented in Allocations.jl. In this section, I give the functions \jlinl{value_1}, \jlinl{value_x} and \jlinl{value_x0}, which are used for computing EF1, EFX$_+$ and EFX$_0$, respectively. These functions take in a valuation profile, an agent $i$ and a bundle $S$, and return the agent $i$'s value for $S$, up to some item. 
+Checking if an allocation is EF is the same for matroid-rank valuations as for additive valuations -- simply compare each agent's own bundle value with that agent's subjective valuation of each other agent's bundle. This is already implemented in Allocations.jl. In this section, I give the functions \jlinl{value_1}, \jlinl{value_x} and \jlinl{value_x0}, which are used for computing EF1, EFX$_+$ and EFX$_0$, respectively. These functions take in a valuation profile $V$, an agent $i$ and a bundle $S$, and return the agent $i$'s value for $S$, up to some item. If each agent $i$'s received value exceeds the result of calling \jlinl{value_1(V, i, S)} on every other agent's bundle $S$, then the allocation is EF1; equivalently so for EFX$_+$ and EFX$_0$. 
 
-When an allocation is clean (i.e., each bundle $A_i$ is independent in $\mathfrak{M}_i$), we know that removing any good from a bundle will decrease the bundle value by 1. However, consider the bundle $B$ such that $|B| = k+1$ and the unform matroid $U_n^k$. The rank of $B$ in $U_n^k$ is $k$, and no matter which good we remove from $B$, the value remains $k$. Finally, consider the graph and bundle $B=\{1,2,3,5\}$ given in Figure~\ref{fig:redundant-bundle}. If the graph gives the rank function for agent $i$, then $v_i(B) = 3$, as there is a circuit in $B$. \skelpar
+If $S$ is independent in $\mathfrak{M}_i$, then the removal of any good in $S$ will reduce agent $i$'s valuation of that bundle by 1. Then, agent $i$'s value for $S$ up to a highest-valued good is the same as that up to a least-valued (positively or no) good. In other words, \jlinl{value_1(V, i, S)} = \jlinl{value_x(V, i, S)} = \jlinl{value_x0(V, i, S)} $=v_i(S)-1$ when $S$ is independent in $\mathfrak{M}_i$. 
 
 \begin{figure}[ht!]
   \centering
@@ -56,18 +56,26 @@ When an allocation is clean (i.e., each bundle $A_i$ is independent in $\mathfra
 \label{fig:redundant-bundle}
 \end{figure}
 
-To check efficiently if an allocation is EF1, we make use of the fact that a matroid rank function has binary marginals; in other words, a highest-valued good in a bundle will always have value 1, unless the bundle value is 0. This gives us a simple way of checking for EF1: if $S$ is independent, the value of $S$ after the removal of a highest-valued good will be $|S|-1$. Similarly, since the least positively-valued good also has value 1, EFX$_+$ is the same as EF1.
+If that is not the case, however, the functions behave differently. It might be tempting to think that if $S$ is not independent (dependent) in $\mathfrak{M}_i$, then no matter which good is removed from $S$, agent $i$ would value the bundle the same. This is certainly the case sometimes; let $\mathfrak{M}_i = U_n^k$, and let $S$ be some set of goods such that $|S| = k+1$. By the definition of the uniform matroid, we have that $v_i(S) = k$. Yet remove any good $g$ from $S$, and the resulting set is of size $|S-g| = k$, and the value remains unchanged. We might however also contrive a scenario in which the removal of some goods from a set $S$ reduces $i$'s valuation of that set, while some other goods while not affect it. This is the case when $\mathfrak{M}_i$ is the graphic matroid obtained from the graph in Figure~\ref{fig:redundant-bundle}, and $S$ is the bundle highlighted in yellow. In this situation, we have $v_i(S)=3$, and $v_i(S-1) = 2 \neq v_i(S-3) = 3$. Thus, agent $i$'s value of $S$ up to a highest-valued item is in this case $v_i(S)-1 = 2$. Similarly, since the least positively-valued good also has value 1, EFX$_+$ is the same as EF1 (this is always the case with matroid-rank valuations). Finally, the least-valued good overall can be removed without a reduction in value when $S$ is dependent. This line of reasoning gives us the implementation of \jlinl{value_1}, \jlinl{value_x} and \jlinl{value_x0} given in Figure~\ref{code:ef1_efx_efx0}.
+
 \begin{figure}[ht!]
 \begin{jllisting}
-value_1(V::MatroidRank, i, S) = max(value(V, i, S) - 1, 0)
-value_x(V::MatroidRank, i, S) = value_1(V, i, S)
-value_x0(V::MatroidRank, i, A) =
-    is_indep(V.Ms[i], A) ? value_1(V, i, A) : value(V, i, A)
-\end{jllisting}
-\caption{Methods for computing EF1, EFX$_+$ and EFX$_0$.}
-\end{figure}
+function value_1(V::MatroidRank, i, S)
+  if is_indep(V.Ms[i], S)
+    return max(length(S)-1, 0)
+  end
+    
+  return minimum(value(V, i, setdiff(S, g)) for g in items(V))
+end
 
-The value of the least valued good overall (including 0-values) depend on whether the bundle is independent. An independent set contains by definition no redundant elements, so if the bundle is independent, the least-valued good has value 1. If the bundle is dependent, it contains at least one 0-valued good, or, equivalently, a good whose removal does not affect the bundle value. This gives us EFX$_0$.
+value_x(V::MatroidRank, i, A) = value_1(V, i, A)
+
+value_x0(V::MatroidRank, i, S) =
+    is_indep(V.Ms[i], S) ? max(length(S)-1, 0) : value(V, i, S)
+\end{jllisting}
+\caption{Methods for computing EF1 and EFX$_+$ and EFX$_0$.}
+\label{code:ef1_efx_efx0}
+\end{figure}
 
 \subsection*{Proportionality}
 To check whether an allocation $A$ is PROP or some relaxation thereof, we compare $v_i(A_i)$ against some threshold for every agent $i$. In this section, we give the functions for computing the threshold for PROP and its relaxations.
@@ -96,7 +104,56 @@ This is equivalent to finding a maximum-size independent set in the $n$-fold uni
 $$\widehat{\mathfrak{M}}_{i \times n} = (E, \widehat{\mathcal{I}}_{i\times n}) = (E, \{ I_1\cup\dots\cup I_n : I_t \in \mathcal{I}_i,\ \forall t \in N \}),$$ 
 which can be produced in polynomial time using the matroid union algorithm~\cite[Ch. 42]{schrijver-2003}. Let $\widehat{A}\in\widehat{\mathcal{I}}_{i\times n}$ be such a set. As shown in Section~\ref{sec:matroid-union}, $\widehat{A}$ allows an $n$-partition $A = (A_1,\dots,A_n)$ such that, in this case, $A_t\in\mathcal{I}_i$ for all $t\in N$.
 
-\include{src/matroids.jl/mms_i.jl}
+\begin{figure}
+  \begin{jllisting}
+"""
+  function mms_i(V, i)
+
+Finds the maximin share of agent i in the instance V.
+"""
+function mms_i(V::MatroidRank, i)
+  M_i = V.Ms[i]; n = na(V)
+
+  # An initial partition into independent subsets (subjectively so for i).
+  (A, _) = matroid_partition_knuth73([M_i for _ in 1:n])
+
+  # Setup matrix D st D[j,k] v_i(A_j) - v_i(A_k) ∀ j,k ∈ [n].
+  D = zeros(Int8, n, n)
+  for j in 1:n, k in 1:n
+      # v_i(A_p) = |A_p| since all sets in A are independent wrt M_i.
+      D[j,k] = length(A[j]) - length(A[k])
+  end
+
+  jk = argmax(D)
+  while D[jk] > 1
+      j,k = Tuple(jk)
+
+      # By the augmentation property, ∃g ∈ A_j st A_k + g ∈ I_i.
+      g = nothing
+      for h ∈ setdiff(A[j], A[k]) 
+          if is_indep(M_i, A[k] ∪ h)
+              g = h; break
+          end 
+      end
+
+      # Update A.
+      setdiff!(A[j], g); union!(A[k], g)
+
+      # Update D.
+      for l in 1:n
+          D[j, l] -= 1; D[l, j] += 1 # A_j is one smaller.
+          D[k, l] += 1; D[l, k] -= 1 # A_k is one larger.
+      end
+
+      jk = argmax(D)
+  end
+  
+  return minimum(length, A)
+end
+  \end{jllisting}
+  \caption{Maximin share computation.}
+  \label{code:mms_i}
+\end{figure}
 
 Matroids.jl implements Knuth's 1973 matroid union algorithm~\cite{knuth1973matroidpartitioning}. This is detailed in Section~\ref{sec:matroid-union-impl}, for now let it suffice to say that we have a function called \jlinl{matroid_partition_knuth73}, which, when given $k$ matroids $(\mathfrak{M}_1,\dots,\mathfrak{M}_k)$ over the same ground set $E$, returns a partition of $E$ into $k$ sets $S = (S_1, \dots, S_k)$ such that each set $S_t$ is independent in $\mathfrak{M}_t$. By passing $n$ copies of $\mathfrak{M}_i$, we get the $n$-partition $A$ as above.
 
@@ -247,103 +304,6 @@ The implementation of \pr{Rank} and \pr{Indep} will depend on the specific type 
     \label{tab:algo_reqs}
 \end{table}
 
-
-\section{Matroid partitioning}
-\label{sec:matroid-union-impl}
-A common pattern for matroid-rank-valued fair allocation algorithms is, as we have seen, to initialize an allocation that corresponds to a maximum-sized independent set in the union of the matroids in play. This allocation must needs be MAX-USW and clean, but any other fairness notions are not guaranteed. The algorithms then exploit the exchange property of independent sets to massage the allocation into one that has the desired properties, in polynomial time. This being such a widespread approach, Matroids.jl should include the functionality for initializing such an allocation. 
-
-This procedure is referred to as both the matroid union algorithm and the matroid partitioning algorithm in the literature, since the task of finding a maximum-size independent set in a union of $n$ matroids over $E$ is equivalent to finding an $n$-partition of $E$, such that each part $i$ is independent in the $i$th matroid $\mathfrak{M}_i$. In this thesis, I refer to the procedure as \pr{Matroid-Partition}, following the example of Knuth, who in a 1973 paper describe the algorithm that will be implemented in this section. In the paper, Knuth expresses the problem in the following manner: 
-\begin{quote}
-  If $\mathfrak{M}_1,\dots,\mathfrak{M}_k$ are matroids defined on a finite set $E$, [find] whether or not the elements-of-$E$ can be colored with $k$ colors such that (i) all elements of color $j$ are independent in $\mathfrak{M}_j$, and (ii) the number of elements of color $j$ lies between given limits, $n_j\leq |E_j| \leq n_j'$.~\cite{knuth1973matroidpartitioning}
-\end{quote}
-If such a coloring exists, the algorithm produces it, otherwise it finds a proof to the contrary. While the terminology differs, we can see that this is in fact a colorful way of asking a question about a fair allocation instance with matroid-rank valuations. The ground set of goods $E$ we are already familiar with. There are $k$ agents, each of whom has her own color. A good is ``colored'' $j$ if it is allocated to agent $j$---we can picture each agent equipped with a can of spray paint they use to denote their goods. The question we are asking then, is whether we can find a clean allocation of the goods, such that each bundle is between certain size limits. Knuth shows that we can find the answer to this question in $\mathcal{O}(n^3 + n^2k)$ calls to the independence oracle.
-
-The Matroids.jl implementation of \pr{Matroid-Partition} is called\linebreak\jlinl{matroid_partition_knuth73} and is given Figure~\ref{code:matroid_partition_knuth73}. TODO: beskriv denne
-\skelpar
-
-\begin{figure}
-\begin{jllisting}
-    
-function matroid_partition_knuth73(Ms, floors=nothing)
-  n = Ms[1].n; k = length(Ms)
-  S0 = Set(1:n) # The unallocated items.
-  S = [Set() for _ in 1:k] # The partition-to-be.
-  color = Dict(x=>0 for x in 1:n) # color[x] = j iff x ∈ S[j].
-  for y in 1:k color[-y] = y end # -y is the 'standard' element of color y.
-  succ = [0 for _ in 1:n]
-
-  floors = floors === nothing ? [0 for _ in 1:k] : floors
-
-  # Ensure every part gets at least its lower limit.
-  for j in 1:k, i in 1:floors[j]
-    augment!(j, n, k, Ms, S, S0, succ, color)
-  end
-
-  # Allocate the rest.
-  while S0 != Set()
-    X = augment!(0, n, k, Ms, S, S0, succ, color)
-    
-    if length(X) != 0
-      return (S, X)
-    end
-  end
-
-  return (S, Set())
-end
-    
-\end{jllisting}
-\caption{\jlinl{matroid_partition_knuth73}}
-\label{code:matroid_partition_knuth73}
-\end{figure}
-
-\begin{figure}[ht!]
-\begin{jllisting}
-
-function augment!(r, n, k, Ms, S, S0, succ, color)
-  for x in 1:n succ[x] = 0 end
-  
-  A = Set(1:n)
-  B = r > 0 ? Set(-r) : Set(-j for j in 1:k)
-  
-  while B != Set()
-    C = Set()
-    for y ∈ B, x ∈ A
-      j = color[y]
-
-      if x ∉ S[j] && is_indep(Ms[j], x ∪ setdiff(S[j], y))
-        succ[x] = y
-        A = setdiff(A, x)
-        C = C ∪ x
-        if color[x] == 0 
-
-          # x is uncolored - transfer:
-          while x ∈ 1:n
-            y = succ[x]
-            j = color[x]
-            
-            if j == 0 setdiff!(S0, x) else setdiff!(S[j], x) end
-        
-            j = color[y]
-            S[j] = S[j] ∪ x
-            color[x] = j
-            x = y
-          end
-
-          return Set() 
-        end
-      end
-    end
-    B = C
-  end
-
-  # We did not find a transfer path to 0.
-  return setdiff(A, reduce(∪, S))
-end
-
-\end{jllisting}
-\caption{The \jlinl{augment!} subroutine in \jlinl{matroid_partition_knuth73}}
-\end{figure}
-
 \section{Exchange graphs and transfer paths}
 As shown in Section~\ref{sec:three-algos}, exchange graphs and transfer paths on these are useful tools for fair allocation with matroid-rank valuations. Therefore, Matroids.jl exposes functions for computing the exchange graph $D(A)$ of an allocation $A$, finding a shortest (transfer) path $P$ between two sets of nodes in $D(A)$, and producing a new allocation $A \Lambda P$ by augmenting $A$ along $P$.
 
@@ -385,7 +345,7 @@ end
 \label{code:exchange_graph}
 \end{figure}
 
-\paragraph{Finding a transfer path.} The purpose of the exchange graph $D(A)$ is to find a transfer path $P$ on it, and produce the augmented allocation $A\Lambda P$. A transfer path is by definition a shortest path from some set of nodes (in the case of \pr{Yankee-Swap}, $F_i$) to some other set of nodes ($A_0$) in $D(A)$. Matroids.jl achieves this using Dijkstra's algorithm~\cite{Dijkstra1959} for finding the shortest paths between a set of nodes and all other nodes. TODO: Diskutere kjøretid? Andre shortest path algos? \skelline
+\paragraph{Finding a transfer path.} The purpose of the exchange graph $D(A)$ is to find a transfer path $P$ on it, and produce the augmented allocation $A\Lambda P$. A transfer path is by definition a shortest path from some set of nodes (in the case of \pr{Yankee-Swap}, $F_i$) to some other set of nodes ($A_0$) in $D(A)$. Matroids.jl achieves this using Dijkstra's algorithm~\cite{Dijkstra1959} for finding the shortest paths between a set of nodes and all other nodes.
 
 \begin{figure}
 \begin{jllisting}

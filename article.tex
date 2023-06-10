@@ -16,7 +16,6 @@
 % \titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries}
 
 
-\usepackage{graphicx}
 \usepackage{mwe}
 
 \usepackage{skeldoc}
@@ -29,8 +28,6 @@
 
 \usepackage{caption}
 \usepackage{booktabs}
-\usepackage{lscape}
-\usepackage{longtable}
 \usepackage{adjustbox}
 
 \usepackage{siunitx}
@@ -52,7 +49,6 @@
 
 \definecolor{lighttan}{cmyk}{0,0.05,0.17,0}
 \definecolor{darktan}{cmyk}{0,0.07,0.26,0.06}
-% \definecolor{complementaryblue}{RGB}{177,194,240}
 \definecolor{complementaryblue}{RGB}{202,226,248}
 \definecolor{averagegreen}{RGB}{214,232,205}
 
@@ -129,7 +125,7 @@ Matroid theory, truly a wonderland}{ChatGPT}
 
 \chapter*{Acknowledgements}
 \thispagestyle{empty}
-I would like to extend a heartfelt thanks to my friends and foes at Radio Revolt, without whom I would have completed this degree years earlier, with far better grades and in significantly better health.
+A big thanks is due to my stellar advisors, Magnus Hetland and Halvard Hummel, whose insightful feedback, patience, and passion for the subject has been truly above and beyond, and has made this past year enjoyable as well as highly educational. Kristina, Petter, and Vemund deserve special thanks for their invaluable moral support, and for listening to my incoherent ranting about matroids for the past few months. I would also like to applaud my flatmates Synne and Even for their general cleanliness in the kitchen area. Finally, a heartfelt thanks goes out to my good colleagues at Radio Revolt, without whom I would have completed this degree years earlier, with far better grades and in significantly better health.
 
 
 
@@ -150,7 +146,9 @@ I would like to extend a heartfelt thanks to my friends and foes at Radio Revolt
 \printbibliography
 
 \begin{appendices}
+  \input{src/appendices/partition.appendix}
   \input{src/appendices/binary_tricks.appendix}
+  \input{src/appendices/full_erection.appendix}
   % \chapter{Random }
   % \label{apx:code}
   % \jlinputlisting{src/appendices/random_kmc_v1.jl}

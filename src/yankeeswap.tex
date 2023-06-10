@@ -217,7 +217,7 @@ function gen_matroidrank_profile(n, gen_matroid, T)
       ms[i] = gen_matroid()
     end
 
-    return MatroidRank(ms, m)
+    return MatroidRank(ms, ms[1].n)
   end
 
   return gen
@@ -227,4 +227,76 @@ end
   \label{code:gen_matroidrank_profile}
 \end{figure}
 
-Figure~\ref{code:gen_matroidrank_profile} shows a Julia function that accepts a function that generates a matroid, and returns a function that constructs a matroid-rank valuation profile with $n$ thusly generated matroids. Matroid generation is rather slow, so the matroids are generated in parallel\footnote{Depending on how many threads are available. Julia starts single-threaded by default, but supports multi-threading~\cite{bezanson2017julia}.}. By plugging in a function for generating random graphs with $m$ edges, as given in Figures~\ref{code:random_ba_graph}, \ref{code:random_ws_graph} and \ref{code:random_er_graph}, we can generate a valuation profile consisting of graphic matroids. Alternatively, we can pass in \jlinl{random_knuth_matroid} to generate a profile of matroids given via their closed sets representations. 
+Figure~\ref{code:gen_matroidrank_profile} shows a Julia function that accepts a function that generates a matroid, and returns a function that constructs a matroid-rank valuation profile with $n$ thusly generated matroids. Matroid generation is rather slow, so the matroids are generated in parallel\footnote{Depending on how many threads are available. Julia starts single-threaded by default, but supports multi-threading~\cite{bezanson2017julia}.}. By plugging in a function for generating random graphs with $m$ edges, as given in Figures~\ref{code:random_ba_graph}, \ref{code:random_ws_graph} and \ref{code:random_er_graph}, we can generate a valuation profile consisting of graphic matroids. Alternatively, we can pass in \jlinl{random_knuth_matroid} to generate a profile of matroids given via their closed sets representations.
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{c|ccl|cr}
+    \toprule
+    ID & $n$ & $m$ & Matroid type & Time & Bytes allocated \\
+    \midrule
+    1 & 8 & 64 & Graphic (ER) & 184.4\unit{\us} & 173.177 KiB \\
+    2 & 8 & 64 & Graphic (WS) & 172.6\unit{\us} & 97.184 KiB \\
+    3 & 8 & 64 & Graphic (BA) & 155.8\unit{\us} & 100.402 KiB \\
+    4 & 4 & 13 & Knuth ($(0,6,0)$) & 34.1\unit{\ms} & 726.149 KiB \\
+    5 & 4 & 16 & Knuth ($(0,7,2)$) & 434.1\unit{\ms} & 2.531 MiB \\
+    6 & 4 & 19 & Knuth ($(0,8,3,1)$) & 5.6\unit{\s} & 9.970 MiB \\
+    \bottomrule
+  \end{tabular}
+  \caption{Six generated instances.}
+\end{table}
+
+\begin{table}[t]
+  \centering
+  \begin{adjustbox}{width=0.9\paperwidth,center}
+    \begin{tabular}{cccccccccc}
+      \toprule
+      ID & Time & Bytes & $\alpha$-EF1 & $\alpha$-EFX$_+$ & $\alpha$-EFX$_0$ & $\alpha$-PROP & $\alpha$-PROPX$_+$ & $\alpha$-PROPX$_0$ & $\alpha$-MMS \\
+      \midrule
+      1 & 22.4\unit{\ms} & 20.1 MiB & 1.133 & 1.133 & 1.124 & 1.0 & 1.142 & 1.0 & 0.991 \\
+      2 & 69.0\unit{\ms} & 36.8 MiB & 1.095 & 1.095 & 1.053 & 1.225 & 1.487 & 1.225 & 0.958 \\
+      3 & 93.0\unit{\ms} & 44.6 MiB & 1.114 & 1.114 & 1.097 & 1.25 & 1.52 & 1.25 & 0.975 \\
+      4 & 429.1\unit{\us} & 234.7 KiB & 1.033 & 1.033 & 1.0 & 1.714 & 4.0 & 1.714 & 1.0 \\
+      5 & 1.3\unit{\ms} & 414.7 KiB & 1.1 & 1.1 & 1.0 & 1.928 & 4.466 & 1.928 & 0.85 \\
+      6 & 3.6\unit{\ms} & 414.7 KiB & 1.1 & 1.1 & 1.0 & 1.928 & 4.466 & 1.928 & 0.85 \\
+      \bottomrule
+    \end{tabular}
+  \end{adjustbox}
+\end{table}
+
+% \begin{table}
+%   \begin{tabular}{cccc}
+    
+%   \end{tabular}
+% \end{table}
+
+% \begin{landscape}
+%   \begin{table}
+%   \begin{tabular}{ccccc}
+%     \toprule
+%     Instance & Time (Gen.) & Bytes (Gen.) & Time (Alloc.) & Bytes (Alloc.) \\
+%     \midrule
+%     8 $\times$ \texttt{GraphicMatroid(random\_er\_graph(64))} & 184.4\unit{\us} & 173.177 KiB & 22.4ms &  20.949 MiB \\
+%     8 $\times$ \texttt{GraphicMatroid(random\_er\_graph(64))} & 172.6\unit{\us} & 97.184 KiB & 69.0ms &  36.820 MiB \\
+%     8 $\times$ \texttt{GraphicMatroid(random\_ba\_graph(64))} & 155.8\unit{\us} & 100.402 KiB & 93.0ms &  44.633 MiB \\
+%     8 $\times$ \texttt{random\_knuth\_matroid(13, [0,6,0])} & 34.1\unit{\ms} & 726.149 KiB & 429.1\unit{\us} &  234.673 KiB \\
+%     8 $\times$ \texttt{random\_knuth\_matroid(16, [0,7,2])} & 434.1\unit{\ms} & 2.531 MiB & 1.3\unit{\ms} &  414.705 KiB \\
+%     8 $\times$ \texttt{random\_knuth\_matroid(19, [0,8,3,1])} & 5.6\unit{\s} & 9.970 MiB & 3.6\unit{\ms} &  669.711 KiB \\
+%     \bottomrule
+%   \end{tabular}
+%   \caption{Experimental results for some randomly generated fair allocation instances.}
+%   \label{tab:results}
+%   \end{table}
+  
+%   \begin{table}
+%     \begin{tabular}{ccccccc}
+%       \toprule
+%       $\alpha$-EF1 & $\alpha$-EFX$_+$ & $\alpha$-EFX$_0$ & $\alpha$-PROP & $\alpha$-PROPX$_+$ & $\alpha$-PROPX$_0$ & $\alpha$-MMS \\
+%       \midrule
+%       1.133 & 1.133 & 1.124 & 1.0 & 1.142 & 1.0 & 0.991 \\
+%       1.095 & 1.095 & 1.053 & 1.225 & 1.487 & 1.225 & 0.958 \\
+%       1.114 & 1.114 & 1.097 & 1.25 & 1.52 & 1.25 & 0.975
+%     \end{tabular}
+%     \caption*{Table~\ref{tab:results} cont.}
+%   \end{table}
+% \end{landscape}

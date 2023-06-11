@@ -144,56 +144,6 @@ Each iteration, an agent $i$ such that $A_i<\mu_i$ is popped from \jlinl{S_less}
 
 The source code for my implementation of \pr{Yankee-Swap} is given in Figure~\ref{code:Yankee-Swap}. The function proceeds similarly to \pr{AlgMMS}. Each iteration, a least-fortunate, highest-priority agent $i$ is chosen from among the agents whose bundle value can still improve (denoted with the \jlinl{flag} array). The set $F_i$ of goods for which $i$ has positive marginal value is found, and a transfer path is produced between $F_i$ and the set of goods currently belonging to agent zero (the unallocated goods). The next allocation is produced by augmenting along the transfer path and the next iteration starts if some agent can still improve their bundle; otherwise it terminates.
 
-\begin{figure}[ht!]
-\begin{jllisting}
-function alloc_yankee_swap_vz22(V::MatroidRank)
-  n = na(V); m = ni(V)
-
-  # Randomly prioritize the agents.
-  agents = shuffle(1:n)
-
-  # Agent "0" (n+1) has a corresponding zero matroid.
-  Ms_ = [V.Ms..., ZeroMatroid(m)]
-
-  A = Allocation(n+1, m)
-  give!(A, n+1, 1:m) # The bundle of unallocated items.
-  flag = falses(n)
-
-  D = exchange_graph(Ms_, A)
-
-  while false in flag
-    # The agents whose bundle can still improve.
-    T = [i for i in agents if flag[i] == false]
-    
-    # Find the agents in T with minimim value.
-    T_vals = [(i, length(bundle(A, i))) for i in T]
-    min_val = minimum(last, T_vals)
-    T_ = [i for (i, v) in T_vals if v == min_val]
-
-    # The highest priority agent with minimum value.
-    i = T_[1] 
-
-    # The goods for which i has positive marginal value.
-    F_i = [g for g in 1:m if is_indep(V.Ms[i], bundle(A, i) ∪ g)]
-
-    #  a shortest path from F_i to an unallocated good.
-    A_0 = [g for g in 1:m if owner(A, g) == n+1]
-    transfer_path = find_shortest_path(D, F_i, A_0)
-
-    # Transfer if path exists.
-    if transfer_path !== nothing
-      transfer!(Ms_, D, A, i, transfer_path)
-    else
-      flag[i] = true
-    end
-  end
-  
-  return A
-end
-\end{jllisting}
-\caption{The Matroids.jl implementation of \pr{Yankee-Swap}}
-\label{code:Yankee-Swap}
-\end{figure}
 
 \section{Running some experiments}
 \label{chap:results}
@@ -201,11 +151,13 @@ At this point, it seems like Matroids.jl has achieved its goal of making it easy
 
 The experimental plan is as follows:
 \begin{enumerate}
-  \item Generate a matroid-rank-valued fair allocation instance with $n$ matroids over $m$ elements.
+  \item Generate a matroid-rank-valued fair allocation instance (according to some matroid generation scheme) with $n$ matroids over $m$ elements.
   \item Find an allocation using some allocation algorithm.
   \item Check the resulting allocations against some set of approximate fairness notions.
   \item Repeat steps 1-3 $k$ times and present the average results.
 \end{enumerate}
+
+\include{src/yankee.fig}
 
 \begin{figure}
   \begin{jllisting}
@@ -227,76 +179,83 @@ end
   \label{code:gen_matroidrank_profile}
 \end{figure}
 
-Figure~\ref{code:gen_matroidrank_profile} shows a Julia function that accepts a function that generates a matroid, and returns a function that constructs a matroid-rank valuation profile with $n$ thusly generated matroids. Matroid generation is rather slow, so the matroids are generated in parallel\footnote{Depending on how many threads are available. Julia starts single-threaded by default, but supports multi-threading~\cite{bezanson2017julia}.}. By plugging in a function for generating random graphs with $m$ edges, as given in Figures~\ref{code:random_ba_graph}, \ref{code:random_ws_graph} and \ref{code:random_er_graph}, we can generate a valuation profile consisting of graphic matroids. Alternatively, we can pass in \jlinl{random_knuth_matroid} to generate a profile of matroids given via their closed sets representations.
+Figure~\ref{code:gen_matroidrank_profile} shows a Julia function that accepts a function that generates a matroid, and returns a function that constructs a matroid-rank valuation profile with $n$ thusly generated matroids. Due to the time-consuming nature of matroid generation, the matroids are generated in parallel\footnote{Depending on how many threads are available. Julia starts single-threaded by default, but supports multi-threading~\cite{bezanson2017julia}.}. By plugging in a function for generating random graphs with $m$ edges, as given in Figures~\ref{code:random_ba_graph}, \ref{code:random_ws_graph} and \ref{code:random_er_graph}, we can generate a valuation profile consisting of graphic matroids. Alternatively, we can pass in \jlinl{random_knuth_matroid} to generate a profile of matroids given via their closed sets representations.
 
 \begin{table}[htbp]
   \centering
-  \begin{tabular}{c|ccl|cr}
+  \begin{tabular}{c|ccl|ccr}
     \toprule
-    ID & $n$ & $m$ & Matroid type & Time & Bytes allocated \\
+    ID & $n$ & $m$ & Matroid type & Avg. rank & Time & Bytes allocated \\
     \midrule
-    1 & 8 & 64 & Graphic (ER) & 184.4\unit{\us} & 173.177 KiB \\
-    2 & 8 & 64 & Graphic (WS) & 172.6\unit{\us} & 97.184 KiB \\
-    3 & 8 & 64 & Graphic (BA) & 155.8\unit{\us} & 100.402 KiB \\
-    4 & 4 & 13 & Knuth ($(0,6,0)$) & 34.1\unit{\ms} & 726.149 KiB \\
-    5 & 4 & 16 & Knuth ($(0,7,2)$) & 434.1\unit{\ms} & 2.531 MiB \\
-    6 & 4 & 19 & Knuth ($(0,8,3,1)$) & 5.6\unit{\s} & 9.970 MiB \\
+    1 & 4 & 24 & Graphic (ER)         & 21.5 & 63.0\unit{\us} & 33.467 KiB \\
+    2 & 4 & 24 & Graphic (WS)         & 13.4 & 64.7\unit{\us} & 20.869 KiB \\
+    3 & 4 & 24 & Graphic (BA)         & 14.3 & 57.2\unit{\us} & 24.183 KiB \\
+    4 & 4 & 24 & Knuth ($(3,8,5,3)$)  & 5.5  & 16.8s          & 15.428 MiB \\
+    5 & 4 & 24 & Knuth ($(0,15,6)$)   & 4.2  & 4.2s           & 5.019 MiB \\
+    6 & 4 & 24 & Knuth ($(0,12,6)$)   & 6.3  & 38.2\unit{\s}  & 21.501 MiB \\
     \bottomrule
   \end{tabular}
-  \caption{Six generated instances.}
+  \caption{Six instance generation schemes with 4 agents and 24 goods.}
+  \label{tab:instances}
 \end{table}
 
-\begin{table}[t]
+Table~\ref{tab:instances} shows six schemes for initializing a matroid-rank valued fair allocation instance. Each scheme generates 4 matroids, one per agent, over 24 goods. The first three set up graphic matroids, using Erdős-Rényi, Barabási-Albert and Watts-Strogatz model random graphs, respectively. The latter three use \pr{Random-Knuth-Matroid}, with three different coarsening configurations. Each scheme was followed to generate 100 fair allocation problem instances. Then, each of the three algorithms we are studying were used to find an allocation for each instance. Finally, the fairness measures implemented in Chapter~\ref{chap:matroids.jl} were used to evaluate the fairness of each allocation. The output is Tables~\ref{res:eit}-\ref{res:yankeeswap}, giving the average approximate ($\alpha-$) fairness of the allocations output by the algorithms per scheme.
+
+This setup illustrates how one might use Matroids.jl to investigate the fairness guarantees of an allocation algorithm. Of course, one would probably want to put a bit more thought behind exactly what schemes to use for initializing instances. The instances used in this example do not seem to pose significant challenges for the algorithms, as indicated by the fact that all allocations meet, on average, almost all the fairness criteria they are evaluated against ($\alpha \geq 1$).
+
+One somewhat interesting observation from these experimental results is that Yankee Swap consistently delivers MMS-fair allocations on all tested schemes, despite its theoretical worst-case guarantee of only $\frac{1}{2}$-MMS fairness. This raises the question: to what extent does Yankee Swap typically exceed this worst-case guarantee in practical applications? This needs to be more rigorously tested than has been done in this thesis, but a positive answer of this kind would be useful for reasoning about the real-world applicability of Yankee Swap. 
+
+
+\begin{table}[ht!]
   \centering
-  \begin{adjustbox}{width=0.9\paperwidth,center}
     \begin{tabular}{cccccccccc}
-      \toprule
-      ID & Time & Bytes & $\alpha$-EF1 & $\alpha$-EFX$_+$ & $\alpha$-EFX$_0$ & $\alpha$-PROP & $\alpha$-PROPX$_+$ & $\alpha$-PROPX$_0$ & $\alpha$-MMS \\
-      \midrule
-      1 & 22.4\unit{\ms} & 20.1 MiB & 1.133 & 1.133 & 1.124 & 1.0 & 1.142 & 1.0 & 0.991 \\
-      2 & 69.0\unit{\ms} & 36.8 MiB & 1.095 & 1.095 & 1.053 & 1.225 & 1.487 & 1.225 & 0.958 \\
-      3 & 93.0\unit{\ms} & 44.6 MiB & 1.114 & 1.114 & 1.097 & 1.25 & 1.52 & 1.25 & 0.975 \\
-      4 & 429.1\unit{\us} & 234.7 KiB & 1.033 & 1.033 & 1.0 & 1.714 & 4.0 & 1.714 & 1.0 \\
-      5 & 1.3\unit{\ms} & 414.7 KiB & 1.1 & 1.1 & 1.0 & 1.928 & 4.466 & 1.928 & 0.85 \\
-      6 & 3.6\unit{\ms} & 414.7 KiB & 1.1 & 1.1 & 1.0 & 1.928 & 4.466 & 1.928 & 0.85 \\
-      \bottomrule
+\toprule
+ID & $\alpha$-EF1 & $\alpha$-EFX$_0$ & $\alpha$-PROP & $\alpha$-PROP1 & $\alpha$-PROPX$_0$ & $\alpha$-MMS \\
+\midrule
+1 & 1.188 &  1.178 & 1.004 & 1.206 & 1.004 & 0.99 \\
+2 & 1.1   &  1.033 & 1.236 & 1.661 & 1.236 & 0.916 \\
+3 & 1.116 &  1.049 & 1.311 & 1.743 & 1.311 & 0.93 \\
+4 & 1.093 &  1.064 & 3.945 & 12.0  & 3.945 & 1.013 \\
+5 & 1.021 &  1.008 & 3.903 & Inf & 3.903 & 1.01 \\
+6 & 1.114 & 1.02 & 3.357 & 8.999 & 3.357 & 1.072 \\
+\bottomrule
     \end{tabular}
-  \end{adjustbox}
+  \caption{Fairness results; \jlinl{alloc_eit_bciz21} on 100 random problem instances according to the schemes given in Table~\ref{tab:instances}.}
+  \label{res:eit}
 \end{table}
 
-% \begin{table}
-%   \begin{tabular}{cccc}
-    
-%   \end{tabular}
-% \end{table}
+\begin{table}
+  \centering
+    \begin{tabular}{cccccccccc}
+\toprule
+ID & $\alpha$-EF1 & $\alpha$-EFX$_0$ & $\alpha$-PROP & $\alpha$-PROP1 & $\alpha$-PROPX$_0$ & $\alpha$-MMS \\
+\midrule
+1 & 1.2      & 1.2   & 1.003 & 1.205  & 1.003 & 1.0\\
+2 & 1.2      & 1.2   & 1.3   & 1.794  & 1.3   & 1.0\\
+3 & 1.2      & 1.2   & 1.32  & 1.778  & 1.32  & 1.0\\
+4  & 1.078    & 1.036 & 3.907 & 11.786 & 3.907 & 1.035\\
+5  & 1.03     & 1.006 & 3.921 & Inf    & 3.921 & 1.029\\
+6  & 1.117    & 1.042 & 3.358 & 8.831  & 3.358 & 1.074\\
+\bottomrule
+    \end{tabular}
+  \caption{Fairness results; \jlinl{alloc_algmms_bv21} on 100 random problem instances according to the schemes given in Table~\ref{tab:instances}.}
+  \label{res:algmms}
+\end{table}
 
-% \begin{landscape}
-%   \begin{table}
-%   \begin{tabular}{ccccc}
-%     \toprule
-%     Instance & Time (Gen.) & Bytes (Gen.) & Time (Alloc.) & Bytes (Alloc.) \\
-%     \midrule
-%     8 $\times$ \texttt{GraphicMatroid(random\_er\_graph(64))} & 184.4\unit{\us} & 173.177 KiB & 22.4ms &  20.949 MiB \\
-%     8 $\times$ \texttt{GraphicMatroid(random\_er\_graph(64))} & 172.6\unit{\us} & 97.184 KiB & 69.0ms &  36.820 MiB \\
-%     8 $\times$ \texttt{GraphicMatroid(random\_ba\_graph(64))} & 155.8\unit{\us} & 100.402 KiB & 93.0ms &  44.633 MiB \\
-%     8 $\times$ \texttt{random\_knuth\_matroid(13, [0,6,0])} & 34.1\unit{\ms} & 726.149 KiB & 429.1\unit{\us} &  234.673 KiB \\
-%     8 $\times$ \texttt{random\_knuth\_matroid(16, [0,7,2])} & 434.1\unit{\ms} & 2.531 MiB & 1.3\unit{\ms} &  414.705 KiB \\
-%     8 $\times$ \texttt{random\_knuth\_matroid(19, [0,8,3,1])} & 5.6\unit{\s} & 9.970 MiB & 3.6\unit{\ms} &  669.711 KiB \\
-%     \bottomrule
-%   \end{tabular}
-%   \caption{Experimental results for some randomly generated fair allocation instances.}
-%   \label{tab:results}
-%   \end{table}
-  
-%   \begin{table}
-%     \begin{tabular}{ccccccc}
-%       \toprule
-%       $\alpha$-EF1 & $\alpha$-EFX$_+$ & $\alpha$-EFX$_0$ & $\alpha$-PROP & $\alpha$-PROPX$_+$ & $\alpha$-PROPX$_0$ & $\alpha$-MMS \\
-%       \midrule
-%       1.133 & 1.133 & 1.124 & 1.0 & 1.142 & 1.0 & 0.991 \\
-%       1.095 & 1.095 & 1.053 & 1.225 & 1.487 & 1.225 & 0.958 \\
-%       1.114 & 1.114 & 1.097 & 1.25 & 1.52 & 1.25 & 0.975
-%     \end{tabular}
-%     \caption*{Table~\ref{tab:results} cont.}
-%   \end{table}
-% \end{landscape}
+\begin{table}
+  \centering
+    \begin{tabular}{cccccccccc}
+\toprule
+ID & $\alpha$-EF1 & $\alpha$-EFX$_0$ & $\alpha$-PROP & $\alpha$-PROP1 & $\alpha$-PROPX$_0$ & $\alpha$-MMS \\
+\midrule
+1 & 1.2     & 1.2   & 1.004 & 1.206 & 1.004 & 1.0\\
+2 & 1.2     & 1.2   & 1.273 & 1.699 & 1.273 & 1.0\\
+3 & 1.2     & 1.2   & 1.32  & 1.778 & 1.32  & 1.0\\
+4 & 1.197   & 1.116 & 3.977 & 12.68 & 3.977 & 1.137\\
+5 & 1.263   & 1.2   & 4.338 & Inf   & 4.338 & 1.248\\
+6 & 1.199   & 1.161 & 3.407 & 8.342 & 3.407 & 1.091\\
+\bottomrule
+    \end{tabular}
+  \caption{Fairness results; \jlinl{alloc_yankee_swap_vz22} on 100 random problem instances according to the schemes given in Table~\ref{tab:instances}.}
+  \label{res:yankeeswap}
+\end{table}

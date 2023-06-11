@@ -1,0 +1,45 @@
+\begin{algorithm}[float*=ht!]{\pr{Knuth-Matroid}(E, \mathrm{X})}{knuth}
+
+  \textbf{Input:}     \tab The ground set of elements $E$, and a list of enlargements $\mathrm{X}$.
+
+  \textbf{Output:}    \tab The list of closed sets of the resulting matroid grouped by rank, \\
+  \mbox{}\tab $\mathrm{F} = [F_0, \ldots, F_r]$, where $F_i$ is the set of closed sets of rank $i$.
+
+  \begin{pseudo}[kw, label=\small\arabic*, indent-mark, line-height=1.2]
+    $r = 0, \mathrm{F} = [\{ \emptyset \}]$ \\
+    while \cn{true}  \\+
+    $\pr{Push!}(\mathrm{F}, \pr{Generate-Covers}(\mathrm{F}, r, E))$ \\
+    $\mathrm{F}[r+1] = \mathrm{F}[r+1] \cup \mathrm{X}[r+1]$ \\
+    \pr{Superpose!}(\mathrm{F}[r+1], \mathrm{F}[r]) \\
+
+    if $E \not \in F[r+1]$ \\+
+    $r \leftarrow r+1$ \\-
+    else \\+
+    return $(E, \mathrm{F})$
+
+  \end{pseudo}
+
+\end{algorithm}
+
+\begin{tcolorbox}[pseudo/filled, colback=lighttan, float*=ht!]
+  \begin{pseudo}*
+    \hd{Generate-Covers}(\mathrm{F}, r, E) \\
+    \kw{return} $\{ A \cup \{a\} : A \in \mathrm{F}[r], a \in E \setminus A \}$
+  \end{pseudo}
+\end{tcolorbox}
+
+\begin{tcolorbox}[pseudo/filled, colback=lighttan, float*=ht!]
+  \begin{pseudo}[kw, indent-mark, compact]*
+    \hd{Superpose!}({F_{r+1},F_r}) \\
+    for $A \in F_{r+1}$ \\+
+    for $B \in F_{r+1}$ \\+
+    \id{flag} $\leftarrow$ \cn{true} \\
+    for $C \in F_r$ \\+
+    if $A \cap B \subseteq C$ \\+
+    \id{flag} $\leftarrow$ \cn{false} \\--
+    \\
+    if \id{flag} = \cn{true} \\+
+    $F_{r+1} \leftarrow F_{r+1} \setminus \{A, B \}$ \\
+    $F_{r+1} \leftarrow F_{r+1} \cup \{A \cup B \}$
+  \end{pseudo}
+\end{tcolorbox}

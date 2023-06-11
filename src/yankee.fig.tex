@@ -1,0 +1,50 @@
+\begin{figure}
+\begin{jllisting}
+function alloc_yankee_swap_vz22(V::MatroidRank)
+  n = na(V); m = ni(V)
+
+  # Randomly prioritize the agents.
+  agents = shuffle(1:n)
+
+  # Agent "0" (n+1) has a corresponding zero matroid.
+  Ms_ = [V.Ms..., ZeroMatroid(m)]
+
+  A = Allocation(n+1, m)
+  give!(A, n+1, 1:m) # The bundle of unallocated items.
+  flag = falses(n)
+
+  D = exchange_graph(Ms_, A)
+
+  while false in flag
+    # The agents whose bundle can still improve.
+    T = [i for i in agents if flag[i] == false]
+    
+    # Find the agents in T with minimim value.
+    T_vals = [(i, length(bundle(A, i))) for i in T]
+    min_val = minimum(last, T_vals)
+    T_ = [i for (i, v) in T_vals if v == min_val]
+
+    # The highest priority agent with minimum value.
+    i = T_[1] 
+
+    # The goods for which i has positive marginal value.
+    F_i = [g for g in 1:m if is_indep(V.Ms[i], bundle(A, i) ∪ g)]
+
+    #  a shortest path from F_i to an unallocated good.
+    A_0 = [g for g in 1:m if owner(A, g) == n+1]
+    transfer_path = find_shortest_path(D, F_i, A_0)
+
+    # Transfer if path exists.
+    if transfer_path !== nothing
+      transfer!(Ms_, D, A, i, transfer_path)
+    else
+      flag[i] = true
+    end
+  end
+  
+  return A
+end
+\end{jllisting}
+\caption{The Matroids.jl implementation of \pr{Yankee-Swap}}
+\label{code:Yankee-Swap}
+\end{figure}

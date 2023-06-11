@@ -1,5 +1,5 @@
 \chapter{Sets as numbers -- some useful tricks}
-Section*~\ref{sec:improving-performance} details a number of steps taken in order to build a performant Julia implementation of \pr{Knuth-Matroid}. Perhaps chief among these steps in terms of sheer performance gain compared to the initial, naïve implementation, was the transition from representing subsets of $E$ as a \jlinl{Set} of integers (or whatever type the elements of E might have), to representing them as a single integer, whose 1-bits denote which elements are in the set. This is possible as long as $n$ is less than the widest available integer type (in off-the-shelf Julia, 128 bits, though one can go wider with the help of libraries~\cite{BitIntegers.jl}). We reiterate the bitwise equivalents of the basic set operations in Table~\ref{tab:equiv-bitwise}.
+Section~\ref{sec:improving-performance} details a number of steps taken in order to build a performant Julia implementation of \pr{Knuth-Matroid}. Perhaps chief among these steps in terms of sheer performance gain compared to the initial, naïve implementation, was the transition from representing subsets of $E$ as a \jlinl{Set} of integers (or whatever type the elements of E might have), to representing them as a single integer, whose 1-bits denote which elements are in the set. This is possible as long as $n$ is less than the widest available integer type (in off-the-shelf Julia, 128 bits, though one can go wider with the help of libraries~\cite{BitIntegers.jl}). We reiterate the bitwise equivalents of the basic set operations in Table~\ref{tab:equiv-bitwise}.
 \begin{table}[!ht]
   \caption{Set operations and their equivalent bitwise operations}
   \label{tab:equiv-bitwise}
@@ -13,7 +13,7 @@ Section*~\ref{sec:improving-performance} details a number of steps taken in orde
       $A \subseteq B$ & $A \land B$ = $A$ \\\hline
   \end{tabular}
 \end{table}
-These bitwise equivalents allow us to perform the set operations in constant time~(right???), resulting in significant performance increases. In the code snippets included throughout Section~\ref{sec:improving-performance} and Appendix~\ref{apx:code}, a number of ``tricks'' are performed with bitwise operations whose workings and purpose might be a bit obtuse. This appendix came to be as I got to grips with working with sets in this manner.
+These bitwise equivalents allow us to perform the set operations in constant time, resulting in significant performance increases. In the code snippets included throughout Section~\ref{sec:improving-performance} and Appendix~\ref{apx:rkmc_dev}, a number of ``tricks'' are performed with bitwise operations whose workings and purpose might be a bit obtuse. This appendix came to be as I got to grips with working with sets in this manner.
 
 \section*{How do I...}
 \subsection*{...create a singleton set?}
@@ -46,5 +46,22 @@ We find all the positions at which the reversed bitstring of the set has a '1' c
 function rand_el(S::Integer)
   x = rand([2^(i-1) for (i,c) in enumerate(reverse(bitstring(S))) if c == '1'])
   return convert(typeof(S), x)
+end
+\end{jllisting}
+
+\subsection*{...convert a set to its bitwise representation?}
+Assuming that the sets start counting at 1 (useful for interacting with Graphs.jl, for instance), this can be achieved with the following function:
+
+\begin{jllisting}
+function set_to_bits(set, T=UInt64)
+  if length(set) == 0 return T(0) end
+  T(reduce(+, (2^(x-1) for x in set), init=0))
+end
+\end{jllisting}
+
+\subsection*{...convert back?}
+\begin{jllisting}
+function bits_to_set(bits)
+  Set(i for (i, c) in enumerate(reverse(bitstring(bits))) if c == '1')
 end
 \end{jllisting}

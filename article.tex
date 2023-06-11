@@ -1,28 +1,13 @@
 \documentclass[b5paper]{report}
 
-% \usepackage{titlesec}
-% \titleformat{\chapter}[display]
-%   {\Large\bfseries}
-%   {\chaptertitlename\ \thechapter}{0pt}{\Huge}
-
 \usepackage[Lenny]{fncychap}
 \usepackage[style=ieee, citestyle=numeric-comp, backend=biber]{biblatex}
 \addbibresource{refs.bib}
-
-% \usepackage[T1]{fontenc}
-% \usepackage{titlesec, blindtext, color}
-% \definecolor{gray75}{gray}{0.75}
-% \newcommand{\hsp}{\hspace{20pt}}
-% \titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries}
-
-
-\usepackage{mwe}
 
 \usepackage{skeldoc}
 \usepackage{pseudo}
 \usepackage{tcolorbox}
 \usepackage{tabto}
-
 
 \usepackage{jlcode}
 
@@ -146,16 +131,10 @@ A big thanks is due to my stellar advisors, Magnus Hetland and Halvard Hummel, w
 \printbibliography
 
 \begin{appendices}
-  \input{src/appendices/partition.appendix}
   \input{src/appendices/binary_tricks.appendix}
+  \input{src/appendices/partition.appendix}
   \input{src/appendices/full_erection.appendix}
-  % \chapter{Random }
-  % \label{apx:code}
-  % \jlinputlisting{src/appendices/random_kmc_v1.jl}
-  % \jlinputlisting{src/appendices/random_kmc_v2.jl}
-  % \jlinputlisting{src/appendices/random_kmc_v4.jl}
-  % \jlinputlisting{src/appendices/random_kmc_v5.jl}
-  % \jlinputlisting{src/appendices/random_kmc_v6.jl}
+  \input{src/appendices/kmc_dev.appendix}
 \end{appendices}
 
 \end{document}

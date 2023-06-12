@@ -199,38 +199,45 @@
       \verb 2208.08782
       \endverb
     \endentry
-    \entry{barman2020fair}{misc}{}
+    \entry{barman2020fair}{inproceedings}{}
       \name{author}{2}{}{%
-        {{hash=a77928c6137c4d5cb40eb41e8df45f28}{%
-           family={Barman},
-           familyi={B\bibinitperiod},
-           given={Siddharth},
-           giveni={S\bibinitperiod}}}%
         {{hash=dab944761f9f3a016872e569b83f42b0}{%
            family={Biswas},
            familyi={B\bibinitperiod},
            given={Arpita},
            giveni={A\bibinitperiod}}}%
+        {{hash=a77928c6137c4d5cb40eb41e8df45f28}{%
+           family={Barman},
+           familyi={B\bibinitperiod},
+           given={Siddharth},
+           giveni={S\bibinitperiod}}}%
       }
-      \strng{namehash}{a508d4652406e1a628273578357f8aad}
-      \strng{fullhash}{a508d4652406e1a628273578357f8aad}
-      \strng{bibnamehash}{a508d4652406e1a628273578357f8aad}
-      \strng{authorbibnamehash}{a508d4652406e1a628273578357f8aad}
-      \strng{authornamehash}{a508d4652406e1a628273578357f8aad}
-      \strng{authorfullhash}{a508d4652406e1a628273578357f8aad}
+      \list{location}{1}{%
+        {Stockholm, Sweden}%
+      }
+      \list{publisher}{1}{%
+        {AAAI Press}%
+      }
+      \strng{namehash}{fcea189af1e122833f729b211c17a217}
+      \strng{fullhash}{fcea189af1e122833f729b211c17a217}
+      \strng{bibnamehash}{fcea189af1e122833f729b211c17a217}
+      \strng{authorbibnamehash}{fcea189af1e122833f729b211c17a217}
+      \strng{authornamehash}{fcea189af1e122833f729b211c17a217}
+      \strng{authorfullhash}{fcea189af1e122833f729b211c17a217}
       \field{sortinit}{5}
       \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{eprintclass}{cs.GT}
-      \field{eprinttype}{arXiv}
-      \field{title}{Fair Division Under Cardinality Constraints}
-      \field{year}{2020}
-      \verb{eprint}
-      \verb 1804.09521
-      \endverb
+      \field{abstract}{We consider the problem of fairly allocating indivisible goods, among agents, under cardinality constraints and additive valuations. In this setting, we are given a partition of the entire set of goods--i.e., the goods are categorized--and a limit is specified on the number of goods that can be allocated from each category to any agent. The objective here is to find a fair allocation in which the subset of goods assigned to any agent satisfies the given cardinality constraints. This problem naturally captures a number of resource-allocation applications, and is a generalization of the well-studied (unconstrained) fair division problem.The two central notions of fairness, in the context of fair division of indivisible goods, are envy freeness up to one good (EF1) and (approximate) maximin share guarantee (MMS). We show that the existence and algorithmic guarantees established for these solution concepts in the unconstrained setting can essentially be achieved under cardinality constraints.Furthermore, focusing on the case wherein all the agents have the same additive valuation, we establish that EF1 allocations exist even under matroid constraints.}
+      \field{booktitle}{Proceedings of the 27th International Joint Conference on Artificial Intelligence}
+      \field{isbn}{9780999241127}
+      \field{series}{IJCAI'18}
+      \field{title}{Fair Division under Cardinality Constraints}
+      \field{year}{2018}
+      \field{pages}{91\bibrangedash 97}
+      \range{pages}{7}
     \endentry
-    \entry{barman2021existence}{misc}{}
+    \entry{barman2021existence}{inproceedings}{}
       \name{author}{2}{}{%
         {{hash=a77928c6137c4d5cb40eb41e8df45f28}{%
            family={Barman},
@@ -243,6 +250,13 @@
            given={Paritosh},
            giveni={P\bibinitperiod}}}%
       }
+      \list{location}{1}{%
+        {Virtual Event, United Kingdom}%
+      }
+      \list{publisher}{2}{%
+        {International Foundation for Autonomous Agents}%
+        {Multiagent Systems}%
+      }
       \strng{namehash}{2535128c93ff9018ab915739ed50813a}
       \strng{fullhash}{2535128c93ff9018ab915739ed50813a}
       \strng{bibnamehash}{2535128c93ff9018ab915739ed50813a}
@@ -253,13 +267,15 @@
       \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{eprintclass}{cs.GT}
-      \field{eprinttype}{arXiv}
+      \field{abstract}{We study fair and economically efficient allocation of indivisible goods among agents whose valuations are rank functions of matroids. Such valuations constitute a well-studied class of submodular functions (i.e., they exhibit a diminishing returns property) and model preferences in several resource-allocation settings. We prove that, for matroid-rank valuations, a social welfare-maximizing allocation that gives each agent her maximin share always exists. Furthermore, such an allocation can be computed in polynomial time. We establish similar existential and algorithmic results for the pairwise maximin share guarantee as well.To complement these results, we show that if the agents have binary XOS valuations or weighted-rank valuations, then maximin fair allocations are not guaranteed to exist. Both of these valuation classes are immediate generalizations of matroid-rank functions.}
+      \field{booktitle}{Proceedings of the 20th International Conference on Autonomous Agents and MultiAgent Systems}
+      \field{isbn}{9781450383073}
+      \field{series}{AAMAS '21}
       \field{title}{Existence and Computation of Maximin Fair Allocations Under Matroid-Rank Valuations}
       \field{year}{2021}
-      \verb{eprint}
-      \verb 2012.12710
-      \endverb
+      \field{pages}{169\bibrangedash 177}
+      \range{pages}{9}
+      \keyw{maximin share,discrete fair division,submodular functions,matroid union theorem}
     \endentry
     \entry{benabbou-2021}{article}{}
       \name{author}{4}{}{%
@@ -668,7 +684,7 @@
       \endverb
       \keyw{Nash welfare,resource allocation,Fair division}
     \endentry
-    \entry{plaut2017envyfreeness}{misc}{}
+    \entry{plaut2017envyfreeness}{article}{}
       \name{author}{2}{}{%
         {{hash=b9c11969a35029c046997d75112cbed5}{%
            family={Plaut},
@@ -691,12 +707,25 @@
       \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{eprintclass}{cs.GT}
-      \field{eprinttype}{arXiv}
+      \field{abstract}{The goal of fair division is to distribute resources among competing players in a ``fair" way. Envy-freeness is the most extensively studied fairness notion in fair division. Envy-free allocations do not always exist with indivisible goods, motivating the study of relaxed versions of envy-freeness. We study the envy-freeness up to any good (EFX) property, which states that no player prefers the bundle of another player following the removal of any single good, and prove the first general results about this property. We use the leximin solution to show existence of EFX allocations in several contexts, sometimes in conjunction with Pareto optimality. For two players with valuations obeying a mild assumption, one of these results provides stronger guarantees than the currently deployed algorithm on Spliddit, a popular fair division website. Unfortunately, finding the leximin solution can require exponential time. We show that this is necessary by proving an exponential lower bound on the number of value queries needed to identify an EFX allocation, even for two players with identical valuations. We consider both additive and more general valuations, and our work suggests that there is a rich landscape of problems to explore in the fair division of indivisible goods with different classes of player valuations.}
+      \field{journaltitle}{SIAM Journal on Discrete Mathematics}
+      \field{number}{2}
       \field{title}{Almost Envy-Freeness with General Valuations}
-      \field{year}{2017}
+      \field{volume}{34}
+      \field{year}{2020}
+      \field{pages}{1039\bibrangedash 1068}
+      \range{pages}{30}
+      \verb{doi}
+      \verb 10.1137/19M124397X
+      \endverb
       \verb{eprint}
-      \verb 1707.04769
+      \verb https://doi.org/10.1137/19M124397X
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1137/19M124397X
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1137/19M124397X
       \endverb
     \endentry
     \entry{Budish2011}{article}{}
@@ -1199,46 +1228,45 @@
       \verb https://doi.org/10.1214/aoms/1177706098
       \endverb
     \endentry
-    \entry{janson1993birth}{misc}{}
+    \entry{janson1993birth}{article}{}
       \name{author}{4}{}{%
         {{hash=f636aecaf9ea5bf3a641d2c20e59a907}{%
            family={Janson},
            familyi={J\bibinitperiod},
            given={Svante},
            giveni={S\bibinitperiod}}}%
-        {{hash=ec08e6f01da5f3814f28a70c89c64656}{%
+        {{hash=16ba958eaf56fad580491eef4f771cee}{%
            family={Knuth},
            familyi={K\bibinitperiod},
-           given={Donald\bibnamedelima E.},
+           given={Donald\bibnamedelima Ervin},
            giveni={D\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
-        {{hash=3e6992c2f1276926fdfe855e416a1e24}{%
-           family={Łuczak},
-           familyi={Ł\bibinitperiod},
+        {{hash=80089fbb7d579772026b872c588b3c5d}{%
+           family={Luczak},
+           familyi={L\bibinitperiod},
            given={Tomasz},
            giveni={T\bibinitperiod}}}%
-        {{hash=f129a1da21d13438e8ef129746c0df4b}{%
+        {{hash=99e0ee9a527d0163248335a500e34ca6}{%
            family={Pittel},
            familyi={P\bibinitperiod},
-           given={Boris},
-           giveni={B\bibinitperiod}}}%
+           given={Boris\bibnamedelima G.},
+           giveni={B\bibinitperiod\bibinitdelim G\bibinitperiod}}}%
       }
       \strng{namehash}{df200c52591bd29f61217bc5b0d0fd64}
-      \strng{fullhash}{c298ea7b4d0d6f69c1213d4e4fd81d87}
-      \strng{bibnamehash}{c298ea7b4d0d6f69c1213d4e4fd81d87}
-      \strng{authorbibnamehash}{c298ea7b4d0d6f69c1213d4e4fd81d87}
+      \strng{fullhash}{138b9667107994eac32bba795a3884f9}
+      \strng{bibnamehash}{138b9667107994eac32bba795a3884f9}
+      \strng{authorbibnamehash}{138b9667107994eac32bba795a3884f9}
       \strng{authornamehash}{df200c52591bd29f61217bc5b0d0fd64}
-      \strng{authorfullhash}{c298ea7b4d0d6f69c1213d4e4fd81d87}
+      \strng{authorfullhash}{138b9667107994eac32bba795a3884f9}
       \field{sortinit}{6}
       \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{eprintclass}{math.PR}
-      \field{eprinttype}{arXiv}
-      \field{title}{The birth of the giant component}
+      \field{journaltitle}{Random Struct. Algorithms}
+      \field{title}{The Birth of the Giant Component}
+      \field{volume}{4}
       \field{year}{1993}
-      \verb{eprint}
-      \verb math/9310236
-      \endverb
+      \field{pages}{233\bibrangedash 359}
+      \range{pages}{127}
     \endentry
     \entry{barabasi-albert}{article}{}
       \name{author}{2}{}{%
@@ -1364,8 +1392,8 @@
       \strng{authorbibnamehash}{10f004e08c7c03d98be0da1231a869ce}
       \strng{authornamehash}{c251cdfd036d9474565c517e73c19c5d}
       \strng{authorfullhash}{10f004e08c7c03d98be0da1231a869ce}
-      \field{sortinit}{6}
-      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{edition}{3}
@@ -1421,8 +1449,8 @@
       \strng{authorbibnamehash}{2d1e788896d138d62ca3630de2bf4649}
       \strng{authornamehash}{2d1e788896d138d62ca3630de2bf4649}
       \strng{authorfullhash}{2d1e788896d138d62ca3630de2bf4649}
-      \field{sortinit}{7}
-      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{issn}{0001-0782}

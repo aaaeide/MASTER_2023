@@ -49,72 +49,50 @@
 
 \newcommand{\mono}[1]{$\texttt{#1}$}
 
-\begin{titlepage}
-  \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+% \begin{titlepage}
+%   \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 
-  \vbox{ }
-  \vbox{ }
-  \begin{center}
-    % Upper part of the page
-    \includegraphics[width=0.15\textwidth]{ntnu.png}\\[1cm]
-    \textsc{\Large Department of Computer Science}\\[1.5cm]
-    \textsc{\large TDT4900 --- Master's thesis}\\[0.5cm]
-    \vbox{ }
+%   \vbox{ }
+%   \vbox{ }
+%   \begin{center}
+%     % Upper part of the page
+%     \includegraphics[width=0.15\textwidth]{ntnu.png}\\[1cm]
+%     \textsc{\Large Department of Computer Science}\\[1.5cm]
+%     \textsc{\large TDT4900 --- Master's thesis}\\[0.5cm]
+%     \vbox{ }
 
-    % Title
-    \HRule \\[0.4cm]
-    { \huge Exploring Matroids in Fair Allocation:}\\[0.1cm]
-    { \huge Building the Matroids.jl Library}\\[0.1cm]
-    \HRule \\[1.5cm]
+%     % Title
+%     \HRule \\[0.4cm]
+%     { \huge Exploring Matroids in Fair Allocation:}\\[0.1cm]
+%     { \huge Building the Matroids.jl Library}\\[0.1cm]
+%     \HRule \\[1.5cm]
 
-    % Author
-    \large
-    \emph{Author:}\\
-    Andreas Aaberge Eide\\[0.5cm]
-    \emph{Supervisor:}\\
-    Magnus Lie Hetland
-    \vfill
+%     % Author
+%     \large
+%     \emph{Author:}\\
+%     Andreas Aaberge Eide\\[0.5cm]
+%     \emph{Supervisor:}\\
+%     Magnus Lie Hetland
+%     \vfill
 
-    % Bottom of the page
-    {\large \today\par}
-  \end{center}
-\end{titlepage}
-\cleardoublepage
-\newpage
+%     % Bottom of the page
+%     {\large \today\par}
+%   \end{center}
+% \end{titlepage}
 
-\epigraph{In matroid theory, we explore
-
-A structure with properties galore
-
-From bases to circuits
-
-It never discourages
-
-Mathematicians always wanting more
-\newline
-\newline
-The axioms it holds are so grand
-
-And its applications vast and unplanned
-
-From optimization to graphs
-
-It can solve so many tasks
-
-Matroid theory, truly a wonderland}{ChatGPT}
+\chapter*{Abstract}
 \thispagestyle{empty}
+This thesis explores the role of matroids in the context of fair allocation, for the purpose of building Matroids.jl, a proof-of-concept Julia library enabling the empirical study of matroidal fair allocation algorithms. To this end, functionality is given for the representation and random generation of graphic matroids. In addition, Knuth's algorithm for the erection of arbitrary matroids is implemented. Three recent fair allocation algorithms are studied and implemented. Also implemented is the functionality for evaluating an allocation against a variety of common fairness notions. The library is finally used to construct an experimental setup and the results of running the implemented algorithms on diverse matroids are described.
 
-\newpage
+\chapter*{Sammendrag}
+\thispagestyle{empty}
+Denne oppgaven utforsker rollen matroider spiller innen rettferdig fordeling, med mål for øyet å utvikle Matroids.jl, et Julia-bibliotek som muliggjør empirisk analyse av algoritmer for rettferdig fordeling som bruker matroider. Matroids.jl implementerer funksjonalitet for å representere og tilfeldig generere grafiske matroider. I tillegg implementeres Knuths algoritme for å tilfeldig sette opp vilkårlige matroider. Tre nylige algoritmer for rettferdig fordeling med matroierang-verdifunksjoner beskrives og deres behov til Matroids.jl analyseres. Matroids.jl implementerer også funksjonalitet for å evaluere en fordeling mot de fleste vanlige rettferdighetsmål. Til slutt benyttes biblioteket til å sette opp en serie eksperimenter som kjøres på de tre utvalgte algoritmene, og resultatene presenteres.
 
 
 
 \chapter*{Acknowledgements}
 \thispagestyle{empty}
 A big thanks is due to my stellar advisors, Magnus Hetland and Halvard Hummel, whose insightful feedback, patience, and passion for the subject has been truly above and beyond, and has made this past year enjoyable as well as highly educational. Kristina, Petter, and Vemund deserve special thanks for their invaluable moral support, and for listening to my incoherent ranting about matroids for the past few months. I would also like to applaud my flatmates Synne and Even for their general cleanliness in the kitchen area. Finally, a heartfelt thanks goes out to my good colleagues at Radio Revolt, without whom I would have completed this degree years earlier, with far better grades and in significantly better health.
-
-
-
-
 
 
 \tableofcontents

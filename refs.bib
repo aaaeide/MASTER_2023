@@ -217,14 +217,20 @@ location = {New York, NY, USA},
 series = {EC '04}
 }
 
-@misc{plaut2017envyfreeness,
-      title={Almost Envy-Freeness with General Valuations}, 
-      author={Benjamin Plaut and Tim Roughgarden},
-      year={2017},
-      eprint={1707.04769},
-      archivePrefix={arXiv},
-      primaryClass={cs.GT}
-}
+@article{plaut2017envyfreeness,
+	abstract = { The goal of fair division is to distribute resources among competing players in a ``fair" way. Envy-freeness is the most extensively studied fairness notion in fair division. Envy-free allocations do not always exist with indivisible goods, motivating the study of relaxed versions of envy-freeness. We study the envy-freeness up to any good (EFX) property, which states that no player prefers the bundle of another player following the removal of any single good, and prove the first general results about this property. We use the leximin solution to show existence of EFX allocations in several contexts, sometimes in conjunction with Pareto optimality. For two players with valuations obeying a mild assumption, one of these results provides stronger guarantees than the currently deployed algorithm on Spliddit, a popular fair division website. Unfortunately, finding the leximin solution can require exponential time. We show that this is necessary by proving an exponential lower bound on the number of value queries needed to identify an EFX allocation, even for two players with identical valuations. We consider both additive and more general valuations, and our work suggests that there is a rich landscape of problems to explore in the fair division of indivisible goods with different classes of player valuations. },
+	author = {Plaut, Benjamin and Roughgarden, Tim},
+	doi = {10.1137/19M124397X},
+	eprint = {https://doi.org/10.1137/19M124397X},
+	journal = {SIAM Journal on Discrete Mathematics},
+	number = {2},
+	pages = {1039-1068},
+	title = {Almost Envy-Freeness with General Valuations},
+	url = {https://doi.org/10.1137/19M124397X},
+	volume = {34},
+	year = {2020},
+	bdsk-url-1 = {https://doi.org/10.1137/19M124397X}}
+
 
 @inproceedings{conitzer-2017-prop1,
 author = {Conitzer, Vincent and Freeman, Rupert and Shah, Nisarg},
@@ -374,17 +380,14 @@ series = {EC '17}
     journal = {Advances in Physics}
 }
 
-
-
-@misc{janson1993birth,
-      title={The birth of the giant component}, 
-      author={Svante Janson and Donald E. Knuth and Tomasz Łuczak and Boris Pittel},
-      year={1993},
-      eprint={math/9310236},
-      archivePrefix={arXiv},
-      primaryClass={math.PR}
+@article{janson1993birth,
+  title={The Birth of the Giant Component},
+  author={Svante Janson and Donald Ervin Knuth and Tomasz Luczak and Boris G. Pittel},
+  journal={Random Struct. Algorithms},
+  year={1993},
+  volume={4},
+  pages={233-359}
 }
-
 
 
 
@@ -487,22 +490,34 @@ series = {EC '17}
       primaryClass={cs.DS}
 }
 
-@misc{barman2021existence,
-      title={Existence and Computation of Maximin Fair Allocations Under Matroid-Rank Valuations}, 
-      author={Siddharth Barman and Paritosh Verma},
-      year={2021},
-      eprint={2012.12710},
-      archivePrefix={arXiv},
-      primaryClass={cs.GT}
+@inproceedings{barman2021existence,
+author = {Barman, Siddharth and Verma, Paritosh},
+title = {Existence and Computation of Maximin Fair Allocations Under Matroid-Rank Valuations},
+year = {2021},
+isbn = {9781450383073},
+publisher = {International Foundation for Autonomous Agents and Multiagent Systems},
+address = {Richland, SC},
+abstract = {We study fair and economically efficient allocation of indivisible goods among agents whose valuations are rank functions of matroids. Such valuations constitute a well-studied class of submodular functions (i.e., they exhibit a diminishing returns property) and model preferences in several resource-allocation settings. We prove that, for matroid-rank valuations, a social welfare-maximizing allocation that gives each agent her maximin share always exists. Furthermore, such an allocation can be computed in polynomial time. We establish similar existential and algorithmic results for the pairwise maximin share guarantee as well.To complement these results, we show that if the agents have binary XOS valuations or weighted-rank valuations, then maximin fair allocations are not guaranteed to exist. Both of these valuation classes are immediate generalizations of matroid-rank functions.},
+booktitle = {Proceedings of the 20th International Conference on Autonomous Agents and MultiAgent Systems},
+pages = {169–177},
+numpages = {9},
+keywords = {maximin share, discrete fair division, submodular functions, matroid union theorem},
+location = {Virtual Event, United Kingdom},
+series = {AAMAS '21}
 }
 
-@misc{barman2020fair,
-      title={Fair Division Under Cardinality Constraints}, 
-      author={Siddharth Barman and Arpita Biswas},
-      year={2020},
-      eprint={1804.09521},
-      archivePrefix={arXiv},
-      primaryClass={cs.GT}
+@inproceedings{barman2020fair,
+author = {Biswas, Arpita and Barman, Siddharth},
+title = {Fair Division under Cardinality Constraints},
+year = {2018},
+isbn = {9780999241127},
+publisher = {AAAI Press},
+abstract = {We consider the problem of fairly allocating indivisible goods, among agents, under cardinality constraints and additive valuations. In this setting, we are given a partition of the entire set of goods--i.e., the goods are categorized--and a limit is specified on the number of goods that can be allocated from each category to any agent. The objective here is to find a fair allocation in which the subset of goods assigned to any agent satisfies the given cardinality constraints. This problem naturally captures a number of resource-allocation applications, and is a generalization of the well-studied (unconstrained) fair division problem.The two central notions of fairness, in the context of fair division of indivisible goods, are envy freeness up to one good (EF1) and (approximate) maximin share guarantee (MMS). We show that the existence and algorithmic guarantees established for these solution concepts in the unconstrained setting can essentially be achieved under cardinality constraints.Furthermore, focusing on the case wherein all the agents have the same additive valuation, we establish that EF1 allocations exist even under matroid constraints.},
+booktitle = {Proceedings of the 27th International Joint Conference on Artificial Intelligence},
+pages = {91–97},
+numpages = {7},
+location = {Stockholm, Sweden},
+series = {IJCAI'18}
 }
 
 @incollection{Benabbou_2020,
